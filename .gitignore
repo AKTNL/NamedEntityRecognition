@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large model binary weights (>100MB)
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# OS and IDE configurations
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

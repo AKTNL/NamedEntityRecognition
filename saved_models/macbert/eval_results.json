@@ -1,0 +1,11 @@
+{
+  "model_name": "hfl/chinese-macbert-base",
+  "best_f1": 0.7657923327642402,
+  "best_epoch": 2,
+  "val_loss": 0.19345803062121072,
+  "max_len": 128,
+  "batch_size": 16,
+  "lr": 3e-05,
+  "epochs": 3,
+  "classification_report": "              precision    recall  f1-score   support\n\n     address     0.5656    0.6702    0.6135       373\n        book     0.7562    0.7857    0.7707       154\n     company     0.7213    0.8148    0.7652       378\n        game     0.7638    0.8441    0.8019       295\n  government     0.7619    0.8421    0.8000       247\n       movie     0.7682    0.7682    0.7682       151\n        name     0.8583    0.8989    0.8782       465\norganization     0.7184    0.8202    0.7659       367\n    position     0.7603    0.8129    0.7857       433\n       scene     0.6457    0.6890    0.6667       209\n\n   micro avg     0.7318    0.8031    0.7658      3072\n   macro avg     0.7320    0.7946    0.7616      3072\nweighted avg     0.7345    0.8031    0.7669      3072\n"
+}

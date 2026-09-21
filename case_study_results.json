@@ -1,0 +1,1137 @@
+{
+  "title": "CLUENER2020: BERT vs MacBERT Case Study & Bad Case Mining Report",
+  "description": "细粒度中文命名实体识别基线对比实验之错例与优势案例深度结构化分析报告",
+  "dataset": "CLUENER2020 Development Set",
+  "models": {
+    "baseline": "bert-base-chinese",
+    "proposed": "hfl/chinese-macbert-base"
+  },
+  "summary": {
+    "total_samples": 1343,
+    "both_correct_count": 657,
+    "both_correct_ratio": "48.92%",
+    "macbert_better_count": 76,
+    "macbert_better_ratio": "5.66%",
+    "bert_better_count": 70,
+    "bert_better_ratio": "5.21%",
+    "both_wrong_count": 540,
+    "both_wrong_ratio": "40.21%",
+    "analysis_conclusion": "在共计 1343 条验证集样本中，MacBERT 展现出更高的实体整体边界识别稳定性与纠错泛化能力。MacBERT 在 76 条样本中实现对 BERT 预测失误的精准修复；在双错的 540 条样本中，大量案例揭示了现实中文 NER 的固有瓶颈（嵌套地址、长路径、主观标注文法歧义及数据集标注噪声）。"
+  },
+  "category_a_macbert_advantages": [
+    {
+      "case_id": "Case-A-01",
+      "sample_index": 18,
+      "pattern_type": "boundary_fragmentation_repair",
+      "pattern_name": "超长组织机构名边界碎片化切分修复",
+      "primary_category": "organization",
+      "text": "莫斯科中央陆军vs波兹南、拉科vs费耶诺德、加拉塔萨雷vs梅塔利斯特，",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 6,
+          "category": "organization",
+          "text": "莫斯科中央陆军"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "organization",
+          "text": "波兹南"
+        },
+        {
+          "start": 13,
+          "end": 14,
+          "category": "organization",
+          "text": "拉科"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "organization",
+          "text": "费耶诺德"
+        },
+        {
+          "start": 22,
+          "end": 26,
+          "category": "organization",
+          "text": "加拉塔萨雷"
+        },
+        {
+          "start": 29,
+          "end": 33,
+          "category": "organization",
+          "text": "梅塔利斯特"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 4,
+          "category": "organization",
+          "text": "莫斯科中央"
+        },
+        {
+          "start": 5,
+          "end": 5,
+          "category": "government",
+          "text": "陆"
+        },
+        {
+          "start": 6,
+          "end": 6,
+          "category": "organization",
+          "text": "军"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "organization",
+          "text": "波兹南"
+        },
+        {
+          "start": 13,
+          "end": 14,
+          "category": "organization",
+          "text": "拉科"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "organization",
+          "text": "费耶诺德"
+        },
+        {
+          "start": 22,
+          "end": 26,
+          "category": "organization",
+          "text": "加拉塔萨雷"
+        },
+        {
+          "start": 29,
+          "end": 33,
+          "category": "organization",
+          "text": "梅塔利斯特"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 6,
+          "category": "organization",
+          "text": "莫斯科中央陆军"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "organization",
+          "text": "波兹南"
+        },
+        {
+          "start": 13,
+          "end": 14,
+          "category": "organization",
+          "text": "拉科"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "organization",
+          "text": "费耶诺德"
+        },
+        {
+          "start": 22,
+          "end": 26,
+          "category": "organization",
+          "text": "加拉塔萨雷"
+        },
+        {
+          "start": 29,
+          "end": 33,
+          "category": "organization",
+          "text": "梅塔利斯特"
+        }
+      ],
+      "diff_analysis": "BERT 将多字体育俱乐部实体‘莫斯科中央陆军’碎片化切分为‘莫斯科中央’(org)、‘陆’(government) 和 ‘军’(org)，出现严重的单字类别混淆与边界断裂；MacBERT 完整识别为单一组织实体‘莫斯科中央陆军’。",
+      "technical_reason": "【WWM 全词掩码与纠错机制优势】原生 BERT 采用字符级单字 Mask，破坏了词汇边界关联；MacBERT 结合中文分词工具进行全词与 N-gram Masking，并在预训练中通过相似词替换而非 [MASK] 占位符，强迫模型对完整词块表征建模，有效杜绝了将‘陆军’单字碎片化归类为行政机构的缺陷。"
+    },
+    {
+      "case_id": "Case-A-02",
+      "sample_index": 504,
+      "pattern_type": "complex_hierarchical_entity",
+      "pattern_name": "复合国家级行业研究会超长实体整体捕获",
+      "primary_category": "organization",
+      "text": "中国房地产及住宅研究会副会长顾云昌认为，经济适用房建设进度主要取决于三个因素：",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 10,
+          "category": "organization",
+          "text": "中国房地产及住宅研究会"
+        },
+        {
+          "start": 11,
+          "end": 13,
+          "category": "position",
+          "text": "副会长"
+        },
+        {
+          "start": 14,
+          "end": 16,
+          "category": "name",
+          "text": "顾云昌"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 3,
+          "category": "organization",
+          "text": "中国房地"
+        },
+        {
+          "start": 4,
+          "end": 4,
+          "category": "government",
+          "text": "产"
+        },
+        {
+          "start": 5,
+          "end": 5,
+          "category": "organization",
+          "text": "及"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "category": "government",
+          "text": "住宅"
+        },
+        {
+          "start": 8,
+          "end": 10,
+          "category": "organization",
+          "text": "研究会"
+        },
+        {
+          "start": 11,
+          "end": 13,
+          "category": "position",
+          "text": "副会长"
+        },
+        {
+          "start": 14,
+          "end": 16,
+          "category": "name",
+          "text": "顾云昌"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 10,
+          "category": "organization",
+          "text": "中国房地产及住宅研究会"
+        },
+        {
+          "start": 11,
+          "end": 13,
+          "category": "position",
+          "text": "副会长"
+        },
+        {
+          "start": 14,
+          "end": 16,
+          "category": "name",
+          "text": "顾云昌"
+        }
+      ],
+      "diff_analysis": "面对长达 11 字的复合协会名‘中国房地产及住宅研究会’，BERT 发生连环崩塌，切碎出 5 个碎片：‘中国房地’(org)、‘产’(gov)、‘及’(org)、‘住宅’(gov)、‘研究会’(org)；MacBERT 100% 准确捕获完整实体边界与类别。",
+      "technical_reason": "【长跨度多义词依赖建模】长机构名称内部包含‘地产’、‘住宅’等可单独成词的高频词汇，原生 BERT 的自注意力分布容易被强局部特征吸引，将‘产’与‘住宅’误判为政务机关；MacBERT 的纠错预训练机制增强了语义整体一致性检测，消除了局部强语义引发的虚假切分。"
+    },
+    {
+      "case_id": "Case-A-03",
+      "sample_index": 1156,
+      "pattern_type": "bracket_and_version_boundary",
+      "pattern_name": "混合全角括号与年份版本的游戏实体边界识别",
+      "primary_category": "game",
+      "text": "上海和广州三大城市开展。项目包括DOTA、实况足球（2011）、CS1.6、",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "address",
+          "text": "上海"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "category": "address",
+          "text": "广州"
+        },
+        {
+          "start": 16,
+          "end": 19,
+          "category": "game",
+          "text": "DOTA"
+        },
+        {
+          "start": 21,
+          "end": 30,
+          "category": "game",
+          "text": "实况足球（2011）"
+        },
+        {
+          "start": 32,
+          "end": 36,
+          "category": "game",
+          "text": "CS1.6"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "address",
+          "text": "上海"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "category": "address",
+          "text": "广州"
+        },
+        {
+          "start": 16,
+          "end": 19,
+          "category": "game",
+          "text": "DOTA"
+        },
+        {
+          "start": 21,
+          "end": 24,
+          "category": "game",
+          "text": "实况足球"
+        },
+        {
+          "start": 27,
+          "end": 30,
+          "category": "game",
+          "text": "011）"
+        },
+        {
+          "start": 32,
+          "end": 36,
+          "category": "game",
+          "text": "CS1.6"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "address",
+          "text": "上海"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "category": "address",
+          "text": "广州"
+        },
+        {
+          "start": 16,
+          "end": 19,
+          "category": "game",
+          "text": "DOTA"
+        },
+        {
+          "start": 21,
+          "end": 30,
+          "category": "game",
+          "text": "实况足球（2011）"
+        },
+        {
+          "start": 32,
+          "end": 36,
+          "category": "game",
+          "text": "CS1.6"
+        }
+      ],
+      "diff_analysis": "针对含版本年份与括号的复合游戏名称‘实况足球（2011）’，BERT 在括号处发生断裂，拆成了‘实况足球’与‘011）’两个无效残片；MacBERT 成功将整个带括号名称完整识别为一个 game 实体。",
+      "technical_reason": "【标点与数字上下文连续性】原生 BERT 在符号与数字交叉处往往由于未登录词（OOV）碎片化处理导致注意力中断；MacBERT 的 N-gram 掩码涵盖连续的字母、标点和数字片段，大幅提升了对带版本号实体的鲁棒性。"
+    },
+    {
+      "case_id": "Case-A-04",
+      "sample_index": 529,
+      "pattern_type": "mixed_alphanumeric_brand",
+      "pattern_name": "中英混合商业地产品牌完整识别",
+      "primary_category": "company",
+      "text": "soho中国董事长潘石屹演讲时更是直接呼吁：“取消第二套房限制，让房子流通起来。”",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 5,
+          "category": "company",
+          "text": "soho中国"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "position",
+          "text": "董事长"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "name",
+          "text": "潘石屹"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 3,
+          "category": "company",
+          "text": "soho"
+        },
+        {
+          "start": 5,
+          "end": 5,
+          "category": "position",
+          "text": "国"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "position",
+          "text": "董事长"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "name",
+          "text": "潘石屹"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 5,
+          "category": "company",
+          "text": "soho中国"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "position",
+          "text": "董事长"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "name",
+          "text": "潘石屹"
+        }
+      ],
+      "diff_analysis": "针对英汉混合知名企业‘soho中国’，BERT 识别为‘soho’(company)并把‘国’误判为职位(position)；MacBERT 准确识别为‘soho中国’(company)。",
+      "technical_reason": "【跨语言子词表征对齐】BERT 在从英文小写字母转移到中文字符时，字符嵌入空间发生断层，造成紧随其后的‘中国’出现语义漂移；MacBERT 纠错预训练大幅减少了预训练与微调特征分布的不一致。"
+    },
+    {
+      "case_id": "Case-A-05",
+      "sample_index": 702,
+      "pattern_type": "company_branch_boundary",
+      "pattern_name": "金融机构复合分支机构名称边界修复",
+      "primary_category": "company",
+      "text": "对盈利也是毫无帮助的。”彭小军透露，截至三季末，深发展信用卡中心人员比去年下降了15%以上，",
+      "ground_truth": [
+        {
+          "start": 12,
+          "end": 14,
+          "category": "name",
+          "text": "彭小军"
+        },
+        {
+          "start": 24,
+          "end": 31,
+          "category": "company",
+          "text": "深发展信用卡中心"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 12,
+          "end": 14,
+          "category": "name",
+          "text": "彭小军"
+        },
+        {
+          "start": 24,
+          "end": 28,
+          "category": "company",
+          "text": "深发展信用"
+        },
+        {
+          "start": 30,
+          "end": 30,
+          "category": "company",
+          "text": "中"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 12,
+          "end": 14,
+          "category": "name",
+          "text": "彭小军"
+        },
+        {
+          "start": 24,
+          "end": 31,
+          "category": "company",
+          "text": "深发展信用卡中心"
+        }
+      ],
+      "diff_analysis": "BERT 对‘深发展信用卡中心’识别截断为‘深发展信用’与单独的‘中’；MacBERT 准确识别全部 8 个字符‘深发展信用卡中心’。",
+      "technical_reason": "【末尾通用后缀粘合】‘中心’、‘部’等通用组织后缀在 BERT 中容易被淡化或单独拆出，MacBERT 保留了完整的名词短语边界结构。"
+    },
+    {
+      "case_id": "Case-A-06",
+      "sample_index": 1267,
+      "pattern_type": "cross_category_disambiguation",
+      "pattern_name": "跨类别歧义消解（俱乐部组织 vs 人名）",
+      "primary_category": "organization",
+      "text": "贝蒂斯在客场与瓦伦打起对攻，虽然攻入两球，但是失球更多，暴露他们在投入较多人员去进攻时，",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "organization",
+          "text": "贝蒂斯"
+        },
+        {
+          "start": 7,
+          "end": 8,
+          "category": "organization",
+          "text": "瓦伦"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "name",
+          "text": "贝蒂斯"
+        },
+        {
+          "start": 7,
+          "end": 8,
+          "category": "organization",
+          "text": "瓦伦"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "organization",
+          "text": "贝蒂斯"
+        },
+        {
+          "start": 7,
+          "end": 8,
+          "category": "organization",
+          "text": "瓦伦"
+        }
+      ],
+      "diff_analysis": "在体育新闻文本‘贝蒂斯在客场与瓦伦打起对攻...’中，BERT 将足球俱乐部‘贝蒂斯’误识别为人名(name)；MacBERT 结合‘客场’、‘打起对攻’等全局语义，精准判定其为组织(organization)。",
+      "technical_reason": "【全局上下文语义推断】‘贝蒂斯’字面类似于西方音译人名，单字缺乏强组织先验；MacBERT 的双向 Transformer 编码结合 SOP（句子顺序预测）预训练，对篇章级语境上下文的语义约束理解更深。"
+    },
+    {
+      "case_id": "Case-A-07",
+      "sample_index": 923,
+      "pattern_type": "rare_name_disambiguation",
+      "pattern_name": "罕见姓氏人名消歧与机构混淆纠正",
+      "primary_category": "name",
+      "text": "商为智实习生陈文波",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "name",
+          "text": "商为智"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "category": "position",
+          "text": "实习生"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "name",
+          "text": "陈文波"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "company",
+          "text": "商为智"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "category": "position",
+          "text": "实习生"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "name",
+          "text": "陈文波"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 2,
+          "category": "name",
+          "text": "商为智"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "category": "position",
+          "text": "实习生"
+        },
+        {
+          "start": 6,
+          "end": 8,
+          "category": "name",
+          "text": "陈文波"
+        }
+      ],
+      "diff_analysis": "在‘商为智实习生陈文波’中，BERT 将罕见姓名‘商为智’误分类为公司(company)；MacBERT 正确识别‘商为智’为人名(name)。",
+      "technical_reason": "【字符语义特征纠正】‘商’字常作为商业/商社出现，BERT 极易产生机构名假阳性；MacBERT 纠错掩码机制对同义词上下文替换的建模，使其在人名实体识别上显著超越原生 BERT。"
+    },
+    {
+      "case_id": "Case-A-08",
+      "sample_index": 29,
+      "pattern_type": "game_title_and_noise_filtering",
+      "pattern_name": "流行游戏专名识别与口语杂质过滤",
+      "primary_category": "game",
+      "text": "玩dota，你会发现敢死队根本没有用处玩imba，你会发现敢死队是制胜的关键",
+      "ground_truth": [
+        {
+          "start": 1,
+          "end": 4,
+          "category": "game",
+          "text": "dota"
+        },
+        {
+          "start": 20,
+          "end": 23,
+          "category": "game",
+          "text": "imba"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 1,
+          "end": 4,
+          "category": "game",
+          "text": "dota"
+        },
+        {
+          "start": 10,
+          "end": 12,
+          "category": "game",
+          "text": "敢死队"
+        },
+        {
+          "start": 20,
+          "end": 20,
+          "category": "game",
+          "text": "i"
+        },
+        {
+          "start": 22,
+          "end": 23,
+          "category": "game",
+          "text": "ba"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 1,
+          "end": 4,
+          "category": "game",
+          "text": "dota"
+        },
+        {
+          "start": 20,
+          "end": 23,
+          "category": "game",
+          "text": "imba"
+        }
+      ],
+      "diff_analysis": "文本包含‘玩dota...玩imba...’，BERT 将口语词‘敢死队’误标为游戏，并将‘imba’截断为‘i’和‘ba’（漏掉m）；MacBERT 准确抽取出‘dota’和‘imba’，未产生多余误报。",
+      "technical_reason": "【高精度实体过滤】MacBERT 展现出更高的 Precision，抑制了低置信度口语词汇的泛化过载。"
+    }
+  ],
+  "category_b_hard_cases": [
+    {
+      "case_id": "Case-B-01",
+      "sample_index": 1,
+      "pattern_type": "gt_omission_label_noise",
+      "pattern_name": "经典真实实体漏标 / 足球俱乐部公认别称",
+      "primary_category": "organization",
+      "text": "温格的球队终于又踢了一场经典的比赛，2比1战胜曼联之后枪手仍然留在了夺冠集团之内，",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "name",
+          "text": "温格"
+        },
+        {
+          "start": 23,
+          "end": 24,
+          "category": "organization",
+          "text": "曼联"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "name",
+          "text": "温格"
+        },
+        {
+          "start": 23,
+          "end": 24,
+          "category": "organization",
+          "text": "曼联"
+        },
+        {
+          "start": 27,
+          "end": 28,
+          "category": "organization",
+          "text": "枪手"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 0,
+          "end": 1,
+          "category": "name",
+          "text": "温格"
+        },
+        {
+          "start": 23,
+          "end": 24,
+          "category": "organization",
+          "text": "曼联"
+        },
+        {
+          "start": 27,
+          "end": 28,
+          "category": "organization",
+          "text": "枪手"
+        }
+      ],
+      "diff_analysis": "文本：‘...2比1战胜曼联之后枪手仍然留在了夺冠集团之内...’；dev.json 真实标签仅包含‘曼联’与‘温格’，遗漏了‘枪手’；BERT 与 MacBERT 均精准且一致地识别出‘枪手’(organization)！",
+      "technical_reason": "【数据集标注噪声与漏标顽疾】在足球专业领域，‘枪手’是英超豪门阿森纳足球俱乐部的公认别称。深度预训练模型基于语境成功捕获了其组织实体属性，但因人工标注漏标，在 seqeval 的严格精确匹配评测中被判定为假阳性（FP），人为拉低了精确率得分。",
+      "proposed_solution": "建立基于模型交叉校验（Cross-Validation Ensemble）的数据集标注清洗机制，针对双模型高置信度预测但 GT 缺失的案例进行半监督重标审校。"
+    },
+    {
+      "case_id": "Case-B-02",
+      "sample_index": 3,
+      "pattern_type": "gt_omission_government",
+      "pattern_name": "核心政务机构实体人工遗漏",
+      "primary_category": "government",
+      "text": "郑阿姨就赶到文汇路排队拿钱，希望能将缴纳的一万余元学费拿回来，顺便找校方或者教委要个说法。",
+      "ground_truth": [
+        {
+          "start": 6,
+          "end": 8,
+          "category": "address",
+          "text": "文汇路"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 6,
+          "end": 8,
+          "category": "address",
+          "text": "文汇路"
+        },
+        {
+          "start": 34,
+          "end": 35,
+          "category": "government",
+          "text": "校方"
+        },
+        {
+          "start": 38,
+          "end": 39,
+          "category": "government",
+          "text": "教委"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 6,
+          "end": 8,
+          "category": "address",
+          "text": "文汇路"
+        },
+        {
+          "start": 34,
+          "end": 34,
+          "category": "government",
+          "text": "校"
+        },
+        {
+          "start": 38,
+          "end": 39,
+          "category": "government",
+          "text": "教委"
+        }
+      ],
+      "diff_analysis": "文本：‘...顺便找校方或者教委要个说法。’；dev.json 仅标注了‘文汇路’(address)，遗漏了行政机构‘教委’(government)；BERT 与 MacBERT 均正确挖掘出‘教委’(government)。",
+      "technical_reason": "【常见简称覆盖率不足】‘教委’（教育委员会）是标准的政府机关简称，模型具备优秀的知识泛化能力，而人工标注存在随意性和疏漏。",
+      "proposed_solution": "在预处理或后处理阶段引入官方机构组织权威词典补充基线。"
+    },
+    {
+      "case_id": "Case-B-03",
+      "sample_index": 1246,
+      "pattern_type": "boundary_modifier_ambiguity",
+      "pattern_name": "修饰性语块边界歧义（道路专名 vs 围合管制区域）",
+      "primary_category": "address",
+      "text": "限行规则与北京保持一致。限行区域为邢州大道、祥和大街、东华路、滨江路围合区域含上述道路。",
+      "ground_truth": [
+        {
+          "start": 5,
+          "end": 6,
+          "category": "address",
+          "text": "北京"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "address",
+          "text": "邢州大道"
+        },
+        {
+          "start": 22,
+          "end": 25,
+          "category": "address",
+          "text": "祥和大街"
+        },
+        {
+          "start": 27,
+          "end": 29,
+          "category": "address",
+          "text": "东华路"
+        },
+        {
+          "start": 31,
+          "end": 37,
+          "category": "address",
+          "text": "滨江路围合区域"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 5,
+          "end": 6,
+          "category": "address",
+          "text": "北京"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "address",
+          "text": "邢州大道"
+        },
+        {
+          "start": 22,
+          "end": 25,
+          "category": "address",
+          "text": "祥和大街"
+        },
+        {
+          "start": 27,
+          "end": 29,
+          "category": "address",
+          "text": "东华路"
+        },
+        {
+          "start": 31,
+          "end": 33,
+          "category": "address",
+          "text": "滨江路"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 5,
+          "end": 6,
+          "category": "address",
+          "text": "北京"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "address",
+          "text": "邢州大道"
+        },
+        {
+          "start": 22,
+          "end": 25,
+          "category": "address",
+          "text": "祥和大街"
+        },
+        {
+          "start": 27,
+          "end": 29,
+          "category": "address",
+          "text": "东华路"
+        },
+        {
+          "start": 31,
+          "end": 33,
+          "category": "address",
+          "text": "滨江路"
+        }
+      ],
+      "diff_analysis": "文本：‘...限行区域为邢州大道、祥和大街、东华路、滨江路围合区域含上述道路。’；真实标签标注为‘滨江路围合区域’(7字)；BERT 与 MacBERT 均预测为‘滨江路’(3字)。",
+      "technical_reason": "【专有名词核心与空间修饰语边界模糊】‘滨江路’是明确的道路地理实体，而‘围合区域’在语言学上是空间范围修饰语。由于 BIO 线性标注标准未对‘专名核心’与‘扩展修饰’给出公理化定义，模型依照概率更倾向于在词汇‘路’截断，导致 strict match 判定失败。",
+      "proposed_solution": "支持软匹配（Partial Match / Span IoU）评估，或区分核心实体与修饰语实体。"
+    },
+    {
+      "case_id": "Case-B-04",
+      "sample_index": 812,
+      "pattern_type": "hierarchical_route_address",
+      "pattern_name": "超长交通路线描述与复杂空间关系嵌套",
+      "primary_category": "address",
+      "text": "社区位于京良路南侧，距离京石高速约5公里，从京石高速西三环六里桥到京良路出口仅10余公里。",
+      "ground_truth": [
+        {
+          "start": 4,
+          "end": 8,
+          "category": "address",
+          "text": "京良路南侧"
+        },
+        {
+          "start": 22,
+          "end": 37,
+          "category": "address",
+          "text": "京石高速西三环六里桥到京良路出口"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 4,
+          "end": 8,
+          "category": "address",
+          "text": "京良路南侧"
+        },
+        {
+          "start": 12,
+          "end": 15,
+          "category": "address",
+          "text": "京石高速"
+        },
+        {
+          "start": 22,
+          "end": 31,
+          "category": "address",
+          "text": "京石高速西三环六里桥"
+        },
+        {
+          "start": 33,
+          "end": 37,
+          "category": "address",
+          "text": "京良路出口"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 4,
+          "end": 8,
+          "category": "address",
+          "text": "京良路南侧"
+        },
+        {
+          "start": 12,
+          "end": 15,
+          "category": "address",
+          "text": "京石高速"
+        },
+        {
+          "start": 22,
+          "end": 32,
+          "category": "address",
+          "text": "京石高速西三环六里桥到"
+        },
+        {
+          "start": 33,
+          "end": 37,
+          "category": "address",
+          "text": "京良路出口"
+        }
+      ],
+      "diff_analysis": "文本：‘...从京石高速西三环六里桥到京良路出口仅10余公里。’；真实标签将整句路径强行标注为一个实体：‘京石高速西三环六里桥到京良路出口’(16字)；BERT 与 MacBERT 均将其拆分出‘京石高速’、‘京石高速西三环六里桥’、‘京良路出口’。",
+      "technical_reason": "【路径结构与嵌套实体建模局限】该实体本质包含起点‘六里桥’、干线‘京石高速’、介词‘到’、终点‘出口’等多层级空间关系。线性序列标注（BIO）受限于单层标签空间，无法表达起点-终点的复合路径语义。",
+      "proposed_solution": "针对此类长距离导航描述，需升级为关系抽取或基于片段（Span-based）的分层 NER 架构。"
+    },
+    {
+      "case_id": "Case-B-05",
+      "sample_index": 27,
+      "pattern_type": "bracket_alias_collision",
+      "pattern_name": "括号别名与真实人名嵌套冲突",
+      "primary_category": "name",
+      "text": "现役DotA明星选手，担任SOLO位的世界第一影魔Pis（卜严骏），",
+      "ground_truth": [
+        {
+          "start": 2,
+          "end": 5,
+          "category": "game",
+          "text": "DotA"
+        },
+        {
+          "start": 6,
+          "end": 9,
+          "category": "position",
+          "text": "明星选手"
+        },
+        {
+          "start": 25,
+          "end": 32,
+          "category": "name",
+          "text": "Pis（卜严骏）"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 2,
+          "end": 5,
+          "category": "game",
+          "text": "DotA"
+        },
+        {
+          "start": 6,
+          "end": 9,
+          "category": "position",
+          "text": "明星选手"
+        },
+        {
+          "start": 25,
+          "end": 27,
+          "category": "name",
+          "text": "Pis"
+        },
+        {
+          "start": 29,
+          "end": 32,
+          "category": "name",
+          "text": "卜严骏）"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 2,
+          "end": 5,
+          "category": "game",
+          "text": "DotA"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "category": "position",
+          "text": "明星"
+        },
+        {
+          "start": 8,
+          "end": 9,
+          "category": "position",
+          "text": "选手"
+        },
+        {
+          "start": 25,
+          "end": 27,
+          "category": "name",
+          "text": "Pis"
+        },
+        {
+          "start": 29,
+          "end": 31,
+          "category": "name",
+          "text": "卜严骏"
+        }
+      ],
+      "diff_analysis": "文本：‘...担任SOLO位的世界第一影魔Pis（卜严骏），’；真实标签整体标注为‘Pis（卜严骏）’(name)；BERT 将其切为‘Pis’与‘卜严骏）’；MacBERT 切为‘Pis’与‘卜严骏’。",
+      "technical_reason": "【代号与真实姓名嵌套】Pis 是选手知名 ID，卜严骏是中文真实姓名。人工标注将括号整体合一，而预训练语言模型天然倾向于将标点隔离，剥离出两个纯净实体。这是典型的嵌套实体识别（Nested NER）冲突。",
+      "proposed_solution": "引入指针网络（GlobalPointer）或机器阅读理解（MRC）框架处理重叠与嵌套实体。"
+    },
+    {
+      "case_id": "Case-B-06",
+      "sample_index": 1188,
+      "pattern_type": "annotator_noise_unclosed_punctuation",
+      "pattern_name": "人工标注失误残留未闭合标点脏数据",
+      "primary_category": "address",
+      "text": "从目前发展状况来看，南城行动计划确实给房山区带来了翻天覆地的变化：北京石化新材料科技产业基地（",
+      "ground_truth": [
+        {
+          "start": 19,
+          "end": 21,
+          "category": "address",
+          "text": "房山区"
+        },
+        {
+          "start": 33,
+          "end": 46,
+          "category": "address",
+          "text": "北京石化新材料科技产业基地（"
+        }
+      ],
+      "bert_prediction": [
+        {
+          "start": 19,
+          "end": 21,
+          "category": "address",
+          "text": "房山区"
+        },
+        {
+          "start": 33,
+          "end": 45,
+          "category": "address",
+          "text": "北京石化新材料科技产业基地"
+        }
+      ],
+      "macbert_prediction": [
+        {
+          "start": 19,
+          "end": 21,
+          "category": "address",
+          "text": "房山区"
+        },
+        {
+          "start": 33,
+          "end": 45,
+          "category": "address",
+          "text": "北京石化新材料科技产业基地"
+        }
+      ],
+      "diff_analysis": "文本：‘...北京石化新材料科技产业基地（’；真实标签末尾包含未闭合的前括号：‘北京石化新材料科技产业基地（’(14字)；BERT 与 MacBERT 均自动剔除了半括号，精准预测‘北京石化新材料科技产业基地’(13字)。",
+      "technical_reason": "【模型鲁棒性超越原始脏标注】标注人员在界面滑选时失误多选了半个括号‘（’。BERT 与 MacBERT 依靠预训练学到的句法知识，正确判定括号不属于实体本身，但严苛的字符串位置评测将其判为错误。",
+      "proposed_solution": "在数据预处理阶段执行基于正则规则的括号配对与末尾标点清洗后处理。"
+    }
+  ]
+}

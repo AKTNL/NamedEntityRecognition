@@ -1,0 +1,11 @@
+{
+  "model_name": "bert-base-chinese",
+  "best_f1": 0.7618159203980099,
+  "best_epoch": 3,
+  "val_loss": 0.20498762115658747,
+  "max_len": 128,
+  "batch_size": 16,
+  "lr": 3e-05,
+  "epochs": 3,
+  "classification_report": "              precision    recall  f1-score   support\n\n     address     0.5806    0.6568    0.6164       373\n        book     0.7561    0.8052    0.7799       154\n     company     0.7197    0.8016    0.7584       378\n        game     0.7353    0.8475    0.7874       295\n  government     0.7517    0.8704    0.8068       247\n       movie     0.8082    0.7815    0.7946       151\n        name     0.8357    0.8968    0.8651       465\norganization     0.7201    0.7711    0.7447       367\n    position     0.7511    0.8083    0.7786       433\n       scene     0.6502    0.6938    0.6713       209\n\n   micro avg     0.7292    0.7975    0.7618      3072\n   macro avg     0.7309    0.7933    0.7603      3072\nweighted avg     0.7304    0.7975    0.7621      3072\n"
+}
