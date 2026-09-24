@@ -1843,7 +1843,7 @@ def build():
          主题切换 (Theme Manager)
          ======================================================================== */
       function initTheme() {{
-        const savedTheme = localStorage.getItem('macbert_workbench_theme') || 'dark';
+        const savedTheme = localStorage.getItem('macbert_ner_theme') || localStorage.getItem('macbert_workbench_theme') || 'dark';
         setTheme(savedTheme);
         el.themeToggleBtn.addEventListener('click', () => {{
           const current = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -1853,6 +1853,7 @@ def build():
 
       function setTheme(theme) {{
         document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('macbert_ner_theme', theme);
         localStorage.setItem('macbert_workbench_theme', theme);
         if (theme === 'dark') {{
           el.themeIconSun.style.display = 'none';
@@ -1896,10 +1897,10 @@ def build():
       /* ========================================================================
          自定义用例管理系统 (Custom Cases System)
          ======================================================================== */
-      const STORAGE_KEY_CASES = 'macbert_ner_custom_cases_v2';
+      const STORAGE_KEY_CASES = 'macbert_ner_custom_cases';
 
       function loadCustomCases() {{
-        const stored = localStorage.getItem(STORAGE_KEY_CASES);
+        const stored = localStorage.getItem(STORAGE_KEY_CASES) || localStorage.getItem('macbert_ner_custom_cases_v2');
         if (stored) {{
           try {{
             state.customCases = JSON.parse(stored);

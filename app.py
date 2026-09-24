@@ -57,9 +57,11 @@ DEVICE = torch.device("cpu")
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(APP_ROOT, "templates")
+DEFAULT_BERT_DIR = os.path.join(APP_ROOT, "saved_models", "bert")
+DEFAULT_MACBERT_DIR = os.path.join(APP_ROOT, "saved_models", "macbert")
 
 
-def load_models(bert_dir: str = "./saved_models/bert", macbert_dir: str = "./saved_models/macbert"):
+def load_models(bert_dir: str = DEFAULT_BERT_DIR, macbert_dir: str = DEFAULT_MACBERT_DIR):
     """加载微调好的 BERT 与 MacBERT 模型及 Tokenizer"""
     global MODELS, TOKENIZERS
     print("=" * 65)
@@ -91,6 +93,12 @@ def load_models(bert_dir: str = "./saved_models/bert", macbert_dir: str = "./sav
     print("=" * 65)
     print(" ✨ 推理引擎加载完成！双模型常驻内存准备就绪。")
     print("=" * 65)
+
+
+def ensure_models_loaded(bert_dir: str = DEFAULT_BERT_DIR, macbert_dir: str = DEFAULT_MACBERT_DIR):
+    """确保双模型及 Tokenizer 已被加载（懒加载与自愈保障）"""
+    if "bert" not in MODELS or "macbert" not in MODELS:
+        load_models(bert_dir, macbert_dir)
 
 
 def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[float]) -> List[Dict[str, Any]]:
@@ -172,6 +180,7 @@ def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[fl
 
 def run_inference(model_key: str, text: str, max_len: int = 128) -> Dict[str, Any]:
     """单模型前向推理与实体抽取"""
+    ensure_models_loaded()
     if model_key not in MODELS or model_key not in TOKENIZERS:
         raise ValueError(f"Model '{model_key}' is not loaded.")
 
@@ -348,13 +357,16 @@ def parse_classification_report(report_str: str) -> Dict[str, Any]:
                 p, r, f1, sup = parts[2], parts[3], parts[4], parts[5]
             else:
                 p, r, f1, sup = parts[1], parts[2], parts[3], parts[4]
-            result[cat] = {
-                "precision": float(p),
-                "recall": float(r),
-                "f1": float(f1),
-                "support": int(sup),
-                "name_cn": CATEGORY_META.get(cat, {}).get("cn", cat)
-            }
+            try:
+                result[cat] = {
+                    "precision": float(p),
+                    "recall": float(r),
+                    "f1": float(f1),
+                    "support": int(sup),
+                    "name_cn": CATEGORY_META.get(cat, {}).get("cn", cat)
+                }
+            except (ValueError, TypeError):
+                continue
     return result
 
 
@@ -605,23 +617,40 @@ def api_predict():
         "max_len": 128
       }
     """
-    data = request.get_json(force=True, silent=True) or {}
-    text = data.get("text", "")
-    model_choice = data.get("model", "both").lower()
-    if model_choice not in ["both", "macbert", "bert"]:
-        model_choice = "both"
-    try:
-        max_len = min(max(int(data.get("max_len", 128)), 16), 512)
-    except (ValueError, TypeError):
-        max_len = 128
+    data = request.get_json(force=True, silent=True)
+    if not isinstance(data, dict):
+        return jsonify({
+            "success": False,
+            "error": "请求体格式错误，必须为包含 'text' 字段的 JSON 对象。"
+        }), 400
 
-    if not text or not text.strip():
+    text = data.get("text", "")
+    if not isinstance(text, str):
+        return jsonify({
+            "success": False,
+            "error": "输入 'text' 字段必须为字符串类型。"
+        }), 400
+
+    clean_text = text.strip()
+    if not clean_text:
         return jsonify({
             "success": False,
             "error": "输入文本不能为空，请输入待分析的中文句子。"
         }), 400
 
-    clean_text = text.strip()
+    raw_model = data.get("model", "both")
+    if not isinstance(raw_model, str):
+        model_choice = "both"
+    else:
+        model_choice = raw_model.strip().lower()
+        if model_choice not in ["both", "macbert", "bert"]:
+            model_choice = "both"
+
+    try:
+        max_len = min(max(int(data.get("max_len", 128)), 16), 512)
+    except (ValueError, TypeError):
+        max_len = 128
+
     if len(clean_text) > max_len:
         # 安全截断并记录提示
         truncated = True
@@ -632,6 +661,7 @@ def api_predict():
 
     results = {}
     try:
+        ensure_models_loaded()
         if model_choice in ["both", "macbert"]:
             results["macbert"] = run_inference("macbert", run_text, max_len=max_len)
         if model_choice in ["both", "bert"]:
@@ -737,8 +767,8 @@ def main():
     parser = argparse.ArgumentParser(description="CLUENER2020 MacBERT vs BERT Reproduction Workbench")
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Host address to bind to")
     parser.add_argument("--port", type=int, default=5000, help="Port to listen on")
-    parser.add_argument("--bert_dir", type=str, default="./saved_models/bert", help="Path to saved BERT model")
-    parser.add_argument("--macbert_dir", type=str, default="./saved_models/macbert", help="Path to saved MacBERT model")
+    parser.add_argument("--bert_dir", type=str, default=DEFAULT_BERT_DIR, help="Path to saved BERT model")
+    parser.add_argument("--macbert_dir", type=str, default=DEFAULT_MACBERT_DIR, help="Path to saved MacBERT model")
     parser.add_argument("--test", action="store_true", help="Run automated self-tests and exit")
     parser.add_argument("--no-browser", action="store_true", help="Do not automatically open browser on start")
     args = parser.parse_args()
