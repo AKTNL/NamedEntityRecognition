@@ -21,38 +21,39 @@ def build():
   <title>MacBERT × CLUENER2020 交互式复现工作台与全栈模型体验系统</title>
   <style>
     /* ==========================================================================
-       1. 全局设计系统与主题变量（Academic Dark / Academic Light）
+       1. 全局设计系统与主题变量（Pure Minimalist Monochrome / 黑白极简）
        ========================================================================== */
     :root {{
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       
-      /* Dark Theme (Deep Slate) */
-      --bg-body: #0a0f1d;
-      --bg-navbar: rgba(15, 23, 42, 0.85);
-      --bg-card: #111827;
-      --bg-card-subtle: #162032;
-      --bg-card-hover: #1f2937;
-      --bg-input: #0f172a;
-      --border-main: #1f293d;
-      --border-subtle: #334155;
-      --border-focus: #6366f1;
+      /* Dark Theme (Pure Grayscale / 黑白极简深色) */
+      --bg-body: #0a0a0a;
+      --bg-navbar: rgba(10, 10, 10, 0.85);
+      --bg-card: #141414;
+      --bg-card-subtle: #1c1c1c;
+      --bg-card-hover: #262626;
+      --bg-input: #0e0e0e;
+      --border-main: #262626;
+      --border-subtle: #383838;
+      --border-focus: #ffffff;
       
-      --text-main: #f8fafc;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
+      --text-main: #ffffff;
+      --text-secondary: #a3a3a3;
+      --text-muted: #737373;
       
-      --accent-primary: #6366f1;
-      --accent-primary-hover: #4f46e5;
-      --accent-macbert: #8b5cf6;
-      --accent-bert: #3b82f6;
-      --accent-success: #10b981;
-      --accent-warning: #f59e0b;
-      --accent-danger: #ef4444;
+      --accent-primary: #ffffff;
+      --accent-primary-hover: #e5e5e5;
+      --accent-primary-fg: #0a0a0a;
+      --accent-macbert: #ffffff;
+      --accent-bert: #737373;
+      --accent-success: #ffffff;
+      --accent-warning: #a3a3a3;
+      --accent-danger: #d4d4d4;
       
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.5);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.8);
       
       --radius-sm: 6px;
       --radius-md: 10px;
@@ -64,45 +65,145 @@ def build():
     }}
 
     [data-theme="light"] {{
-      /* Light Theme (Academic Slate) */
-      --bg-body: #f8fafc;
+      /* Light Theme (Clean Minimalist Monochrome / 黑白极简浅色) */
+      --bg-body: #ffffff;
       --bg-navbar: rgba(255, 255, 255, 0.9);
       --bg-card: #ffffff;
-      --bg-card-subtle: #f1f5f9;
-      --bg-card-hover: #f8fafc;
+      --bg-card-subtle: #f5f5f5;
+      --bg-card-hover: #ebebeb;
       --bg-input: #ffffff;
-      --border-main: #e2e8f0;
-      --border-subtle: #cbd5e1;
-      --border-focus: #4f46e5;
+      --border-main: #e5e5e5;
+      --border-subtle: #d4d4d4;
+      --border-focus: #000000;
       
-      --text-main: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
+      --text-main: #000000;
+      --text-secondary: #525252;
+      --text-muted: #8c8c8c;
       
-      --accent-primary: #4f46e5;
-      --accent-primary-hover: #4338ca;
-      --accent-macbert: #7c3aed;
-      --accent-bert: #2563eb;
-      --accent-success: #059669;
-      --accent-warning: #d97706;
-      --accent-danger: #dc2626;
+      --accent-primary: #000000;
+      --accent-primary-hover: #262626;
+      --accent-primary-fg: #ffffff;
+      --accent-macbert: #000000;
+      --accent-bert: #737373;
+      --accent-success: #000000;
+      --accent-warning: #525252;
+      --accent-danger: #262626;
       
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.12);
     }}
 
-    /* 10 实体类别的统一色彩体系 */
-    .cat-address {{ --cat-color: #10b981; }}
-    .cat-book {{ --cat-color: #f59e0b; }}
-    .cat-company {{ --cat-color: #3b82f6; }}
-    .cat-game {{ --cat-color: #8b5cf6; }}
-    .cat-government {{ --cat-color: #ef4444; }}
-    .cat-movie {{ --cat-color: #ec4899; }}
-    .cat-name {{ --cat-color: #06b6d4; }}
-    .cat-organization {{ --cat-color: #6366f1; }}
-    .cat-position {{ --cat-color: #eab308; }}
-    .cat-scene {{ --cat-color: #84cc16; }}
+    /* 10 实体类别的极简黑白灰高辨识度体系 (纯色、边框、明度阶梯与纹理差异) */
+    .cat-address, .badge-address {{
+      --badge-bg: #1c1c1c;
+      --badge-border: #444444;
+      --badge-color: #ffffff;
+    }}
+    .cat-book, .badge-book {{
+      --badge-bg: #141414;
+      --badge-border: #666666;
+      --badge-color: #e5e5e5;
+      border-style: dashed !important;
+    }}
+    .cat-company, .badge-company {{
+      --badge-bg: #282828;
+      --badge-border: #888888;
+      --badge-color: #ffffff;
+      font-weight: 700;
+    }}
+    .cat-game, .badge-game {{
+      --badge-bg: #181818;
+      --badge-border: #666666;
+      --badge-color: #d4d4d4;
+      border-style: dotted !important;
+    }}
+    .cat-government, .badge-government {{
+      --badge-bg: #000000;
+      --badge-border: #ffffff;
+      --badge-color: #ffffff;
+    }}
+    .cat-movie, .badge-movie {{
+      --badge-bg: #1e1e1e;
+      --badge-border: #555555;
+      --badge-color: #b0b0b0;
+    }}
+    .cat-name, .badge-name {{
+      --badge-bg: #ffffff;
+      --badge-border: #ffffff;
+      --badge-color: #000000;
+      font-weight: 700;
+    }}
+    .cat-organization, .badge-organization {{
+      --badge-bg: #222222;
+      --badge-border: #aaaaaa;
+      --badge-color: #ffffff;
+      font-weight: 700;
+    }}
+    .cat-position, .badge-position {{
+      --badge-bg: #141414;
+      --badge-border: #444444;
+      --badge-color: #8c8c8c;
+      border-style: dashed !important;
+    }}
+    .cat-scene, .badge-scene {{
+      --badge-bg: #252525;
+      --badge-border: #777777;
+      --badge-color: #f0f0f0;
+      border-style: double !important;
+      border-width: 3px !important;
+    }}
+
+    [data-theme="light"] .cat-address, [data-theme="light"] .badge-address {{
+      --badge-bg: #f5f5f5;
+      --badge-border: #d4d4d4;
+      --badge-color: #111111;
+    }}
+    [data-theme="light"] .cat-book, [data-theme="light"] .badge-book {{
+      --badge-bg: #fafafa;
+      --badge-border: #888888;
+      --badge-color: #222222;
+    }}
+    [data-theme="light"] .cat-company, [data-theme="light"] .badge-company {{
+      --badge-bg: #e8e8e8;
+      --badge-border: #666666;
+      --badge-color: #000000;
+    }}
+    [data-theme="light"] .cat-game, [data-theme="light"] .badge-game {{
+      --badge-bg: #f5f5f5;
+      --badge-border: #777777;
+      --badge-color: #333333;
+    }}
+    [data-theme="light"] .cat-government, [data-theme="light"] .badge-government {{
+      --badge-bg: #ffffff;
+      --badge-border: #000000;
+      --badge-color: #000000;
+    }}
+    [data-theme="light"] .cat-movie, [data-theme="light"] .badge-movie {{
+      --badge-bg: #f0f0f0;
+      --badge-border: #cccccc;
+      --badge-color: #555555;
+    }}
+    [data-theme="light"] .cat-name, [data-theme="light"] .badge-name {{
+      --badge-bg: #000000;
+      --badge-border: #000000;
+      --badge-color: #ffffff;
+    }}
+    [data-theme="light"] .cat-organization, [data-theme="light"] .badge-organization {{
+      --badge-bg: #dedede;
+      --badge-border: #222222;
+      --badge-color: #000000;
+    }}
+    [data-theme="light"] .cat-position, [data-theme="light"] .badge-position {{
+      --badge-bg: #fafafa;
+      --badge-border: #cccccc;
+      --badge-color: #555555;
+    }}
+    [data-theme="light"] .cat-scene, [data-theme="light"] .badge-scene {{
+      --badge-bg: #eeeeee;
+      --badge-border: #888888;
+      --badge-color: #111111;
+    }}
 
     * {{
       box-sizing: border-box;
@@ -123,11 +224,11 @@ def build():
     }}
 
     a {{
-      color: var(--accent-primary);
-      text-decoration: none;
+      color: var(--text-main);
+      text-decoration: underline;
     }}
     a:hover {{
-      text-decoration: underline;
+      color: var(--text-secondary);
     }}
 
     /* ==========================================================================
@@ -158,14 +259,21 @@ def build():
       width: 36px;
       height: 36px;
       border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--accent-macbert), var(--accent-bert));
+      background: #000000;
+      border: 1px solid #333333;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #ffffff;
       font-weight: 800;
       font-size: 1.1rem;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }}
+    [data-theme="light"] .nav-logo {{
+      background: #000000;
+      border: 1px solid #000000;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }}
 
     .nav-title-group h1 {{
@@ -189,9 +297,9 @@ def build():
       padding: 0.15rem 0.45rem;
       border-radius: var(--radius-full);
       font-weight: 600;
-      background: rgba(99, 102, 241, 0.15);
-      color: var(--accent-primary);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-main);
     }}
 
     .nav-actions {{
@@ -216,11 +324,11 @@ def build():
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: var(--accent-warning);
+      background-color: var(--text-muted);
     }}
     .status-dot.online {{
-      background-color: var(--accent-success);
-      box-shadow: 0 0 8px var(--accent-success);
+      background-color: var(--text-main);
+      box-shadow: 0 0 8px var(--text-main);
       animation: pulse 2s infinite;
     }}
 
@@ -280,8 +388,8 @@ def build():
       color: var(--text-main);
     }}
     .tab-btn.active {{
-      color: var(--accent-primary);
-      border-bottom-color: var(--accent-primary);
+      color: var(--text-main);
+      border-bottom-color: var(--text-main);
     }}
 
     /* ==========================================================================
@@ -360,11 +468,12 @@ def build():
     }}
     .btn-primary {{
       background: var(--accent-primary);
-      color: #ffffff;
+      color: var(--accent-primary-fg);
       border-color: var(--accent-primary);
     }}
     .btn-primary:hover {{
       background: var(--accent-primary-hover);
+      border-color: var(--accent-primary-hover);
     }}
     .btn-secondary {{
       background: var(--bg-card-subtle);
@@ -416,7 +525,7 @@ def build():
     .arena-textarea:focus {{
       outline: none;
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.2);
     }}
 
     .char-count {{
@@ -471,9 +580,9 @@ def build():
       border-color: var(--border-subtle);
     }}
     .preset-pill.active {{
-      background: rgba(99, 102, 241, 0.15);
-      border-color: var(--accent-primary);
-      color: var(--accent-primary);
+      background: var(--text-main);
+      border-color: var(--text-main);
+      color: var(--bg-body);
       font-weight: 600;
     }}
 
@@ -523,8 +632,9 @@ def build():
       font-size: 0.7rem;
       padding: 0.1rem 0.4rem;
       border-radius: var(--radius-sm);
-      background: rgba(99, 102, 241, 0.1);
-      color: var(--accent-primary);
+      background: var(--bg-card-hover);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
       font-weight: 600;
     }}
     .custom-case-time {{
@@ -552,17 +662,19 @@ def build():
       gap: 0.4rem;
     }}
 
-    /* 差异分析报告视窗 (Diff Mode) */
+    /* 差异分析报告视窗 (Diff Mode) - 极简黑白灰 */
     .diff-alert-card {{
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-main);
+      border-left: 4px solid var(--text-main);
       border-radius: var(--radius-lg);
       padding: 1rem 1.25rem;
       margin-bottom: 1.5rem;
     }}
     .diff-alert-card.identical {{
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.05));
-      border-color: rgba(16, 185, 129, 0.3);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-main);
+      border-left: 4px solid var(--border-subtle);
     }}
     .diff-header {{
       display: flex;
@@ -672,32 +784,32 @@ def build():
       word-break: break-all;
     }}
 
-    /* 实体标签高亮样式与 Tooltip */
+    /* 实体标签高亮样式与 Tooltip (极简黑白灰高对比度体系) */
     .entity-span {{
       display: inline-flex;
       align-items: center;
       gap: 0.2rem;
-      padding: 0.1rem 0.4rem;
+      padding: 0.12rem 0.45rem;
       margin: 0 0.15rem;
       border-radius: var(--radius-sm);
       cursor: pointer;
       position: relative;
       font-weight: 600;
       transition: all var(--transition-fast);
-      background: rgba(var(--badge-rgb, 99, 102, 241), 0.15);
-      color: var(--badge-color, #6366f1);
-      border: 1px solid rgba(var(--badge-rgb, 99, 102, 241), 0.35);
+      background: var(--badge-bg, var(--bg-card-subtle));
+      color: var(--badge-color, var(--text-main));
+      border: 1px solid var(--badge-border, var(--border-subtle));
     }}
     .entity-span:hover {{
       transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }}
 
     .ent-label {{
       font-size: 0.68rem;
-      opacity: 0.85;
+      opacity: 0.8;
       font-weight: 700;
-      margin-left: 0.15rem;
+      margin-left: 0.2rem;
     }}
 
     .ent-tooltip {{
@@ -707,7 +819,7 @@ def build():
       bottom: calc(100% + 6px);
       left: 50%;
       transform: translateX(-50%);
-      background: #0f172a;
+      background: #000000;
       color: #ffffff;
       padding: 0.4rem 0.7rem;
       border-radius: var(--radius-sm);
@@ -717,8 +829,8 @@ def build():
       line-height: 1.4;
       white-space: nowrap;
       z-index: 50;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      border: 1px solid #334155;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      border: 1px solid #333333;
       pointer-events: none;
       transition: opacity var(--transition-fast), visibility var(--transition-fast);
     }}
@@ -726,18 +838,35 @@ def build():
       visibility: visible;
       opacity: 1;
     }}
+    [data-theme="light"] .ent-tooltip {{
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid #000000;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }}
 
-    /* 10 类别高亮色彩配置 */
-    .badge-address {{ --badge-color: #10b981; --badge-rgb: 16, 185, 129; }}
-    .badge-book {{ --badge-color: #f59e0b; --badge-rgb: 245, 158, 11; }}
-    .badge-company {{ --badge-color: #3b82f6; --badge-rgb: 59, 130, 246; }}
-    .badge-game {{ --badge-color: #8b5cf6; --badge-rgb: 139, 92, 246; }}
-    .badge-government {{ --badge-color: #ef4444; --badge-rgb: 239, 68, 68; }}
-    .badge-movie {{ --badge-color: #ec4899; --badge-rgb: 236, 72, 153; }}
-    .badge-name {{ --badge-color: #06b6d4; --badge-rgb: 6, 182, 212; }}
-    .badge-organization {{ --badge-color: #6366f1; --badge-rgb: 99, 102, 241; }}
-    .badge-position {{ --badge-color: #eab308; --badge-rgb: 234, 179, 8; }}
-    .badge-scene {{ --badge-color: #84cc16; --badge-rgb: 132, 204, 22; }}
+    /* 10 类别高亮色彩配置 (兼容纯色变量) */
+    .badge-address {{ --badge-color: #ffffff; }}
+    .badge-book {{ --badge-color: #e5e5e5; }}
+    .badge-company {{ --badge-color: #ffffff; }}
+    .badge-game {{ --badge-color: #d4d4d4; }}
+    .badge-government {{ --badge-color: #ffffff; }}
+    .badge-movie {{ --badge-color: #b0b0b0; }}
+    .badge-name {{ --badge-color: #000000; }}
+    .badge-organization {{ --badge-color: #ffffff; }}
+    .badge-position {{ --badge-color: #8c8c8c; }}
+    .badge-scene {{ --badge-color: #f0f0f0; }}
+
+    [data-theme="light"] .badge-address {{ --badge-color: #111111; }}
+    [data-theme="light"] .badge-book {{ --badge-color: #222222; }}
+    [data-theme="light"] .badge-company {{ --badge-color: #000000; }}
+    [data-theme="light"] .badge-game {{ --badge-color: #333333; }}
+    [data-theme="light"] .badge-government {{ --badge-color: #000000; }}
+    [data-theme="light"] .badge-movie {{ --badge-color: #555555; }}
+    [data-theme="light"] .badge-name {{ --badge-color: #ffffff; }}
+    [data-theme="light"] .badge-organization {{ --badge-color: #000000; }}
+    [data-theme="light"] .badge-position {{ --badge-color: #555555; }}
+    [data-theme="light"] .badge-scene {{ --badge-color: #111111; }}
 
     /* 结构化实体列表 */
     .entities-chips-container {{
@@ -787,7 +916,7 @@ def build():
     }}
     .conf-bar-fill {{
       height: 100%;
-      background: var(--accent-primary);
+      background: var(--text-main);
       border-radius: var(--radius-full);
     }}
     .conf-percent {{
@@ -847,7 +976,8 @@ def build():
       background: var(--bg-card-hover);
     }}
     .probe-table tr.row-diff td {{
-      background: rgba(245, 158, 11, 0.1) !important;
+      background: var(--bg-card-hover) !important;
+      font-weight: 600;
     }}
     .bio-tag {{
       display: inline-block;
@@ -862,12 +992,14 @@ def build():
       background: var(--bg-card-subtle);
     }}
     .bio-tag.bio-B {{
-      background: rgba(99, 102, 241, 0.2);
-      color: var(--accent-primary);
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
     }}
     .bio-tag.bio-I {{
-      background: rgba(139, 92, 246, 0.15);
-      color: var(--accent-macbert);
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+      border: 1px dashed var(--border-main);
     }}
 
     /* ==========================================================================
@@ -895,9 +1027,9 @@ def build():
       color: var(--text-main);
     }}
     .code-tab-btn.active {{
-      background: var(--accent-primary);
-      color: #ffffff;
-      border-color: var(--accent-primary);
+      background: var(--text-main);
+      color: var(--bg-body);
+      border-color: var(--text-main);
       font-weight: 600;
     }}
 
@@ -923,7 +1055,7 @@ def build():
       border: 1px solid var(--border-main);
       border-radius: var(--radius-md);
       padding: 1rem;
-      border-left: 4px solid var(--accent-primary);
+      border-left: 4px solid var(--text-main);
     }}
     .annotation-title {{
       font-size: 0.9rem;
@@ -939,7 +1071,7 @@ def build():
       font-family: var(--font-mono);
       font-size: 0.75rem;
       margin-bottom: 0.5rem;
-      color: var(--accent-macbert);
+      color: var(--text-main);
       white-space: pre-wrap;
     }}
     .annotation-text {{
@@ -971,12 +1103,17 @@ def build():
     .code-block-container {{
       max-height: 640px;
       overflow: auto;
-      background: #080c14;
-      color: #e2e8f0;
+      background: #0d0d0d;
+      color: #f5f5f5;
       font-family: var(--font-mono);
       font-size: 0.82rem;
       line-height: 1.6;
       padding: 1rem;
+      border: 1px solid var(--border-main);
+    }}
+    [data-theme="light"] .code-block-container {{
+      background: #f8f8f8;
+      color: #171717;
     }}
     .code-block-container pre {{
       margin: 0;
@@ -1001,8 +1138,8 @@ def build():
       gap: 0.5rem;
     }}
     .kpi-card.highlight {{
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
-      border-color: rgba(99, 102, 241, 0.4);
+      background: var(--bg-card);
+      border: 2px solid var(--text-main);
     }}
     .kpi-title {{
       font-size: 0.8rem;
@@ -1029,8 +1166,9 @@ def build():
       border-radius: var(--radius-sm);
     }}
     .kpi-delta.pos {{
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--accent-success);
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
     }}
     .kpi-subtext {{
       font-size: 0.75rem;
@@ -1059,9 +1197,10 @@ def build():
       cursor: pointer;
     }}
     .chart-btn.active {{
-      background: var(--accent-primary);
-      color: #ffffff;
-      border-color: var(--accent-primary);
+      background: var(--text-main);
+      color: var(--bg-body);
+      border-color: var(--text-main);
+      font-weight: 600;
     }}
 
     .svg-chart-wrapper {{
@@ -1109,9 +1248,9 @@ def build():
       transition: all var(--transition-fast);
     }}
     .gallery-filter-btn.active {{
-      background: var(--accent-primary);
-      color: #ffffff;
-      border-color: var(--accent-primary);
+      background: var(--text-main);
+      color: var(--bg-body);
+      border-color: var(--text-main);
       font-weight: 600;
     }}
 
@@ -1152,9 +1291,9 @@ def build():
       font-weight: 700;
       padding: 0.15rem 0.5rem;
       border-radius: var(--radius-sm);
-      background: rgba(99, 102, 241, 0.15);
-      color: var(--accent-primary);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: var(--bg-card-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
     }}
     .case-title {{
       font-size: 0.95rem;
@@ -1295,14 +1434,14 @@ def build():
       pointer-events: none;
     }}
     .toast {{
-      background: #1e293b;
-      color: #f8fafc;
+      background: var(--text-main);
+      color: var(--bg-body);
       padding: 0.6rem 1.1rem;
       border-radius: var(--radius-md);
       font-size: 0.85rem;
-      font-weight: 500;
-      box-shadow: var(--shadow-md);
-      border: 1px solid #334155;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-main);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -1378,9 +1517,9 @@ def build():
     <section class="tab-pane active" id="tab-arena">
       
       <!-- 离线模式降级提醒横幅（默认隐藏，离线时展现） -->
-      <div id="offlineNoticeBanner" style="display:none; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      <div id="offlineNoticeBanner" style="display:none; background: var(--bg-card-subtle); border: 1px solid var(--border-main); border-left: 4px solid var(--text-muted); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
         <div>
-          <strong>🟡 当前处于离线演示模式 (Offline Simulation Active)</strong>：
+          <strong>当前处于离线演示模式 (Offline Simulation Active)</strong>：
           未检测到后端 Flask 服务，系统已自动切换至内置的 100% 离线推演引擎与真实预置预测集。
           若需体验 PyTorch 真实权重实时推理，只需在终端执行 <code>python app.py</code>。
         </div>
@@ -1465,7 +1604,7 @@ def build():
         <!-- BERT 列 -->
         <div class="model-col bert">
           <div class="model-meta-bar">
-            <div class="model-tag-name" style="color:var(--accent-bert);">
+            <div class="model-tag-name" style="color:var(--text-secondary);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               BERT-base-Chinese (Baseline)
             </div>
@@ -2253,7 +2392,7 @@ def build():
               end: idx + item.w.length - 1,
               category: item.cat,
               category_cn: meta[item.cat]?.cn || item.cat,
-              color: meta[item.cat]?.color || '#6366f1',
+              color: 'var(--text-main)',
               text: item.w,
               confidence: 0.965
             }});
@@ -2396,11 +2535,11 @@ def build():
           el.diffAlertContainer.innerHTML = `
             <div class="diff-alert-card identical">
               <div class="diff-header">
-                <div class="diff-title" style="color:var(--accent-success);">
+                <div class="diff-title" style="color:var(--text-main);">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   两模型预测完全一致 (No Discrepancy)
                 </div>
-                <span class="stat-chip" style="color:var(--accent-success); border-color:rgba(16,185,129,0.3);">一致率: 100%</span>
+                <span class="stat-chip" style="color:var(--text-secondary); border-color:var(--border-subtle);">一致率: 100%</span>
               </div>
               <div class="diff-desc">${{escapeHtml(diff.summary || 'BERT 与 MacBERT 对当前句子的所有实体边界切分与类别判定完全吻合。')}}</div>
             </div>
@@ -2412,7 +2551,7 @@ def build():
         if (diff.boundary_repairs && diff.boundary_repairs.length > 0) {{
           repairsHtml = diff.boundary_repairs.map(r => `
             <div class="diff-detail-item">
-              <span style="color:var(--accent-macbert); font-weight:700;">[MacBERT 全词修复]</span>
+              <span style="color:var(--text-main); font-weight:700;">[MacBERT 全词修复]</span>
               <div>
                 <strong>${{escapeHtml(r.macbert_entity.text)}}</strong> (跨度 [${{r.macbert_entity.start}}:${{r.macbert_entity.end}}], 完整识别为 ${{r.macbert_entity.category_cn}})
                 <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">
@@ -2427,7 +2566,7 @@ def build():
         if (diff.category_conflicts && diff.category_conflicts.length > 0) {{
           conflictsHtml = diff.category_conflicts.map(c => `
             <div class="diff-detail-item">
-              <span style="color:var(--accent-warning); font-weight:700;">[细粒度消歧差异]</span>
+              <span style="color:var(--text-secondary); font-weight:700;">[细粒度消歧差异]</span>
               <div>${{escapeHtml(c.description)}}</div>
             </div>
           `).join('');
@@ -2442,7 +2581,7 @@ def build():
             if (!coveredMStarts.has(u.start)) {{
               uniqueHtml += `
                 <div class="diff-detail-item">
-                  <span style="color:var(--accent-macbert); font-weight:700;">[MacBERT 独有召回]</span>
+                  <span style="color:var(--text-main); font-weight:700;">[MacBERT 独有召回]</span>
                   <div>
                     <strong>${{escapeHtml(u.text)}}</strong> 判定为【${{escapeHtml(u.category_cn || u.category)}}】(置信度 ${{(u.confidence * 100).toFixed(1)}}%)，跨度 [${{u.start}}:${{u.end}}]。BERT 未能检出此实体。
                   </div>
@@ -2457,7 +2596,7 @@ def build():
             if (!coveredBStarts.has(u.start)) {{
               uniqueHtml += `
                 <div class="diff-detail-item">
-                  <span style="color:var(--accent-bert); font-weight:700;">[BERT 独有标注]</span>
+                  <span style="color:var(--text-muted); font-weight:700;">[BERT 独有标注]</span>
                   <div>
                     <strong>${{escapeHtml(u.text)}}</strong> 判定为【${{escapeHtml(u.category_cn || u.category)}}】(置信度 ${{(u.confidence * 100).toFixed(1)}}%)，跨度 [${{u.start}}:${{u.end}}]。MacBERT 判定为非实体。
                   </div>
@@ -2470,11 +2609,11 @@ def build():
         el.diffAlertContainer.innerHTML = `
           <div class="diff-alert-card">
             <div class="diff-header">
-              <div class="diff-title" style="color:var(--accent-primary);">
+              <div class="diff-title" style="color:var(--text-main);">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 模型对比分歧报告 (Diff Mode Active)
               </div>
-              <span class="stat-chip" style="color:var(--accent-primary); border-color:rgba(99,102,241,0.3);">
+              <span class="stat-chip" style="color:var(--text-main); border-color:var(--border-subtle);">
                 分歧 Token: ${{diff.diff_token_count || 0}} 字 (${{diff.diff_token_ratio || 0}}%)
               </span>
             </div>
@@ -2514,8 +2653,8 @@ def build():
               <td style="font-family:var(--font-mono); color:var(--text-muted);">${{(mTok.confidence * 100).toFixed(1)}}%</td>
               <td>
                 ${{isDiff 
-                  ? '<span style="color:var(--accent-warning); font-weight:700;">⚡ 分歧</span>' 
-                  : '<span style="color:var(--accent-success);">✓ 一致</span>'}}
+                  ? '<span style="color:var(--text-main); font-weight:700;">● 分歧</span>' 
+                  : '<span style="color:var(--text-muted);">○ 一致</span>'}}
               </td>
             </tr>
           `;
@@ -2625,13 +2764,15 @@ def build():
 
         let svg = `<svg viewBox="0 0 ${{chartWidth}} ${{chartHeight}}" style="width:100%; height:auto; overflow:visible;">`;
 
-        // 绘制 Y 轴刻度线 (0%, 25%, 50%, 75%, 100%)
-        const gridColor = isDark ? '#1e293b' : '#e2e8f0';
-        const labelColor = isDark ? '#94a3b8' : '#64748b';
+        // 绘制 Y 轴刻度线 (0%, 25%, 50%, 75%, 100%) - 极简灰度网格
+        const gridColor = isDark ? '#262626' : '#e5e5e5';
+        const labelColor = isDark ? '#a3a3a3' : '#525252';
+        const macbertBarColor = isDark ? '#ffffff' : '#000000';
+        const bertBarColor = isDark ? '#525252' : '#a3a3a3';
 
         for (let pct = 0; pct <= 100; pct += 25) {{
           const y = paddingTop + plotHeight * (1 - pct / 100);
-          svg += `<line x1="${{paddingLeft}}" y1="${{y}}" x2="${{chartWidth - paddingRight}}" y2="${{y}}" stroke="${{gridColor}}" stroke-dasharray="3,3" />`;
+          svg += `<line x1="${{paddingLeft}}" y1="${{y}}" x2="${{chartWidth - paddingRight}}" y2="${{y}}" stroke="${{gridColor}}" stroke-dasharray="2,2" />`;
           svg += `<text x="${{paddingLeft - 12}}" y="${{y + 4}}" fill="${{labelColor}}" font-size="11" text-anchor="end" font-family="var(--font-mono)">${{pct}}%</text>`;
         }}
 
@@ -2650,13 +2791,13 @@ def build():
           const bY = paddingTop + (plotHeight - bHeight);
           const mY = paddingTop + (plotHeight - mHeight);
 
-          // BERT 柱体 (科技蓝)
-          svg += `<rect x="${{bX}}" y="${{bY}}" width="${{barWidth}}" height="${{bHeight}}" rx="3" fill="#3b82f6" opacity="0.85">
+          // BERT 柱体 (中灰基准)
+          svg += `<rect x="${{bX}}" y="${{bY}}" width="${{barWidth}}" height="${{bHeight}}" rx="2" fill="${{bertBarColor}}">
             <title>BERT (${{item.name_cn}}): ${{bVal.toFixed(1)}}%</title>
           </rect>`;
 
-          // MacBERT 柱体 (极客紫)
-          svg += `<rect x="${{mX}}" y="${{mY}}" width="${{barWidth}}" height="${{mHeight}}" rx="3" fill="#8b5cf6">
+          // MacBERT 柱体 (高对比纯白/纯黑)
+          svg += `<rect x="${{mX}}" y="${{mY}}" width="${{barWidth}}" height="${{mHeight}}" rx="2" fill="${{macbertBarColor}}">
             <title>MacBERT (${{item.name_cn}}): ${{mVal.toFixed(1)}}%</title>
           </rect>`;
 
@@ -2664,9 +2805,9 @@ def build():
           svg += `<text x="${{groupCenterX}}" y="${{chartHeight - paddingBottom + 18}}" fill="${{labelColor}}" font-size="11" font-weight="600" text-anchor="middle">${{item.name_cn}}</text>`;
           svg += `<text x="${{groupCenterX}}" y="${{chartHeight - paddingBottom + 32}}" fill="${{labelColor}}" font-size="9" text-anchor="middle" font-family="var(--font-mono)">${{item.category}}</text>`;
 
-          // 增益差异小标签
+          // 增益差异小标签 (极简黑白灰高对比度)
           const delta = (mVal - bVal).toFixed(1);
-          const deltaColor = delta > 0 ? '#10b981' : (delta < 0 ? '#ef4444' : '#64748b');
+          const deltaColor = isDark ? (delta > 0 ? '#ffffff' : '#737373') : (delta > 0 ? '#000000' : '#8c8c8c');
           const deltaSign = delta > 0 ? `+${{delta}}` : `${{delta}}`;
           svg += `<text x="${{groupCenterX}}" y="${{Math.min(bY, mY) - 6}}" fill="${{deltaColor}}" font-size="10" font-weight="700" text-anchor="middle" font-family="var(--font-mono)">${{deltaSign}}%</text>`;
         }});
@@ -2674,9 +2815,9 @@ def build():
         // 图例 (Legend)
         svg += `
           <g transform="translate(${{chartWidth - paddingRight - 220}}, 10)">
-            <rect x="0" y="0" width="12" height="12" rx="2" fill="#8b5cf6" />
+            <rect x="0" y="0" width="12" height="12" rx="2" fill="${{macbertBarColor}}" />
             <text x="18" y="10" fill="${{labelColor}}" font-size="11" font-weight="600">Chinese-MacBERT</text>
-            <rect x="130" y="0" width="12" height="12" rx="2" fill="#3b82f6" />
+            <rect x="130" y="0" width="12" height="12" rx="2" fill="${{bertBarColor}}" />
             <text x="148" y="10" fill="${{labelColor}}" font-size="11" font-weight="600">BERT-base</text>
           </g>
         `;
@@ -2697,20 +2838,20 @@ def build():
             </td>
             <td style="font-family:var(--font-mono);">${{item.support}} 个跨度</td>
             <td style="font-family:var(--font-mono);">
-              P: ${{item.bert.precision}}% / R: ${{item.bert.recall}}% / <strong style="color:var(--accent-bert)">F1: ${{item.bert.f1}}%</strong>
+              P: ${{item.bert.precision}}% / R: ${{item.bert.recall}}% / <span style="color:var(--text-secondary); font-weight:600;">F1: ${{item.bert.f1}}%</span>
             </td>
             <td style="font-family:var(--font-mono);">
-              P: ${{item.macbert.precision}}% / R: ${{item.macbert.recall}}% / <strong style="color:var(--accent-macbert)">F1: ${{item.macbert.f1}}%</strong>
+              P: ${{item.macbert.precision}}% / R: ${{item.macbert.recall}}% / <strong style="color:var(--text-main);">F1: ${{item.macbert.f1}}%</strong>
             </td>
             <td>
-              <span class="kpi-delta ${{item.delta.f1 > 0 ? 'pos' : ''}}" style="font-family:var(--font-mono); font-size:0.8rem;">
+              <span class="kpi-delta" style="font-family:var(--font-mono); font-size:0.8rem; border:1px solid var(--border-subtle); color:var(--text-main); font-weight:700;">
                 ${{item.delta.f1 > 0 ? '+' : ''}}${{item.delta.f1}}%
               </span>
             </td>
             <td>
               ${{item.delta.f1 >= 1.0 
-                ? '<span style="color:var(--accent-success); font-weight:700;">★ 显著优势增益</span>' 
-                : (item.delta.f1 > 0 ? '<span style="color:var(--accent-primary);">稳步提升</span>' : '<span style="color:var(--text-muted);">性能基本持平</span>')}}
+                ? '<span style="color:var(--text-main); font-weight:700;">★ 显著优势增益</span>' 
+                : (item.delta.f1 > 0 ? '<span style="color:var(--text-secondary);">稳步提升</span>' : '<span style="color:var(--text-muted);">性能基本持平</span>')}}
             </td>
           </tr>
         `).join('');
@@ -2762,19 +2903,19 @@ def build():
             
             <div class="comparison-box">
               <div class="comp-row">
-                <span class="comp-label" style="color:var(--accent-success);">🎯 真实标注:</span>
+                <span class="comp-label" style="color:var(--text-main); font-weight:700;">🎯 真实标注:</span>
                 <div class="comp-entities">
                   ${{renderEntitiesInlineBadges(c.ground_truth)}}
                 </div>
               </div>
               <div class="comp-row">
-                <span class="comp-label" style="color:var(--accent-bert);">❌ BERT预测:</span>
+                <span class="comp-label" style="color:var(--text-muted);">BERT预测:</span>
                 <div class="comp-entities">
                   ${{renderEntitiesInlineBadges(c.bert_prediction)}}
                 </div>
               </div>
               <div class="comp-row">
-                <span class="comp-label" style="color:var(--accent-macbert);">✅ MacBERT:</span>
+                <span class="comp-label" style="color:var(--text-main); font-weight:700;">MacBERT:</span>
                 <div class="comp-entities">
                   ${{renderEntitiesInlineBadges(c.macbert_prediction)}}
                 </div>

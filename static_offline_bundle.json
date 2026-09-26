@@ -52,7 +52,7 @@
       {
         "category": "address",
         "name_cn": "地址",
-        "color": "#10b981",
+        "color": "#737373",
         "support": 373,
         "bert": {
           "precision": 58.06,
@@ -74,7 +74,7 @@
       {
         "category": "book",
         "name_cn": "书籍",
-        "color": "#f59e0b",
+        "color": "#525252",
         "support": 154,
         "bert": {
           "precision": 75.61,
@@ -96,7 +96,7 @@
       {
         "category": "company",
         "name_cn": "公司",
-        "color": "#3b82f6",
+        "color": "#171717",
         "support": 378,
         "bert": {
           "precision": 71.97,
@@ -118,7 +118,7 @@
       {
         "category": "game",
         "name_cn": "游戏",
-        "color": "#8b5cf6",
+        "color": "#404040",
         "support": 295,
         "bert": {
           "precision": 73.53,
@@ -140,7 +140,7 @@
       {
         "category": "government",
         "name_cn": "政府机构",
-        "color": "#ef4444",
+        "color": "#262626",
         "support": 247,
         "bert": {
           "precision": 75.17,
@@ -162,7 +162,7 @@
       {
         "category": "movie",
         "name_cn": "电影",
-        "color": "#ec4899",
+        "color": "#8c8c8c",
         "support": 151,
         "bert": {
           "precision": 80.82,
@@ -184,7 +184,7 @@
       {
         "category": "name",
         "name_cn": "姓名",
-        "color": "#06b6d4",
+        "color": "#0a0a0a",
         "support": 465,
         "bert": {
           "precision": 83.57,
@@ -206,7 +206,7 @@
       {
         "category": "organization",
         "name_cn": "组织机构",
-        "color": "#6366f1",
+        "color": "#333333",
         "support": 367,
         "bert": {
           "precision": 72.01,
@@ -228,7 +228,7 @@
       {
         "category": "position",
         "name_cn": "职位",
-        "color": "#eab308",
+        "color": "#666666",
         "support": 433,
         "bert": {
           "precision": 75.11,
@@ -250,7 +250,7 @@
       {
         "category": "scene",
         "name_cn": "景点",
-        "color": "#84cc16",
+        "color": "#a3a3a3",
         "support": 209,
         "bert": {
           "precision": 65.02,
@@ -321,37 +321,43 @@
             "start": 0,
             "end": 6,
             "category": "organization",
-            "text": "莫斯科中央陆军"
+            "text": "莫斯科中央陆军",
+            "color": "#333333"
           },
           {
             "start": 9,
             "end": 11,
             "category": "organization",
-            "text": "波兹南"
+            "text": "波兹南",
+            "color": "#333333"
           },
           {
             "start": 13,
             "end": 14,
             "category": "organization",
-            "text": "拉科"
+            "text": "拉科",
+            "color": "#333333"
           },
           {
             "start": 17,
             "end": 20,
             "category": "organization",
-            "text": "费耶诺德"
+            "text": "费耶诺德",
+            "color": "#333333"
           },
           {
             "start": 22,
             "end": 26,
             "category": "organization",
-            "text": "加拉塔萨雷"
+            "text": "加拉塔萨雷",
+            "color": "#333333"
           },
           {
             "start": 29,
             "end": 33,
             "category": "organization",
-            "text": "梅塔利斯特"
+            "text": "梅塔利斯特",
+            "color": "#333333"
           }
         ],
         "bert_prediction": [
@@ -359,49 +365,57 @@
             "start": 0,
             "end": 4,
             "category": "organization",
-            "text": "莫斯科中央"
+            "text": "莫斯科中央",
+            "color": "#333333"
           },
           {
             "start": 5,
             "end": 5,
             "category": "government",
-            "text": "陆"
+            "text": "陆",
+            "color": "#262626"
           },
           {
             "start": 6,
             "end": 6,
             "category": "organization",
-            "text": "军"
+            "text": "军",
+            "color": "#333333"
           },
           {
             "start": 9,
             "end": 11,
             "category": "organization",
-            "text": "波兹南"
+            "text": "波兹南",
+            "color": "#333333"
           },
           {
             "start": 13,
             "end": 14,
             "category": "organization",
-            "text": "拉科"
+            "text": "拉科",
+            "color": "#333333"
           },
           {
             "start": 17,
             "end": 20,
             "category": "organization",
-            "text": "费耶诺德"
+            "text": "费耶诺德",
+            "color": "#333333"
           },
           {
             "start": 22,
             "end": 26,
             "category": "organization",
-            "text": "加拉塔萨雷"
+            "text": "加拉塔萨雷",
+            "color": "#333333"
           },
           {
             "start": 29,
             "end": 33,
             "category": "organization",
-            "text": "梅塔利斯特"
+            "text": "梅塔利斯特",
+            "color": "#333333"
           }
         ],
         "macbert_prediction": [
@@ -409,37 +423,43 @@
             "start": 0,
             "end": 6,
             "category": "organization",
-            "text": "莫斯科中央陆军"
+            "text": "莫斯科中央陆军",
+            "color": "#333333"
           },
           {
             "start": 9,
             "end": 11,
             "category": "organization",
-            "text": "波兹南"
+            "text": "波兹南",
+            "color": "#333333"
           },
           {
             "start": 13,
             "end": 14,
             "category": "organization",
-            "text": "拉科"
+            "text": "拉科",
+            "color": "#333333"
           },
           {
             "start": 17,
             "end": 20,
             "category": "organization",
-            "text": "费耶诺德"
+            "text": "费耶诺德",
+            "color": "#333333"
           },
           {
             "start": 22,
             "end": 26,
             "category": "organization",
-            "text": "加拉塔萨雷"
+            "text": "加拉塔萨雷",
+            "color": "#333333"
           },
           {
             "start": 29,
             "end": 33,
             "category": "organization",
-            "text": "梅塔利斯特"
+            "text": "梅塔利斯特",
+            "color": "#333333"
           }
         ],
         "diff_analysis": "BERT 将多字体育俱乐部实体‘莫斯科中央陆军’碎片化切分为‘莫斯科中央’(org)、‘陆’(government) 和 ‘军’(org)，出现严重的单字类别混淆与边界断裂；MacBERT 完整识别为单一组织实体‘莫斯科中央陆军’。",
@@ -457,19 +477,22 @@
             "start": 0,
             "end": 10,
             "category": "organization",
-            "text": "中国房地产及住宅研究会"
+            "text": "中国房地产及住宅研究会",
+            "color": "#333333"
           },
           {
             "start": 11,
             "end": 13,
             "category": "position",
-            "text": "副会长"
+            "text": "副会长",
+            "color": "#666666"
           },
           {
             "start": 14,
             "end": 16,
             "category": "name",
-            "text": "顾云昌"
+            "text": "顾云昌",
+            "color": "#0a0a0a"
           }
         ],
         "bert_prediction": [
@@ -477,43 +500,50 @@
             "start": 0,
             "end": 3,
             "category": "organization",
-            "text": "中国房地"
+            "text": "中国房地",
+            "color": "#333333"
           },
           {
             "start": 4,
             "end": 4,
             "category": "government",
-            "text": "产"
+            "text": "产",
+            "color": "#262626"
           },
           {
             "start": 5,
             "end": 5,
             "category": "organization",
-            "text": "及"
+            "text": "及",
+            "color": "#333333"
           },
           {
             "start": 6,
             "end": 7,
             "category": "government",
-            "text": "住宅"
+            "text": "住宅",
+            "color": "#262626"
           },
           {
             "start": 8,
             "end": 10,
             "category": "organization",
-            "text": "研究会"
+            "text": "研究会",
+            "color": "#333333"
           },
           {
             "start": 11,
             "end": 13,
             "category": "position",
-            "text": "副会长"
+            "text": "副会长",
+            "color": "#666666"
           },
           {
             "start": 14,
             "end": 16,
             "category": "name",
-            "text": "顾云昌"
+            "text": "顾云昌",
+            "color": "#0a0a0a"
           }
         ],
         "macbert_prediction": [
@@ -521,19 +551,22 @@
             "start": 0,
             "end": 10,
             "category": "organization",
-            "text": "中国房地产及住宅研究会"
+            "text": "中国房地产及住宅研究会",
+            "color": "#333333"
           },
           {
             "start": 11,
             "end": 13,
             "category": "position",
-            "text": "副会长"
+            "text": "副会长",
+            "color": "#666666"
           },
           {
             "start": 14,
             "end": 16,
             "category": "name",
-            "text": "顾云昌"
+            "text": "顾云昌",
+            "color": "#0a0a0a"
           }
         ],
         "diff_analysis": "面对长达 11 字的复合协会名‘中国房地产及住宅研究会’，BERT 发生连环崩塌，切碎出 5 个碎片：‘中国房地’(org)、‘产’(gov)、‘及’(org)、‘住宅’(gov)、‘研究会’(org)；MacBERT 100% 准确捕获完整实体边界与类别。",
@@ -551,31 +584,36 @@
             "start": 0,
             "end": 1,
             "category": "address",
-            "text": "上海"
+            "text": "上海",
+            "color": "#737373"
           },
           {
             "start": 3,
             "end": 4,
             "category": "address",
-            "text": "广州"
+            "text": "广州",
+            "color": "#737373"
           },
           {
             "start": 16,
             "end": 19,
             "category": "game",
-            "text": "DOTA"
+            "text": "DOTA",
+            "color": "#404040"
           },
           {
             "start": 21,
             "end": 30,
             "category": "game",
-            "text": "实况足球（2011）"
+            "text": "实况足球（2011）",
+            "color": "#404040"
           },
           {
             "start": 32,
             "end": 36,
             "category": "game",
-            "text": "CS1.6"
+            "text": "CS1.6",
+            "color": "#404040"
           }
         ],
         "bert_prediction": [
@@ -583,37 +621,43 @@
             "start": 0,
             "end": 1,
             "category": "address",
-            "text": "上海"
+            "text": "上海",
+            "color": "#737373"
           },
           {
             "start": 3,
             "end": 4,
             "category": "address",
-            "text": "广州"
+            "text": "广州",
+            "color": "#737373"
           },
           {
             "start": 16,
             "end": 19,
             "category": "game",
-            "text": "DOTA"
+            "text": "DOTA",
+            "color": "#404040"
           },
           {
             "start": 21,
             "end": 24,
             "category": "game",
-            "text": "实况足球"
+            "text": "实况足球",
+            "color": "#404040"
           },
           {
             "start": 27,
             "end": 30,
             "category": "game",
-            "text": "011）"
+            "text": "011）",
+            "color": "#404040"
           },
           {
             "start": 32,
             "end": 36,
             "category": "game",
-            "text": "CS1.6"
+            "text": "CS1.6",
+            "color": "#404040"
           }
         ],
         "macbert_prediction": [
@@ -621,31 +665,36 @@
             "start": 0,
             "end": 1,
             "category": "address",
-            "text": "上海"
+            "text": "上海",
+            "color": "#737373"
           },
           {
             "start": 3,
             "end": 4,
             "category": "address",
-            "text": "广州"
+            "text": "广州",
+            "color": "#737373"
           },
           {
             "start": 16,
             "end": 19,
             "category": "game",
-            "text": "DOTA"
+            "text": "DOTA",
+            "color": "#404040"
           },
           {
             "start": 21,
             "end": 30,
             "category": "game",
-            "text": "实况足球（2011）"
+            "text": "实况足球（2011）",
+            "color": "#404040"
           },
           {
             "start": 32,
             "end": 36,
             "category": "game",
-            "text": "CS1.6"
+            "text": "CS1.6",
+            "color": "#404040"
           }
         ],
         "diff_analysis": "针对含版本年份与括号的复合游戏名称‘实况足球（2011）’，BERT 在括号处发生断裂，拆成了‘实况足球’与‘011）’两个无效残片；MacBERT 成功将整个带括号名称完整识别为一个 game 实体。",
@@ -663,19 +712,22 @@
             "start": 0,
             "end": 5,
             "category": "company",
-            "text": "soho中国"
+            "text": "soho中国",
+            "color": "#171717"
           },
           {
             "start": 6,
             "end": 8,
             "category": "position",
-            "text": "董事长"
+            "text": "董事长",
+            "color": "#666666"
           },
           {
             "start": 9,
             "end": 11,
             "category": "name",
-            "text": "潘石屹"
+            "text": "潘石屹",
+            "color": "#0a0a0a"
           }
         ],
         "bert_prediction": [
@@ -683,25 +735,29 @@
             "start": 0,
             "end": 3,
             "category": "company",
-            "text": "soho"
+            "text": "soho",
+            "color": "#171717"
           },
           {
             "start": 5,
             "end": 5,
             "category": "position",
-            "text": "国"
+            "text": "国",
+            "color": "#666666"
           },
           {
             "start": 6,
             "end": 8,
             "category": "position",
-            "text": "董事长"
+            "text": "董事长",
+            "color": "#666666"
           },
           {
             "start": 9,
             "end": 11,
             "category": "name",
-            "text": "潘石屹"
+            "text": "潘石屹",
+            "color": "#0a0a0a"
           }
         ],
         "macbert_prediction": [
@@ -709,19 +765,22 @@
             "start": 0,
             "end": 5,
             "category": "company",
-            "text": "soho中国"
+            "text": "soho中国",
+            "color": "#171717"
           },
           {
             "start": 6,
             "end": 8,
             "category": "position",
-            "text": "董事长"
+            "text": "董事长",
+            "color": "#666666"
           },
           {
             "start": 9,
             "end": 11,
             "category": "name",
-            "text": "潘石屹"
+            "text": "潘石屹",
+            "color": "#0a0a0a"
           }
         ],
         "diff_analysis": "针对英汉混合知名企业‘soho中国’，BERT 识别为‘soho’(company)并把‘国’误判为职位(position)；MacBERT 准确识别为‘soho中国’(company)。",
@@ -739,13 +798,15 @@
             "start": 12,
             "end": 14,
             "category": "name",
-            "text": "彭小军"
+            "text": "彭小军",
+            "color": "#0a0a0a"
           },
           {
             "start": 24,
             "end": 31,
             "category": "company",
-            "text": "深发展信用卡中心"
+            "text": "深发展信用卡中心",
+            "color": "#171717"
           }
         ],
         "bert_prediction": [
@@ -753,19 +814,22 @@
             "start": 12,
             "end": 14,
             "category": "name",
-            "text": "彭小军"
+            "text": "彭小军",
+            "color": "#0a0a0a"
           },
           {
             "start": 24,
             "end": 28,
             "category": "company",
-            "text": "深发展信用"
+            "text": "深发展信用",
+            "color": "#171717"
           },
           {
             "start": 30,
             "end": 30,
             "category": "company",
-            "text": "中"
+            "text": "中",
+            "color": "#171717"
           }
         ],
         "macbert_prediction": [
@@ -773,13 +837,15 @@
             "start": 12,
             "end": 14,
             "category": "name",
-            "text": "彭小军"
+            "text": "彭小军",
+            "color": "#0a0a0a"
           },
           {
             "start": 24,
             "end": 31,
             "category": "company",
-            "text": "深发展信用卡中心"
+            "text": "深发展信用卡中心",
+            "color": "#171717"
           }
         ],
         "diff_analysis": "BERT 对‘深发展信用卡中心’识别截断为‘深发展信用’与单独的‘中’；MacBERT 准确识别全部 8 个字符‘深发展信用卡中心’。",
@@ -797,13 +863,15 @@
             "start": 0,
             "end": 2,
             "category": "organization",
-            "text": "贝蒂斯"
+            "text": "贝蒂斯",
+            "color": "#333333"
           },
           {
             "start": 7,
             "end": 8,
             "category": "organization",
-            "text": "瓦伦"
+            "text": "瓦伦",
+            "color": "#333333"
           }
         ],
         "bert_prediction": [
@@ -811,13 +879,15 @@
             "start": 0,
             "end": 2,
             "category": "name",
-            "text": "贝蒂斯"
+            "text": "贝蒂斯",
+            "color": "#0a0a0a"
           },
           {
             "start": 7,
             "end": 8,
             "category": "organization",
-            "text": "瓦伦"
+            "text": "瓦伦",
+            "color": "#333333"
           }
         ],
         "macbert_prediction": [
@@ -825,13 +895,15 @@
             "start": 0,
             "end": 2,
             "category": "organization",
-            "text": "贝蒂斯"
+            "text": "贝蒂斯",
+            "color": "#333333"
           },
           {
             "start": 7,
             "end": 8,
             "category": "organization",
-            "text": "瓦伦"
+            "text": "瓦伦",
+            "color": "#333333"
           }
         ],
         "diff_analysis": "在体育新闻文本‘贝蒂斯在客场与瓦伦打起对攻...’中，BERT 将足球俱乐部‘贝蒂斯’误识别为人名(name)；MacBERT 结合‘客场’、‘打起对攻’等全局语义，精准判定其为组织(organization)。",
@@ -849,19 +921,22 @@
             "start": 0,
             "end": 2,
             "category": "name",
-            "text": "商为智"
+            "text": "商为智",
+            "color": "#0a0a0a"
           },
           {
             "start": 3,
             "end": 5,
             "category": "position",
-            "text": "实习生"
+            "text": "实习生",
+            "color": "#666666"
           },
           {
             "start": 6,
             "end": 8,
             "category": "name",
-            "text": "陈文波"
+            "text": "陈文波",
+            "color": "#0a0a0a"
           }
         ],
         "bert_prediction": [
@@ -869,19 +944,22 @@
             "start": 0,
             "end": 2,
             "category": "company",
-            "text": "商为智"
+            "text": "商为智",
+            "color": "#171717"
           },
           {
             "start": 3,
             "end": 5,
             "category": "position",
-            "text": "实习生"
+            "text": "实习生",
+            "color": "#666666"
           },
           {
             "start": 6,
             "end": 8,
             "category": "name",
-            "text": "陈文波"
+            "text": "陈文波",
+            "color": "#0a0a0a"
           }
         ],
         "macbert_prediction": [
@@ -889,19 +967,22 @@
             "start": 0,
             "end": 2,
             "category": "name",
-            "text": "商为智"
+            "text": "商为智",
+            "color": "#0a0a0a"
           },
           {
             "start": 3,
             "end": 5,
             "category": "position",
-            "text": "实习生"
+            "text": "实习生",
+            "color": "#666666"
           },
           {
             "start": 6,
             "end": 8,
             "category": "name",
-            "text": "陈文波"
+            "text": "陈文波",
+            "color": "#0a0a0a"
           }
         ],
         "diff_analysis": "在‘商为智实习生陈文波’中，BERT 将罕见姓名‘商为智’误分类为公司(company)；MacBERT 正确识别‘商为智’为人名(name)。",
@@ -919,13 +1000,15 @@
             "start": 1,
             "end": 4,
             "category": "game",
-            "text": "dota"
+            "text": "dota",
+            "color": "#404040"
           },
           {
             "start": 20,
             "end": 23,
             "category": "game",
-            "text": "imba"
+            "text": "imba",
+            "color": "#404040"
           }
         ],
         "bert_prediction": [
@@ -933,25 +1016,29 @@
             "start": 1,
             "end": 4,
             "category": "game",
-            "text": "dota"
+            "text": "dota",
+            "color": "#404040"
           },
           {
             "start": 10,
             "end": 12,
             "category": "game",
-            "text": "敢死队"
+            "text": "敢死队",
+            "color": "#404040"
           },
           {
             "start": 20,
             "end": 20,
             "category": "game",
-            "text": "i"
+            "text": "i",
+            "color": "#404040"
           },
           {
             "start": 22,
             "end": 23,
             "category": "game",
-            "text": "ba"
+            "text": "ba",
+            "color": "#404040"
           }
         ],
         "macbert_prediction": [
@@ -959,13 +1046,15 @@
             "start": 1,
             "end": 4,
             "category": "game",
-            "text": "dota"
+            "text": "dota",
+            "color": "#404040"
           },
           {
             "start": 20,
             "end": 23,
             "category": "game",
-            "text": "imba"
+            "text": "imba",
+            "color": "#404040"
           }
         ],
         "diff_analysis": "文本包含‘玩dota...玩imba...’，BERT 将口语词‘敢死队’误标为游戏，并将‘imba’截断为‘i’和‘ba’（漏掉m）；MacBERT 准确抽取出‘dota’和‘imba’，未产生多余误报。",
@@ -985,13 +1074,15 @@
             "start": 0,
             "end": 1,
             "category": "name",
-            "text": "温格"
+            "text": "温格",
+            "color": "#0a0a0a"
           },
           {
             "start": 23,
             "end": 24,
             "category": "organization",
-            "text": "曼联"
+            "text": "曼联",
+            "color": "#333333"
           }
         ],
         "bert_prediction": [
@@ -999,19 +1090,22 @@
             "start": 0,
             "end": 1,
             "category": "name",
-            "text": "温格"
+            "text": "温格",
+            "color": "#0a0a0a"
           },
           {
             "start": 23,
             "end": 24,
             "category": "organization",
-            "text": "曼联"
+            "text": "曼联",
+            "color": "#333333"
           },
           {
             "start": 27,
             "end": 28,
             "category": "organization",
-            "text": "枪手"
+            "text": "枪手",
+            "color": "#333333"
           }
         ],
         "macbert_prediction": [
@@ -1019,19 +1113,22 @@
             "start": 0,
             "end": 1,
             "category": "name",
-            "text": "温格"
+            "text": "温格",
+            "color": "#0a0a0a"
           },
           {
             "start": 23,
             "end": 24,
             "category": "organization",
-            "text": "曼联"
+            "text": "曼联",
+            "color": "#333333"
           },
           {
             "start": 27,
             "end": 28,
             "category": "organization",
-            "text": "枪手"
+            "text": "枪手",
+            "color": "#333333"
           }
         ],
         "diff_analysis": "文本：‘...2比1战胜曼联之后枪手仍然留在了夺冠集团之内...’；dev.json 真实标签仅包含‘曼联’与‘温格’，遗漏了‘枪手’；BERT 与 MacBERT 均精准且一致地识别出‘枪手’(organization)！",
@@ -1050,7 +1147,8 @@
             "start": 6,
             "end": 8,
             "category": "address",
-            "text": "文汇路"
+            "text": "文汇路",
+            "color": "#737373"
           }
         ],
         "bert_prediction": [
@@ -1058,19 +1156,22 @@
             "start": 6,
             "end": 8,
             "category": "address",
-            "text": "文汇路"
+            "text": "文汇路",
+            "color": "#737373"
           },
           {
             "start": 34,
             "end": 35,
             "category": "government",
-            "text": "校方"
+            "text": "校方",
+            "color": "#262626"
           },
           {
             "start": 38,
             "end": 39,
             "category": "government",
-            "text": "教委"
+            "text": "教委",
+            "color": "#262626"
           }
         ],
         "macbert_prediction": [
@@ -1078,19 +1179,22 @@
             "start": 6,
             "end": 8,
             "category": "address",
-            "text": "文汇路"
+            "text": "文汇路",
+            "color": "#737373"
           },
           {
             "start": 34,
             "end": 34,
             "category": "government",
-            "text": "校"
+            "text": "校",
+            "color": "#262626"
           },
           {
             "start": 38,
             "end": 39,
             "category": "government",
-            "text": "教委"
+            "text": "教委",
+            "color": "#262626"
           }
         ],
         "diff_analysis": "文本：‘...顺便找校方或者教委要个说法。’；dev.json 仅标注了‘文汇路’(address)，遗漏了行政机构‘教委’(government)；BERT 与 MacBERT 均正确挖掘出‘教委’(government)。",
@@ -1109,31 +1213,36 @@
             "start": 5,
             "end": 6,
             "category": "address",
-            "text": "北京"
+            "text": "北京",
+            "color": "#737373"
           },
           {
             "start": 17,
             "end": 20,
             "category": "address",
-            "text": "邢州大道"
+            "text": "邢州大道",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 25,
             "category": "address",
-            "text": "祥和大街"
+            "text": "祥和大街",
+            "color": "#737373"
           },
           {
             "start": 27,
             "end": 29,
             "category": "address",
-            "text": "东华路"
+            "text": "东华路",
+            "color": "#737373"
           },
           {
             "start": 31,
             "end": 37,
             "category": "address",
-            "text": "滨江路围合区域"
+            "text": "滨江路围合区域",
+            "color": "#737373"
           }
         ],
         "bert_prediction": [
@@ -1141,31 +1250,36 @@
             "start": 5,
             "end": 6,
             "category": "address",
-            "text": "北京"
+            "text": "北京",
+            "color": "#737373"
           },
           {
             "start": 17,
             "end": 20,
             "category": "address",
-            "text": "邢州大道"
+            "text": "邢州大道",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 25,
             "category": "address",
-            "text": "祥和大街"
+            "text": "祥和大街",
+            "color": "#737373"
           },
           {
             "start": 27,
             "end": 29,
             "category": "address",
-            "text": "东华路"
+            "text": "东华路",
+            "color": "#737373"
           },
           {
             "start": 31,
             "end": 33,
             "category": "address",
-            "text": "滨江路"
+            "text": "滨江路",
+            "color": "#737373"
           }
         ],
         "macbert_prediction": [
@@ -1173,31 +1287,36 @@
             "start": 5,
             "end": 6,
             "category": "address",
-            "text": "北京"
+            "text": "北京",
+            "color": "#737373"
           },
           {
             "start": 17,
             "end": 20,
             "category": "address",
-            "text": "邢州大道"
+            "text": "邢州大道",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 25,
             "category": "address",
-            "text": "祥和大街"
+            "text": "祥和大街",
+            "color": "#737373"
           },
           {
             "start": 27,
             "end": 29,
             "category": "address",
-            "text": "东华路"
+            "text": "东华路",
+            "color": "#737373"
           },
           {
             "start": 31,
             "end": 33,
             "category": "address",
-            "text": "滨江路"
+            "text": "滨江路",
+            "color": "#737373"
           }
         ],
         "diff_analysis": "文本：‘...限行区域为邢州大道、祥和大街、东华路、滨江路围合区域含上述道路。’；真实标签标注为‘滨江路围合区域’(7字)；BERT 与 MacBERT 均预测为‘滨江路’(3字)。",
@@ -1216,13 +1335,15 @@
             "start": 4,
             "end": 8,
             "category": "address",
-            "text": "京良路南侧"
+            "text": "京良路南侧",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 37,
             "category": "address",
-            "text": "京石高速西三环六里桥到京良路出口"
+            "text": "京石高速西三环六里桥到京良路出口",
+            "color": "#737373"
           }
         ],
         "bert_prediction": [
@@ -1230,25 +1351,29 @@
             "start": 4,
             "end": 8,
             "category": "address",
-            "text": "京良路南侧"
+            "text": "京良路南侧",
+            "color": "#737373"
           },
           {
             "start": 12,
             "end": 15,
             "category": "address",
-            "text": "京石高速"
+            "text": "京石高速",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 31,
             "category": "address",
-            "text": "京石高速西三环六里桥"
+            "text": "京石高速西三环六里桥",
+            "color": "#737373"
           },
           {
             "start": 33,
             "end": 37,
             "category": "address",
-            "text": "京良路出口"
+            "text": "京良路出口",
+            "color": "#737373"
           }
         ],
         "macbert_prediction": [
@@ -1256,25 +1381,29 @@
             "start": 4,
             "end": 8,
             "category": "address",
-            "text": "京良路南侧"
+            "text": "京良路南侧",
+            "color": "#737373"
           },
           {
             "start": 12,
             "end": 15,
             "category": "address",
-            "text": "京石高速"
+            "text": "京石高速",
+            "color": "#737373"
           },
           {
             "start": 22,
             "end": 32,
             "category": "address",
-            "text": "京石高速西三环六里桥到"
+            "text": "京石高速西三环六里桥到",
+            "color": "#737373"
           },
           {
             "start": 33,
             "end": 37,
             "category": "address",
-            "text": "京良路出口"
+            "text": "京良路出口",
+            "color": "#737373"
           }
         ],
         "diff_analysis": "文本：‘...从京石高速西三环六里桥到京良路出口仅10余公里。’；真实标签将整句路径强行标注为一个实体：‘京石高速西三环六里桥到京良路出口’(16字)；BERT 与 MacBERT 均将其拆分出‘京石高速’、‘京石高速西三环六里桥’、‘京良路出口’。",
@@ -1293,19 +1422,22 @@
             "start": 2,
             "end": 5,
             "category": "game",
-            "text": "DotA"
+            "text": "DotA",
+            "color": "#404040"
           },
           {
             "start": 6,
             "end": 9,
             "category": "position",
-            "text": "明星选手"
+            "text": "明星选手",
+            "color": "#666666"
           },
           {
             "start": 25,
             "end": 32,
             "category": "name",
-            "text": "Pis（卜严骏）"
+            "text": "Pis（卜严骏）",
+            "color": "#0a0a0a"
           }
         ],
         "bert_prediction": [
@@ -1313,25 +1445,29 @@
             "start": 2,
             "end": 5,
             "category": "game",
-            "text": "DotA"
+            "text": "DotA",
+            "color": "#404040"
           },
           {
             "start": 6,
             "end": 9,
             "category": "position",
-            "text": "明星选手"
+            "text": "明星选手",
+            "color": "#666666"
           },
           {
             "start": 25,
             "end": 27,
             "category": "name",
-            "text": "Pis"
+            "text": "Pis",
+            "color": "#0a0a0a"
           },
           {
             "start": 29,
             "end": 32,
             "category": "name",
-            "text": "卜严骏）"
+            "text": "卜严骏）",
+            "color": "#0a0a0a"
           }
         ],
         "macbert_prediction": [
@@ -1339,31 +1475,36 @@
             "start": 2,
             "end": 5,
             "category": "game",
-            "text": "DotA"
+            "text": "DotA",
+            "color": "#404040"
           },
           {
             "start": 6,
             "end": 7,
             "category": "position",
-            "text": "明星"
+            "text": "明星",
+            "color": "#666666"
           },
           {
             "start": 8,
             "end": 9,
             "category": "position",
-            "text": "选手"
+            "text": "选手",
+            "color": "#666666"
           },
           {
             "start": 25,
             "end": 27,
             "category": "name",
-            "text": "Pis"
+            "text": "Pis",
+            "color": "#0a0a0a"
           },
           {
             "start": 29,
             "end": 31,
             "category": "name",
-            "text": "卜严骏"
+            "text": "卜严骏",
+            "color": "#0a0a0a"
           }
         ],
         "diff_analysis": "文本：‘...担任SOLO位的世界第一影魔Pis（卜严骏），’；真实标签整体标注为‘Pis（卜严骏）’(name)；BERT 将其切为‘Pis’与‘卜严骏）’；MacBERT 切为‘Pis’与‘卜严骏’。",
@@ -1382,13 +1523,15 @@
             "start": 19,
             "end": 21,
             "category": "address",
-            "text": "房山区"
+            "text": "房山区",
+            "color": "#737373"
           },
           {
             "start": 33,
             "end": 46,
             "category": "address",
-            "text": "北京石化新材料科技产业基地（"
+            "text": "北京石化新材料科技产业基地（",
+            "color": "#737373"
           }
         ],
         "bert_prediction": [
@@ -1396,13 +1539,15 @@
             "start": 19,
             "end": 21,
             "category": "address",
-            "text": "房山区"
+            "text": "房山区",
+            "color": "#737373"
           },
           {
             "start": 33,
             "end": 45,
             "category": "address",
-            "text": "北京石化新材料科技产业基地"
+            "text": "北京石化新材料科技产业基地",
+            "color": "#737373"
           }
         ],
         "macbert_prediction": [
@@ -1410,13 +1555,15 @@
             "start": 19,
             "end": 21,
             "category": "address",
-            "text": "房山区"
+            "text": "房山区",
+            "color": "#737373"
           },
           {
             "start": 33,
             "end": 45,
             "category": "address",
-            "text": "北京石化新材料科技产业基地"
+            "text": "北京石化新材料科技产业基地",
+            "color": "#737373"
           }
         ],
         "diff_analysis": "文本：‘...北京石化新材料科技产业基地（’；真实标签末尾包含未闭合的前括号：‘北京石化新材料科技产业基地（’(14字)；BERT 与 MacBERT 均自动剔除了半括号，精准预测‘北京石化新材料科技产业基地’(13字)。",
@@ -1504,52 +1651,52 @@
   "category_meta": {
     "address": {
       "cn": "地址",
-      "color": "#10b981",
+      "color": "#737373",
       "desc": "地理位置、道路门牌、小区楼宇、行政区划"
     },
     "book": {
       "cn": "书籍",
-      "color": "#f59e0b",
+      "color": "#737373",
       "desc": "出版书籍、学术著作、网络小说、期刊文献"
     },
     "company": {
       "cn": "公司",
-      "color": "#3b82f6",
+      "color": "#737373",
       "desc": "企业实体、商业公司、跨国集团、银行机构"
     },
     "game": {
       "cn": "游戏",
-      "color": "#8b5cf6",
+      "color": "#737373",
       "desc": "电子游戏、端游网游、手游作品、主机游戏"
     },
     "government": {
       "cn": "政府机构",
-      "color": "#ef4444",
+      "color": "#737373",
       "desc": "国家行政机关、司法机关、政府管理部门"
     },
     "movie": {
       "cn": "电影",
-      "color": "#ec4899",
+      "color": "#737373",
       "desc": "院线电影、网络大电影、纪录片、影视IP"
     },
     "name": {
       "cn": "姓名",
-      "color": "#06b6d4",
+      "color": "#737373",
       "desc": "真实人名、虚构人名、历史人物、运动员"
     },
     "organization": {
       "cn": "组织机构",
-      "color": "#6366f1",
+      "color": "#737373",
       "desc": "行业协会、体育俱乐部、学术学会、社会团体"
     },
     "position": {
       "cn": "职位",
-      "color": "#eab308",
+      "color": "#737373",
       "desc": "企业职务、学术职称、头衔称号、官职岗位"
     },
     "scene": {
       "cn": "景点",
-      "color": "#84cc16",
+      "color": "#737373",
       "desc": "风景名胜、名胜古迹、地标公园、旅游景区"
     }
   },
@@ -1637,7 +1784,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央陆军",
               "confidence": 0.9779
             },
@@ -1646,7 +1793,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "波兹南",
               "confidence": 0.9855
             },
@@ -1655,7 +1802,7 @@
               "end": 14,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拉科",
               "confidence": 0.9824
             },
@@ -1664,7 +1811,7 @@
               "end": 20,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "费耶诺德",
               "confidence": 0.9918
             },
@@ -1673,7 +1820,7 @@
               "end": 26,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "加拉塔萨雷",
               "confidence": 0.9916
             },
@@ -1682,7 +1829,7 @@
               "end": 33,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "梅塔利斯特",
               "confidence": 0.9914
             }
@@ -1911,7 +2058,7 @@
               "end": 4,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央",
               "confidence": 0.8286
             },
@@ -1920,7 +2067,7 @@
               "end": 5,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "陆",
               "confidence": 0.5188
             },
@@ -1929,7 +2076,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "军",
               "confidence": 0.5583
             },
@@ -1938,7 +2085,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "波兹南",
               "confidence": 0.9938
             },
@@ -1947,7 +2094,7 @@
               "end": 14,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拉科",
               "confidence": 0.9927
             },
@@ -1956,7 +2103,7 @@
               "end": 20,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "费耶诺德",
               "confidence": 0.9946
             },
@@ -1965,7 +2112,7 @@
               "end": 26,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "加拉塔萨雷",
               "confidence": 0.9937
             },
@@ -1974,7 +2121,7 @@
               "end": 33,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "梅塔利斯特",
               "confidence": 0.9927
             }
@@ -2205,7 +2352,7 @@
             "end": 11,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "波兹南",
             "confidence": 0.9855
           },
@@ -2214,7 +2361,7 @@
             "end": 14,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "拉科",
             "confidence": 0.9824
           },
@@ -2223,7 +2370,7 @@
             "end": 20,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "费耶诺德",
             "confidence": 0.9918
           },
@@ -2232,7 +2379,7 @@
             "end": 26,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "加拉塔萨雷",
             "confidence": 0.9916
           },
@@ -2241,7 +2388,7 @@
             "end": 33,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "梅塔利斯特",
             "confidence": 0.9914
           }
@@ -2252,7 +2399,7 @@
             "end": 6,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "莫斯科中央陆军",
             "confidence": 0.9779
           }
@@ -2263,7 +2410,7 @@
             "end": 4,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "莫斯科中央",
             "confidence": 0.8286
           },
@@ -2272,7 +2419,7 @@
             "end": 5,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "陆",
             "confidence": 0.5188
           },
@@ -2281,7 +2428,7 @@
             "end": 6,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "军",
             "confidence": 0.5583
           }
@@ -2295,7 +2442,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央陆军",
               "confidence": 0.9779
             },
@@ -2305,7 +2452,7 @@
                 "end": 4,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "莫斯科中央",
                 "confidence": 0.8286
               },
@@ -2314,7 +2461,7 @@
                 "end": 5,
                 "category": "government",
                 "category_cn": "政府机构",
-                "color": "#ef4444",
+                "color": "#262626",
                 "text": "陆",
                 "confidence": 0.5188
               },
@@ -2323,7 +2470,7 @@
                 "end": 6,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "军",
                 "confidence": 0.5583
               }
@@ -2350,7 +2497,7 @@
               "end": 12,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "中国国际经济贸易仲裁委员会",
               "confidence": 0.9136
             },
@@ -2359,7 +2506,7 @@
               "end": 21,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "中国汽车工业协会",
               "confidence": 0.9752
             }
@@ -2588,7 +2735,7 @@
               "end": 12,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "中国国际经济贸易仲裁委员会",
               "confidence": 0.9576
             },
@@ -2597,7 +2744,7 @@
               "end": 21,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "中国汽车工业协会",
               "confidence": 0.9817
             }
@@ -2828,7 +2975,7 @@
             "end": 12,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "中国国际经济贸易仲裁委员会",
             "confidence": 0.9136
           },
@@ -2837,7 +2984,7 @@
             "end": 21,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "中国汽车工业协会",
             "confidence": 0.9752
           }
@@ -2862,7 +3009,7 @@
               "end": 2,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "腾讯",
               "confidence": 0.9211
             },
@@ -2871,7 +3018,7 @@
               "end": 28,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "《极品飞车Online(极品飞车网游版)》",
               "confidence": 0.9794
             }
@@ -3136,7 +3283,7 @@
               "end": 2,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "腾讯",
               "confidence": 0.9758
             },
@@ -3145,7 +3292,7 @@
               "end": 28,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "《极品飞车Online(极品飞车网游版)》",
               "confidence": 0.9803
             }
@@ -3412,7 +3559,7 @@
             "end": 2,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "腾讯",
             "confidence": 0.9211
           },
@@ -3421,7 +3568,7 @@
             "end": 28,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "《极品飞车Online(极品飞车网游版)》",
             "confidence": 0.9794
           }
@@ -3446,7 +3593,7 @@
               "end": 10,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "世茂Emall购物中心",
               "confidence": 0.6902
             },
@@ -3455,7 +3602,7 @@
               "end": 15,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "苹果公司",
               "confidence": 0.9351
             },
@@ -3464,7 +3611,7 @@
               "end": 19,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "星巴克",
               "confidence": 0.9614
             },
@@ -3473,7 +3620,7 @@
               "end": 39,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "上海市浦东新区陆家嘴",
               "confidence": 0.9885
             }
@@ -3738,7 +3885,7 @@
               "end": 10,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "世茂Emall购物中心",
               "confidence": 0.8278
             },
@@ -3747,7 +3894,7 @@
               "end": 15,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "苹果公司",
               "confidence": 0.9725
             },
@@ -3756,7 +3903,7 @@
               "end": 19,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "星巴克",
               "confidence": 0.9774
             },
@@ -3765,7 +3912,7 @@
               "end": 39,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "上海市浦东新区陆家嘴",
               "confidence": 0.9933
             }
@@ -4032,7 +4179,7 @@
             "end": 10,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "世茂Emall购物中心",
             "confidence": 0.6902
           },
@@ -4041,7 +4188,7 @@
             "end": 15,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "苹果公司",
             "confidence": 0.9351
           },
@@ -4050,7 +4197,7 @@
             "end": 19,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "星巴克",
             "confidence": 0.9614
           },
@@ -4059,7 +4206,7 @@
             "end": 39,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "上海市浦东新区陆家嘴",
             "confidence": 0.9885
           }
@@ -4084,7 +4231,7 @@
               "end": 13,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "招商银行股份有限公司深圳分行",
               "confidence": 0.9908
             },
@@ -4093,7 +4240,7 @@
               "end": 15,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "行长",
               "confidence": 0.9802
             },
@@ -4102,7 +4249,7 @@
               "end": 17,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "张伟",
               "confidence": 0.9883
             },
@@ -4111,7 +4258,7 @@
               "end": 24,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "南山区科技园",
               "confidence": 0.9649
             }
@@ -4340,7 +4487,7 @@
               "end": 13,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "招商银行股份有限公司深圳分行",
               "confidence": 0.9956
             },
@@ -4349,7 +4496,7 @@
               "end": 15,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "行长",
               "confidence": 0.988
             },
@@ -4358,7 +4505,7 @@
               "end": 17,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "张伟",
               "confidence": 0.9968
             },
@@ -4367,7 +4514,7 @@
               "end": 24,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "南山区科技园",
               "confidence": 0.9928
             }
@@ -4598,7 +4745,7 @@
             "end": 13,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "招商银行股份有限公司深圳分行",
             "confidence": 0.9908
           },
@@ -4607,7 +4754,7 @@
             "end": 15,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "行长",
             "confidence": 0.9802
           },
@@ -4616,7 +4763,7 @@
             "end": 17,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "张伟",
             "confidence": 0.9883
           },
@@ -4625,7 +4772,7 @@
             "end": 24,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "南山区科技园",
             "confidence": 0.9649
           }
@@ -4650,7 +4797,7 @@
               "end": 3,
               "category": "book",
               "category_cn": "书籍",
-              "color": "#f59e0b",
+              "color": "#525252",
               "text": "阿斯报",
               "confidence": 0.6704
             },
@@ -4659,7 +4806,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拜仁慕尼黑",
               "confidence": 0.9853
             },
@@ -4668,7 +4815,7 @@
               "end": 19,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "热刺",
               "confidence": 0.9739
             },
@@ -4677,7 +4824,7 @@
               "end": 20,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "前",
               "confidence": 0.5746
             },
@@ -4686,7 +4833,7 @@
               "end": 25,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "哈里凯恩",
               "confidence": 0.9877
             }
@@ -4867,7 +5014,7 @@
               "end": 3,
               "category": "book",
               "category_cn": "书籍",
-              "color": "#f59e0b",
+              "color": "#525252",
               "text": "阿斯报",
               "confidence": 0.6316
             },
@@ -4876,7 +5023,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拜仁慕尼黑",
               "confidence": 0.9943
             },
@@ -4885,7 +5032,7 @@
               "end": 19,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "热刺",
               "confidence": 0.9055
             },
@@ -4894,7 +5041,7 @@
               "end": 20,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "前",
               "confidence": 0.5813
             },
@@ -4903,7 +5050,7 @@
               "end": 25,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "哈里凯恩",
               "confidence": 0.9939
             }
@@ -5086,7 +5233,7 @@
             "end": 3,
             "category": "book",
             "category_cn": "书籍",
-            "color": "#f59e0b",
+            "color": "#525252",
             "text": "阿斯报",
             "confidence": 0.6704
           },
@@ -5095,7 +5242,7 @@
             "end": 11,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "拜仁慕尼黑",
             "confidence": 0.9853
           },
@@ -5104,7 +5251,7 @@
             "end": 19,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "热刺",
             "confidence": 0.9739
           },
@@ -5113,7 +5260,7 @@
             "end": 20,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "前",
             "confidence": 0.5746
           },
@@ -5122,7 +5269,7 @@
             "end": 25,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "哈里凯恩",
             "confidence": 0.9877
           }
@@ -5147,7 +5294,7 @@
               "end": 0,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "中",
               "confidence": 0.3524
             },
@@ -5156,7 +5303,7 @@
               "end": 4,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "国工程院",
               "confidence": 0.5104
             },
@@ -5165,7 +5312,7 @@
               "end": 6,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "院士",
               "confidence": 0.786
             },
@@ -5174,7 +5321,7 @@
               "end": 15,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "清华大学自动化系",
               "confidence": 0.8439
             },
@@ -5183,7 +5330,7 @@
               "end": 17,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "教授",
               "confidence": 0.9617
             },
@@ -5192,7 +5339,7 @@
               "end": 20,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "仉尚德",
               "confidence": 0.9858
             }
@@ -5385,7 +5532,7 @@
               "end": 6,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "中国工程院院士",
               "confidence": 0.8401
             },
@@ -5394,7 +5541,7 @@
               "end": 15,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "清华大学自动化系",
               "confidence": 0.7515
             },
@@ -5403,7 +5550,7 @@
               "end": 17,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "教授",
               "confidence": 0.9787
             },
@@ -5412,7 +5559,7 @@
               "end": 20,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "仉尚德",
               "confidence": 0.9963
             }
@@ -5607,7 +5754,7 @@
             "end": 15,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "清华大学自动化系",
             "confidence": 0.8439
           },
@@ -5616,7 +5763,7 @@
             "end": 17,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "教授",
             "confidence": 0.9617
           },
@@ -5625,7 +5772,7 @@
             "end": 20,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "仉尚德",
             "confidence": 0.9858
           }
@@ -5636,7 +5783,7 @@
             "end": 0,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "中",
             "confidence": 0.3524
           },
@@ -5645,7 +5792,7 @@
             "end": 4,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "国工程院",
             "confidence": 0.5104
           },
@@ -5654,7 +5801,7 @@
             "end": 6,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "院士",
             "confidence": 0.786
           }
@@ -5665,7 +5812,7 @@
             "end": 6,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "中国工程院院士",
             "confidence": 0.8401
           }
@@ -5691,7 +5838,7 @@
               "end": 13,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "王者荣耀",
               "confidence": 0.9924
             },
@@ -5700,7 +5847,7 @@
               "end": 20,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "地下城与勇士",
               "confidence": 0.9847
             }
@@ -5905,7 +6052,7 @@
               "end": 13,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "王者荣耀",
               "confidence": 0.9961
             },
@@ -5914,7 +6061,7 @@
               "end": 20,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "地下城与勇士",
               "confidence": 0.9883
             }
@@ -6121,7 +6268,7 @@
             "end": 13,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "王者荣耀",
             "confidence": 0.9924
           },
@@ -6130,7 +6277,7 @@
             "end": 20,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "地下城与勇士",
             "confidence": 0.9847
           }
@@ -6155,7 +6302,7 @@
               "end": 21,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京市朝阳区建国门外大街1号国贸大厦三期",
               "confidence": 0.9876
             },
@@ -6164,7 +6311,7 @@
               "end": 24,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "李雷",
               "confidence": 0.9516
             },
@@ -6173,7 +6320,7 @@
               "end": 27,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "王华",
               "confidence": 0.9515
             },
@@ -6182,7 +6329,7 @@
               "end": 36,
               "category": "scene",
               "category_cn": "景点",
-              "color": "#84cc16",
+              "color": "#a3a3a3",
               "text": "颐和园长廊",
               "confidence": 0.9438
             }
@@ -6441,7 +6588,7 @@
               "end": 21,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京市朝阳区建国门外大街1号国贸大厦三期",
               "confidence": 0.9958
             },
@@ -6450,7 +6597,7 @@
               "end": 24,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "李雷",
               "confidence": 0.994
             },
@@ -6459,7 +6606,7 @@
               "end": 27,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "王华",
               "confidence": 0.9902
             },
@@ -6468,7 +6615,7 @@
               "end": 36,
               "category": "scene",
               "category_cn": "景点",
-              "color": "#84cc16",
+              "color": "#a3a3a3",
               "text": "颐和园长廊",
               "confidence": 0.9467
             }
@@ -6729,7 +6876,7 @@
             "end": 21,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "北京市朝阳区建国门外大街1号国贸大厦三期",
             "confidence": 0.9876
           },
@@ -6738,7 +6885,7 @@
             "end": 24,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "李雷",
             "confidence": 0.9516
           },
@@ -6747,7 +6894,7 @@
             "end": 27,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "王华",
             "confidence": 0.9515
           },
@@ -6756,7 +6903,7 @@
             "end": 36,
             "category": "scene",
             "category_cn": "景点",
-            "color": "#84cc16",
+            "color": "#a3a3a3",
             "text": "颐和园长廊",
             "confidence": 0.9438
           }
@@ -6781,7 +6928,7 @@
               "end": 4,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "万达",
               "confidence": 0.6863
             },
@@ -6790,7 +6937,7 @@
               "end": 6,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "城",
               "confidence": 0.508
             },
@@ -6799,7 +6946,7 @@
               "end": 15,
               "category": "movie",
               "category_cn": "电影",
-              "color": "#ec4899",
+              "color": "#8c8c8c",
               "text": "《三体》",
               "confidence": 0.9867
             },
@@ -6808,7 +6955,7 @@
               "end": 22,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "西西弗",
               "confidence": 0.5595
             },
@@ -6817,7 +6964,7 @@
               "end": 24,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "店",
               "confidence": 0.4109
             },
@@ -6826,7 +6973,7 @@
               "end": 30,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "刘慈欣",
               "confidence": 0.9823
             },
@@ -6835,7 +6982,7 @@
               "end": 39,
               "category": "book",
               "category_cn": "书籍",
-              "color": "#f59e0b",
+              "color": "#525252",
               "text": "《三体》",
               "confidence": 0.9787
             }
@@ -7100,7 +7247,7 @@
               "end": 6,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "万达影城",
               "confidence": 0.9393
             },
@@ -7109,7 +7256,7 @@
               "end": 15,
               "category": "movie",
               "category_cn": "电影",
-              "color": "#ec4899",
+              "color": "#8c8c8c",
               "text": "《三体》",
               "confidence": 0.9583
             },
@@ -7118,7 +7265,7 @@
               "end": 22,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "西西弗",
               "confidence": 0.4141
             },
@@ -7127,7 +7274,7 @@
               "end": 24,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "店",
               "confidence": 0.4592
             },
@@ -7136,7 +7283,7 @@
               "end": 30,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "刘慈欣",
               "confidence": 0.9963
             },
@@ -7145,7 +7292,7 @@
               "end": 39,
               "category": "book",
               "category_cn": "书籍",
-              "color": "#f59e0b",
+              "color": "#525252",
               "text": "《三体》",
               "confidence": 0.9921
             }
@@ -7412,7 +7559,7 @@
             "end": 15,
             "category": "movie",
             "category_cn": "电影",
-            "color": "#ec4899",
+            "color": "#8c8c8c",
             "text": "《三体》",
             "confidence": 0.9867
           },
@@ -7421,7 +7568,7 @@
             "end": 24,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "店",
             "confidence": 0.4109
           },
@@ -7430,7 +7577,7 @@
             "end": 30,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "刘慈欣",
             "confidence": 0.9823
           },
@@ -7439,7 +7586,7 @@
             "end": 39,
             "category": "book",
             "category_cn": "书籍",
-            "color": "#f59e0b",
+            "color": "#525252",
             "text": "《三体》",
             "confidence": 0.9787
           }
@@ -7450,7 +7597,7 @@
             "end": 4,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "万达",
             "confidence": 0.6863
           },
@@ -7459,7 +7606,7 @@
             "end": 6,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "城",
             "confidence": 0.508
           },
@@ -7468,7 +7615,7 @@
             "end": 22,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "西西弗",
             "confidence": 0.5595
           }
@@ -7479,7 +7626,7 @@
             "end": 6,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "万达影城",
             "confidence": 0.9393
           },
@@ -7488,7 +7635,7 @@
             "end": 22,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "西西弗",
             "confidence": 0.4141
           }
@@ -7525,7 +7672,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央陆军",
               "confidence": 0.9779
             },
@@ -7534,7 +7681,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "波兹南",
               "confidence": 0.9855
             },
@@ -7543,7 +7690,7 @@
               "end": 14,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拉科",
               "confidence": 0.9824
             },
@@ -7552,7 +7699,7 @@
               "end": 20,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "费耶诺德",
               "confidence": 0.9918
             },
@@ -7561,7 +7708,7 @@
               "end": 26,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "加拉塔萨雷",
               "confidence": 0.9916
             },
@@ -7570,7 +7717,7 @@
               "end": 33,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "梅塔利斯特",
               "confidence": 0.9914
             }
@@ -7799,7 +7946,7 @@
               "end": 4,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央",
               "confidence": 0.8286
             },
@@ -7808,7 +7955,7 @@
               "end": 5,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "陆",
               "confidence": 0.5188
             },
@@ -7817,7 +7964,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "军",
               "confidence": 0.5583
             },
@@ -7826,7 +7973,7 @@
               "end": 11,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "波兹南",
               "confidence": 0.9938
             },
@@ -7835,7 +7982,7 @@
               "end": 14,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "拉科",
               "confidence": 0.9927
             },
@@ -7844,7 +7991,7 @@
               "end": 20,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "费耶诺德",
               "confidence": 0.9946
             },
@@ -7853,7 +8000,7 @@
               "end": 26,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "加拉塔萨雷",
               "confidence": 0.9937
             },
@@ -7862,7 +8009,7 @@
               "end": 33,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "梅塔利斯特",
               "confidence": 0.9927
             }
@@ -8093,7 +8240,7 @@
             "end": 11,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "波兹南",
             "confidence": 0.9855
           },
@@ -8102,7 +8249,7 @@
             "end": 14,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "拉科",
             "confidence": 0.9824
           },
@@ -8111,7 +8258,7 @@
             "end": 20,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "费耶诺德",
             "confidence": 0.9918
           },
@@ -8120,7 +8267,7 @@
             "end": 26,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "加拉塔萨雷",
             "confidence": 0.9916
           },
@@ -8129,7 +8276,7 @@
             "end": 33,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "梅塔利斯特",
             "confidence": 0.9914
           }
@@ -8140,7 +8287,7 @@
             "end": 6,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "莫斯科中央陆军",
             "confidence": 0.9779
           }
@@ -8151,7 +8298,7 @@
             "end": 4,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "莫斯科中央",
             "confidence": 0.8286
           },
@@ -8160,7 +8307,7 @@
             "end": 5,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "陆",
             "confidence": 0.5188
           },
@@ -8169,7 +8316,7 @@
             "end": 6,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "军",
             "confidence": 0.5583
           }
@@ -8183,7 +8330,7 @@
               "end": 6,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "莫斯科中央陆军",
               "confidence": 0.9779
             },
@@ -8193,7 +8340,7 @@
                 "end": 4,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "莫斯科中央",
                 "confidence": 0.8286
               },
@@ -8202,7 +8349,7 @@
                 "end": 5,
                 "category": "government",
                 "category_cn": "政府机构",
-                "color": "#ef4444",
+                "color": "#262626",
                 "text": "陆",
                 "confidence": 0.5188
               },
@@ -8211,7 +8358,7 @@
                 "end": 6,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "军",
                 "confidence": 0.5583
               }
@@ -8238,7 +8385,7 @@
               "end": 10,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "中国房地产及住宅研究会",
               "confidence": 0.5928
             },
@@ -8247,7 +8394,7 @@
               "end": 13,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "副会长",
               "confidence": 0.9623
             },
@@ -8256,7 +8403,7 @@
               "end": 16,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "顾云昌",
               "confidence": 0.9946
             }
@@ -8509,7 +8656,7 @@
               "end": 3,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "中国房地",
               "confidence": 0.5136
             },
@@ -8518,7 +8665,7 @@
               "end": 4,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "产",
               "confidence": 0.4133
             },
@@ -8527,7 +8674,7 @@
               "end": 5,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "及",
               "confidence": 0.4546
             },
@@ -8536,7 +8683,7 @@
               "end": 7,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "住宅",
               "confidence": 0.4948
             },
@@ -8545,7 +8692,7 @@
               "end": 10,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "研究会",
               "confidence": 0.5412
             },
@@ -8554,7 +8701,7 @@
               "end": 13,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "副会长",
               "confidence": 0.9765
             },
@@ -8563,7 +8710,7 @@
               "end": 16,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "顾云昌",
               "confidence": 0.9974
             }
@@ -8818,7 +8965,7 @@
             "end": 13,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "副会长",
             "confidence": 0.9623
           },
@@ -8827,7 +8974,7 @@
             "end": 16,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "顾云昌",
             "confidence": 0.9946
           }
@@ -8838,7 +8985,7 @@
             "end": 10,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "中国房地产及住宅研究会",
             "confidence": 0.5928
           }
@@ -8849,7 +8996,7 @@
             "end": 3,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "中国房地",
             "confidence": 0.5136
           },
@@ -8858,7 +9005,7 @@
             "end": 4,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "产",
             "confidence": 0.4133
           },
@@ -8867,7 +9014,7 @@
             "end": 5,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "及",
             "confidence": 0.4546
           },
@@ -8876,7 +9023,7 @@
             "end": 7,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "住宅",
             "confidence": 0.4948
           },
@@ -8885,7 +9032,7 @@
             "end": 10,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "研究会",
             "confidence": 0.5412
           }
@@ -8899,7 +9046,7 @@
               "end": 10,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "中国房地产及住宅研究会",
               "confidence": 0.5928
             },
@@ -8909,7 +9056,7 @@
                 "end": 3,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "中国房地",
                 "confidence": 0.5136
               },
@@ -8918,7 +9065,7 @@
                 "end": 4,
                 "category": "government",
                 "category_cn": "政府机构",
-                "color": "#ef4444",
+                "color": "#262626",
                 "text": "产",
                 "confidence": 0.4133
               },
@@ -8927,7 +9074,7 @@
                 "end": 5,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "及",
                 "confidence": 0.4546
               },
@@ -8936,7 +9083,7 @@
                 "end": 7,
                 "category": "government",
                 "category_cn": "政府机构",
-                "color": "#ef4444",
+                "color": "#262626",
                 "text": "住宅",
                 "confidence": 0.4948
               },
@@ -8945,7 +9092,7 @@
                 "end": 10,
                 "category": "organization",
                 "category_cn": "组织机构",
-                "color": "#6366f1",
+                "color": "#333333",
                 "text": "研究会",
                 "confidence": 0.5412
               }
@@ -8974,7 +9121,7 @@
               "end": 1,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "上海",
               "confidence": 0.9444
             },
@@ -8983,7 +9130,7 @@
               "end": 4,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "广州",
               "confidence": 0.9641
             },
@@ -8992,7 +9139,7 @@
               "end": 19,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "DOTA",
               "confidence": 0.9771
             },
@@ -9001,7 +9148,7 @@
               "end": 30,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "实况足球（2011）",
               "confidence": 0.8865
             },
@@ -9010,7 +9157,7 @@
               "end": 36,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "CS1.6",
               "confidence": 0.8866
             }
@@ -9257,7 +9404,7 @@
               "end": 1,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "上海",
               "confidence": 0.9832
             },
@@ -9266,7 +9413,7 @@
               "end": 4,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "广州",
               "confidence": 0.9817
             },
@@ -9275,7 +9422,7 @@
               "end": 19,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "DOTA",
               "confidence": 0.9828
             },
@@ -9284,7 +9431,7 @@
               "end": 24,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "实况足球",
               "confidence": 0.9859
             },
@@ -9293,7 +9440,7 @@
               "end": 30,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "011）",
               "confidence": 0.5535
             },
@@ -9302,7 +9449,7 @@
               "end": 36,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "CS1.6",
               "confidence": 0.8827
             }
@@ -9551,7 +9698,7 @@
             "end": 1,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "上海",
             "confidence": 0.9444
           },
@@ -9560,7 +9707,7 @@
             "end": 4,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "广州",
             "confidence": 0.9641
           },
@@ -9569,7 +9716,7 @@
             "end": 19,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "DOTA",
             "confidence": 0.9771
           },
@@ -9578,7 +9725,7 @@
             "end": 36,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "CS1.6",
             "confidence": 0.8866
           }
@@ -9589,7 +9736,7 @@
             "end": 30,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "实况足球（2011）",
             "confidence": 0.8865
           }
@@ -9600,7 +9747,7 @@
             "end": 24,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "实况足球",
             "confidence": 0.9859
           },
@@ -9609,7 +9756,7 @@
             "end": 30,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "011）",
             "confidence": 0.5535
           }
@@ -9623,7 +9770,7 @@
               "end": 30,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "实况足球（2011）",
               "confidence": 0.8865
             },
@@ -9633,7 +9780,7 @@
                 "end": 24,
                 "category": "game",
                 "category_cn": "游戏",
-                "color": "#8b5cf6",
+                "color": "#404040",
                 "text": "实况足球",
                 "confidence": 0.9859
               },
@@ -9642,7 +9789,7 @@
                 "end": 30,
                 "category": "game",
                 "category_cn": "游戏",
-                "color": "#8b5cf6",
+                "color": "#404040",
                 "text": "011）",
                 "confidence": 0.5535
               }
@@ -9670,7 +9817,7 @@
               "end": 5,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "soho中国",
               "confidence": 0.8589
             },
@@ -9679,7 +9826,7 @@
               "end": 8,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "董事长",
               "confidence": 0.9702
             },
@@ -9688,7 +9835,7 @@
               "end": 11,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "潘石屹",
               "confidence": 0.9933
             }
@@ -9953,7 +10100,7 @@
               "end": 3,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "soho",
               "confidence": 0.9801
             },
@@ -9962,7 +10109,7 @@
               "end": 5,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "国",
               "confidence": 0.4382
             },
@@ -9971,7 +10118,7 @@
               "end": 8,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "董事长",
               "confidence": 0.9664
             },
@@ -9980,7 +10127,7 @@
               "end": 11,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "潘石屹",
               "confidence": 0.9973
             }
@@ -10247,7 +10394,7 @@
             "end": 8,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "董事长",
             "confidence": 0.9702
           },
@@ -10256,7 +10403,7 @@
             "end": 11,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "潘石屹",
             "confidence": 0.9933
           }
@@ -10267,7 +10414,7 @@
             "end": 5,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "soho中国",
             "confidence": 0.8589
           }
@@ -10278,7 +10425,7 @@
             "end": 3,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "soho",
             "confidence": 0.9801
           },
@@ -10287,7 +10434,7 @@
             "end": 5,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "国",
             "confidence": 0.4382
           }
@@ -10301,7 +10448,7 @@
               "end": 5,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "soho中国",
               "confidence": 0.8589
             },
@@ -10311,7 +10458,7 @@
                 "end": 3,
                 "category": "company",
                 "category_cn": "公司",
-                "color": "#3b82f6",
+                "color": "#171717",
                 "text": "soho",
                 "confidence": 0.9801
               },
@@ -10320,7 +10467,7 @@
                 "end": 5,
                 "category": "position",
                 "category_cn": "职位",
-                "color": "#eab308",
+                "color": "#666666",
                 "text": "国",
                 "confidence": 0.4382
               }
@@ -10348,7 +10495,7 @@
               "end": 14,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "彭小军",
               "confidence": 0.9841
             },
@@ -10357,7 +10504,7 @@
               "end": 31,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "深发展信用卡中心",
               "confidence": 0.7266
             }
@@ -10652,7 +10799,7 @@
               "end": 14,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "彭小军",
               "confidence": 0.9947
             },
@@ -10661,7 +10808,7 @@
               "end": 28,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "深发展信用",
               "confidence": 0.8481
             },
@@ -10670,7 +10817,7 @@
               "end": 30,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "中",
               "confidence": 0.5179
             }
@@ -10967,7 +11114,7 @@
             "end": 14,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "彭小军",
             "confidence": 0.9841
           }
@@ -10978,7 +11125,7 @@
             "end": 31,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "深发展信用卡中心",
             "confidence": 0.7266
           }
@@ -10989,7 +11136,7 @@
             "end": 28,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "深发展信用",
             "confidence": 0.8481
           },
@@ -10998,7 +11145,7 @@
             "end": 30,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "中",
             "confidence": 0.5179
           }
@@ -11012,7 +11159,7 @@
               "end": 31,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "深发展信用卡中心",
               "confidence": 0.7266
             },
@@ -11022,7 +11169,7 @@
                 "end": 28,
                 "category": "company",
                 "category_cn": "公司",
-                "color": "#3b82f6",
+                "color": "#171717",
                 "text": "深发展信用",
                 "confidence": 0.8481
               },
@@ -11031,7 +11178,7 @@
                 "end": 30,
                 "category": "company",
                 "category_cn": "公司",
-                "color": "#3b82f6",
+                "color": "#171717",
                 "text": "中",
                 "confidence": 0.5179
               }
@@ -11059,7 +11206,7 @@
               "end": 2,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "贝蒂斯",
               "confidence": 0.8742
             },
@@ -11068,7 +11215,7 @@
               "end": 8,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "瓦伦",
               "confidence": 0.9849
             }
@@ -11351,7 +11498,7 @@
               "end": 2,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "贝蒂斯",
               "confidence": 0.9665
             },
@@ -11360,7 +11507,7 @@
               "end": 8,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "瓦伦",
               "confidence": 0.9535
             }
@@ -11645,7 +11792,7 @@
             "end": 8,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "瓦伦",
             "confidence": 0.9849
           }
@@ -11656,7 +11803,7 @@
             "end": 2,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "贝蒂斯",
             "confidence": 0.8742
           }
@@ -11667,7 +11814,7 @@
             "end": 2,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "贝蒂斯",
             "confidence": 0.9665
           }
@@ -11703,7 +11850,7 @@
               "end": 2,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "商为智",
               "confidence": 0.9767
             },
@@ -11712,7 +11859,7 @@
               "end": 5,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "实习生",
               "confidence": 0.9906
             },
@@ -11721,7 +11868,7 @@
               "end": 8,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "陈文波",
               "confidence": 0.9881
             }
@@ -11794,7 +11941,7 @@
               "end": 2,
               "category": "company",
               "category_cn": "公司",
-              "color": "#3b82f6",
+              "color": "#171717",
               "text": "商为智",
               "confidence": 0.7331
             },
@@ -11803,7 +11950,7 @@
               "end": 5,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "实习生",
               "confidence": 0.9948
             },
@@ -11812,7 +11959,7 @@
               "end": 8,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "陈文波",
               "confidence": 0.9958
             }
@@ -11887,7 +12034,7 @@
             "end": 5,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "实习生",
             "confidence": 0.9906
           },
@@ -11896,7 +12043,7 @@
             "end": 8,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "陈文波",
             "confidence": 0.9881
           }
@@ -11907,7 +12054,7 @@
             "end": 2,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "商为智",
             "confidence": 0.9767
           }
@@ -11918,7 +12065,7 @@
             "end": 2,
             "category": "company",
             "category_cn": "公司",
-            "color": "#3b82f6",
+            "color": "#171717",
             "text": "商为智",
             "confidence": 0.7331
           }
@@ -11954,7 +12101,7 @@
               "end": 4,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "dota",
               "confidence": 0.9926
             },
@@ -11963,7 +12110,7 @@
               "end": 23,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "imba",
               "confidence": 0.8908
             }
@@ -12210,7 +12357,7 @@
               "end": 4,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "dota",
               "confidence": 0.9929
             },
@@ -12219,7 +12366,7 @@
               "end": 12,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "敢死队",
               "confidence": 0.9062
             },
@@ -12228,7 +12375,7 @@
               "end": 20,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "i",
               "confidence": 0.5152
             },
@@ -12237,7 +12384,7 @@
               "end": 23,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "ba",
               "confidence": 0.6091
             }
@@ -12486,7 +12633,7 @@
             "end": 4,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "dota",
             "confidence": 0.9926
           }
@@ -12497,7 +12644,7 @@
             "end": 23,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "imba",
             "confidence": 0.8908
           }
@@ -12508,7 +12655,7 @@
             "end": 12,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "敢死队",
             "confidence": 0.9062
           },
@@ -12517,7 +12664,7 @@
             "end": 20,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "i",
             "confidence": 0.5152
           },
@@ -12526,7 +12673,7 @@
             "end": 23,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "ba",
             "confidence": 0.6091
           }
@@ -12540,7 +12687,7 @@
               "end": 23,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "imba",
               "confidence": 0.8908
             },
@@ -12550,7 +12697,7 @@
                 "end": 20,
                 "category": "game",
                 "category_cn": "游戏",
-                "color": "#8b5cf6",
+                "color": "#404040",
                 "text": "i",
                 "confidence": 0.5152
               },
@@ -12559,7 +12706,7 @@
                 "end": 23,
                 "category": "game",
                 "category_cn": "游戏",
-                "color": "#8b5cf6",
+                "color": "#404040",
                 "text": "ba",
                 "confidence": 0.6091
               }
@@ -12589,7 +12736,7 @@
               "end": 1,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "温格",
               "confidence": 0.933
             },
@@ -12598,7 +12745,7 @@
               "end": 24,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "曼联",
               "confidence": 0.9893
             },
@@ -12607,7 +12754,7 @@
               "end": 28,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "枪手",
               "confidence": 0.809
             }
@@ -12872,7 +13019,7 @@
               "end": 1,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "温格",
               "confidence": 0.9789
             },
@@ -12881,7 +13028,7 @@
               "end": 24,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "曼联",
               "confidence": 0.9945
             },
@@ -12890,7 +13037,7 @@
               "end": 28,
               "category": "organization",
               "category_cn": "组织机构",
-              "color": "#6366f1",
+              "color": "#333333",
               "text": "枪手",
               "confidence": 0.7919
             }
@@ -13157,7 +13304,7 @@
             "end": 1,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "温格",
             "confidence": 0.933
           },
@@ -13166,7 +13313,7 @@
             "end": 24,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "曼联",
             "confidence": 0.9893
           },
@@ -13175,7 +13322,7 @@
             "end": 28,
             "category": "organization",
             "category_cn": "组织机构",
-            "color": "#6366f1",
+            "color": "#333333",
             "text": "枪手",
             "confidence": 0.809
           }
@@ -13200,7 +13347,7 @@
               "end": 8,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "文汇路",
               "confidence": 0.9723
             },
@@ -13209,7 +13356,7 @@
               "end": 34,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "校",
               "confidence": 0.3112
             },
@@ -13218,7 +13365,7 @@
               "end": 39,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "教委",
               "confidence": 0.5821
             }
@@ -13507,7 +13654,7 @@
               "end": 8,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "文汇路",
               "confidence": 0.9851
             },
@@ -13516,7 +13663,7 @@
               "end": 35,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "校方",
               "confidence": 0.5694
             },
@@ -13525,7 +13672,7 @@
               "end": 39,
               "category": "government",
               "category_cn": "政府机构",
-              "color": "#ef4444",
+              "color": "#262626",
               "text": "教委",
               "confidence": 0.848
             }
@@ -13816,7 +13963,7 @@
             "end": 8,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "文汇路",
             "confidence": 0.9723
           },
@@ -13825,7 +13972,7 @@
             "end": 39,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "教委",
             "confidence": 0.5821
           }
@@ -13836,7 +13983,7 @@
             "end": 34,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "校",
             "confidence": 0.3112
           }
@@ -13847,7 +13994,7 @@
             "end": 35,
             "category": "government",
             "category_cn": "政府机构",
-            "color": "#ef4444",
+            "color": "#262626",
             "text": "校方",
             "confidence": 0.5694
           }
@@ -13872,7 +14019,7 @@
               "end": 6,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京",
               "confidence": 0.8888
             },
@@ -13881,7 +14028,7 @@
               "end": 20,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "邢州大道",
               "confidence": 0.9772
             },
@@ -13890,7 +14037,7 @@
               "end": 25,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "祥和大街",
               "confidence": 0.9653
             },
@@ -13899,7 +14046,7 @@
               "end": 29,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "东华路",
               "confidence": 0.9577
             },
@@ -13908,7 +14055,7 @@
               "end": 33,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "滨江路",
               "confidence": 0.9509
             }
@@ -14191,7 +14338,7 @@
               "end": 6,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京",
               "confidence": 0.822
             },
@@ -14200,7 +14347,7 @@
               "end": 20,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "邢州大道",
               "confidence": 0.9906
             },
@@ -14209,7 +14356,7 @@
               "end": 25,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "祥和大街",
               "confidence": 0.9884
             },
@@ -14218,7 +14365,7 @@
               "end": 29,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "东华路",
               "confidence": 0.988
             },
@@ -14227,7 +14374,7 @@
               "end": 33,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "滨江路",
               "confidence": 0.9848
             }
@@ -14512,7 +14659,7 @@
             "end": 6,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "北京",
             "confidence": 0.8888
           },
@@ -14521,7 +14668,7 @@
             "end": 20,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "邢州大道",
             "confidence": 0.9772
           },
@@ -14530,7 +14677,7 @@
             "end": 25,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "祥和大街",
             "confidence": 0.9653
           },
@@ -14539,7 +14686,7 @@
             "end": 29,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "东华路",
             "confidence": 0.9577
           },
@@ -14548,7 +14695,7 @@
             "end": 33,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "滨江路",
             "confidence": 0.9509
           }
@@ -14573,7 +14720,7 @@
               "end": 8,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京良路南侧",
               "confidence": 0.8772
             },
@@ -14582,7 +14729,7 @@
               "end": 15,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京石高速",
               "confidence": 0.9459
             },
@@ -14591,7 +14738,7 @@
               "end": 32,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京石高速西三环六里桥到",
               "confidence": 0.9371
             },
@@ -14600,7 +14747,7 @@
               "end": 37,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京良路出口",
               "confidence": 0.8958
             }
@@ -14889,7 +15036,7 @@
               "end": 8,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京良路南侧",
               "confidence": 0.9446
             },
@@ -14898,7 +15045,7 @@
               "end": 15,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京石高速",
               "confidence": 0.9368
             },
@@ -14907,7 +15054,7 @@
               "end": 31,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京石高速西三环六里桥",
               "confidence": 0.9749
             },
@@ -14916,7 +15063,7 @@
               "end": 37,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "京良路出口",
               "confidence": 0.9331
             }
@@ -15207,7 +15354,7 @@
             "end": 8,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "京良路南侧",
             "confidence": 0.8772
           },
@@ -15216,7 +15363,7 @@
             "end": 15,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "京石高速",
             "confidence": 0.9459
           },
@@ -15225,7 +15372,7 @@
             "end": 37,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "京良路出口",
             "confidence": 0.8958
           }
@@ -15236,7 +15383,7 @@
             "end": 32,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "京石高速西三环六里桥到",
             "confidence": 0.9371
           }
@@ -15247,7 +15394,7 @@
             "end": 31,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "京石高速西三环六里桥",
             "confidence": 0.9749
           }
@@ -15272,7 +15419,7 @@
               "end": 5,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "DotA",
               "confidence": 0.9592
             },
@@ -15281,7 +15428,7 @@
               "end": 7,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "明星",
               "confidence": 0.5577
             },
@@ -15290,7 +15437,7 @@
               "end": 9,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "选手",
               "confidence": 0.779
             },
@@ -15299,7 +15446,7 @@
               "end": 27,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "Pis",
               "confidence": 0.7619
             },
@@ -15308,7 +15455,7 @@
               "end": 31,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "卜严骏",
               "confidence": 0.9133
             }
@@ -15531,7 +15678,7 @@
               "end": 5,
               "category": "game",
               "category_cn": "游戏",
-              "color": "#8b5cf6",
+              "color": "#404040",
               "text": "DotA",
               "confidence": 0.9897
             },
@@ -15540,7 +15687,7 @@
               "end": 9,
               "category": "position",
               "category_cn": "职位",
-              "color": "#eab308",
+              "color": "#666666",
               "text": "明星选手",
               "confidence": 0.7917
             },
@@ -15549,7 +15696,7 @@
               "end": 27,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "Pis",
               "confidence": 0.9796
             },
@@ -15558,7 +15705,7 @@
               "end": 32,
               "category": "name",
               "category_cn": "姓名",
-              "color": "#06b6d4",
+              "color": "#0a0a0a",
               "text": "卜严骏）",
               "confidence": 0.7749
             }
@@ -15783,7 +15930,7 @@
             "end": 5,
             "category": "game",
             "category_cn": "游戏",
-            "color": "#8b5cf6",
+            "color": "#404040",
             "text": "DotA",
             "confidence": 0.9592
           },
@@ -15792,7 +15939,7 @@
             "end": 27,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "Pis",
             "confidence": 0.7619
           }
@@ -15803,7 +15950,7 @@
             "end": 7,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "明星",
             "confidence": 0.5577
           },
@@ -15812,7 +15959,7 @@
             "end": 9,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "选手",
             "confidence": 0.779
           },
@@ -15821,7 +15968,7 @@
             "end": 31,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "卜严骏",
             "confidence": 0.9133
           }
@@ -15832,7 +15979,7 @@
             "end": 9,
             "category": "position",
             "category_cn": "职位",
-            "color": "#eab308",
+            "color": "#666666",
             "text": "明星选手",
             "confidence": 0.7917
           },
@@ -15841,7 +15988,7 @@
             "end": 32,
             "category": "name",
             "category_cn": "姓名",
-            "color": "#06b6d4",
+            "color": "#0a0a0a",
             "text": "卜严骏）",
             "confidence": 0.7749
           }
@@ -15867,7 +16014,7 @@
               "end": 21,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "房山区",
               "confidence": 0.935
             },
@@ -15876,7 +16023,7 @@
               "end": 45,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京石化新材料科技产业基地",
               "confidence": 0.5033
             }
@@ -16177,7 +16324,7 @@
               "end": 21,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "房山区",
               "confidence": 0.9781
             },
@@ -16186,7 +16333,7 @@
               "end": 45,
               "category": "address",
               "category_cn": "地址",
-              "color": "#10b981",
+              "color": "#737373",
               "text": "北京石化新材料科技产业基地",
               "confidence": 0.9561
             }
@@ -16489,7 +16636,7 @@
             "end": 21,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "房山区",
             "confidence": 0.935
           },
@@ -16498,7 +16645,7 @@
             "end": 45,
             "category": "address",
             "category_cn": "地址",
-            "color": "#10b981",
+            "color": "#737373",
             "text": "北京石化新材料科技产业基地",
             "confidence": 0.5033
           }

@@ -29,16 +29,16 @@ if hasattr(sys.stdout, "reconfigure"):
 
 # 10 大实体类别中英文对照与元数据
 CATEGORY_META = {
-    "address": {"cn": "地址", "color": "#10b981", "desc": "地理位置、道路门牌、小区楼宇、行政区划"},
-    "book": {"cn": "书籍", "color": "#f59e0b", "desc": "出版书籍、学术著作、网络小说、期刊文献"},
-    "company": {"cn": "公司", "color": "#3b82f6", "desc": "企业实体、商业公司、跨国集团、银行机构"},
-    "game": {"cn": "游戏", "color": "#8b5cf6", "desc": "电子游戏、端游网游、手游作品、主机游戏"},
-    "government": {"cn": "政府机构", "color": "#ef4444", "desc": "国家行政机关、司法机关、政府管理部门"},
-    "movie": {"cn": "电影", "color": "#ec4899", "desc": "院线电影、网络大电影、纪录片、影视IP"},
-    "name": {"cn": "姓名", "color": "#06b6d4", "desc": "真实人名、虚构人名、历史人物、运动员"},
-    "organization": {"cn": "组织机构", "color": "#6366f1", "desc": "行业协会、体育俱乐部、学术学会、社会团体"},
-    "position": {"cn": "职位", "color": "#eab308", "desc": "企业职务、学术职称、头衔称号、官职岗位"},
-    "scene": {"cn": "景点", "color": "#84cc16", "desc": "风景名胜、名胜古迹、地标公园、旅游景区"}
+    "address": {"cn": "地址", "color": "#737373", "desc": "地理位置、道路门牌、小区楼宇、行政区划"},
+    "book": {"cn": "书籍", "color": "#525252", "desc": "出版书籍、学术著作、网络小说、期刊文献"},
+    "company": {"cn": "公司", "color": "#171717", "desc": "企业实体、商业公司、跨国集团、银行机构"},
+    "game": {"cn": "游戏", "color": "#404040", "desc": "电子游戏、端游网游、手游作品、主机游戏"},
+    "government": {"cn": "政府机构", "color": "#262626", "desc": "国家行政机关、司法机关、政府管理部门"},
+    "movie": {"cn": "电影", "color": "#8c8c8c", "desc": "院线电影、网络大电影、纪录片、影视IP"},
+    "name": {"cn": "姓名", "color": "#0a0a0a", "desc": "真实人名、虚构人名、历史人物、运动员"},
+    "organization": {"cn": "组织机构", "color": "#333333", "desc": "行业协会、体育俱乐部、学术学会、社会团体"},
+    "position": {"cn": "职位", "color": "#666666", "desc": "企业职务、学术职称、头衔称号、官职岗位"},
+    "scene": {"cn": "景点", "color": "#a3a3a3", "desc": "风景名胜、名胜古迹、地标公园、旅游景区"}
 }
 
 CATEGORIES = list(CATEGORY_META.keys())
@@ -120,7 +120,7 @@ def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[fl
                     "end": i - 1,
                     "category": curr_cat,
                     "category_cn": CATEGORY_META.get(curr_cat, {}).get("cn", curr_cat),
-                    "color": CATEGORY_META.get(curr_cat, {}).get("color", "#64748b"),
+                    "color": CATEGORY_META.get(curr_cat, {}).get("color", "#737373"),
                     "text": text[curr_start:i],
                     "confidence": round(avg_conf, 4)
                 })
@@ -140,7 +140,7 @@ def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[fl
                         "end": i - 1,
                         "category": curr_cat,
                         "category_cn": CATEGORY_META.get(curr_cat, {}).get("cn", curr_cat),
-                        "color": CATEGORY_META.get(curr_cat, {}).get("color", "#64748b"),
+                        "color": CATEGORY_META.get(curr_cat, {}).get("color", "#737373"),
                         "text": text[curr_start:i],
                         "confidence": round(avg_conf, 4)
                     })
@@ -155,7 +155,7 @@ def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[fl
                     "end": i - 1,
                     "category": curr_cat,
                     "category_cn": CATEGORY_META.get(curr_cat, {}).get("cn", curr_cat),
-                    "color": CATEGORY_META.get(curr_cat, {}).get("color", "#64748b"),
+                    "color": CATEGORY_META.get(curr_cat, {}).get("color", "#737373"),
                     "text": text[curr_start:i],
                     "confidence": round(avg_conf, 4)
                 })
@@ -170,7 +170,7 @@ def bio_to_entities(text: str, char_labels: List[str], char_confidences: List[fl
             "end": len(text) - 1,
             "category": curr_cat,
             "category_cn": CATEGORY_META.get(curr_cat, {}).get("cn", curr_cat),
-            "color": CATEGORY_META.get(curr_cat, {}).get("color", "#64748b"),
+            "color": CATEGORY_META.get(curr_cat, {}).get("color", "#737373"),
             "text": text[curr_start:],
             "confidence": round(avg_conf, 4)
         })
@@ -399,7 +399,7 @@ def get_cached_metrics() -> Dict[str, Any]:
         categories_comparison.append({
             "category": cat,
             "name_cn": CATEGORY_META.get(cat, {}).get("cn", cat),
-            "color": CATEGORY_META.get(cat, {}).get("color", "#64748b"),
+            "color": CATEGORY_META.get(cat, {}).get("color", "#737373"),
             "support": m_item.get("support", b_item.get("support", 0)),
             "bert": {
                 "precision": round(b_item["precision"] * 100, 2),

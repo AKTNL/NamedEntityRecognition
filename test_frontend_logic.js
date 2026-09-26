@@ -54,7 +54,7 @@ function simulateArbitraryText(text) {
         end: idx + item.w.length - 1,
         category: item.cat,
         category_cn: meta[item.cat]?.cn || item.cat,
-        color: meta[item.cat]?.color || '#6366f1',
+        color: meta[item.cat]?.color || '#737373',
         text: item.w,
         confidence: 0.965
       });
