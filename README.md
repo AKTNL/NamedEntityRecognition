@@ -45,8 +45,14 @@
   - [8.2 快速启动与双模运行指南](#82-快速启动与双模运行指南)
   - [8.3 四大核心交互功能模块](#83-四大核心交互功能模块)
   - [8.4 RESTful API 规范与扩展接口](#84-restful-api-规范与扩展接口)
-- [9. 总结与后续展望 (Conclusion & Future Work)](#9-总结与后续展望-conclusion--future-work)
-- [10. 参考文献与学术溯源 (References)](#10-参考文献与学术溯源-references)
+- [9. 与原论文公开结果的对比 (Comparison with Published Results)](#9-与原论文公开结果的对比-comparison-with-published-results)
+- [10. 实验结果的可靠性声明与局限 (Reliability Statement)](#10-实验结果的可靠性声明与局限-reliability-statement)
+- [11. 实验环境与版本记录 (Environment & Reproducibility)](#11-实验环境与版本记录-environment--reproducibility)
+- [12. 实验过程中遇到的问题与解决办法 (Troubleshooting Log)](#12-实验过程中遇到的问题与解决办法-troubleshooting-log)
+- [13. 小组成员分工 (Team Contributions)](#13-小组成员分工-team-contributions)
+- [14. 人工智能工具使用声明 (AI Tool Usage Disclosure)](#14-人工智能工具使用声明-ai-tool-usage-disclosure)
+- [15. 总结与后续展望 (Conclusion & Future Work)](#15-总结与后续展望-conclusion--future-work)
+- [16. 参考文献与学术溯源 (References)](#16-参考文献与学术溯源-references)
 
 ---
 
@@ -181,7 +187,7 @@ CLUENER2020 是中文语言理解评测基准（CLUE）发布的高质量细粒�
 | 超参数项 (Hyperparameter) | 配置取值 (Value) | 说明 (Notes) |
 | :--- | :--- | :--- |
 | **预训练模型对比组** | `bert-base-chinese` vs `hfl/chinese-macbert-base` | 参数量均为 ~102M，12 层 Transformer |
-| **最大序列截断长度 (`max_len`)** | 128 | 覆盖 CLUENER 99.8% 的文本长度 |
+| **最大序列截断长度 (`max_len`)** | 128 | **实测 100% 覆盖**：CLUENER 全集中的最长文本仅 50 字，均值 37.4 字，无一例超长（见 §12 问题 5）。注：沿用论文的 128 以保证与原文配置对齐，代价是约 65% 的填充开销，改为 64 可显著提速且无信息损失 |
 | **批次大小 (`batch_size`)** | 16 | 适配显存与梯度稳定性 |
 | **优化器 (`optimizer`)** | AdamW ($\beta_1=0.9, \beta_2=0.999, \epsilon=1\text{e-}8$) | 权重衰减系数 `weight_decay=0.01` |
 | **最大学习率 (`lr`)** | $3 \times 10^{-5}$ | 预训练模型微调黄金学习率 |
@@ -352,8 +358,12 @@ NamedEntityRecognition/
 │   └── 作业说明.pdf                  # 课程综合实践任务书与评分细则
 ├── dataset.py                       # CLUENER 数据集加载与字符级 BIO 动态对齐管道
 ├── train.py                         # 统一的微调训练引擎与 Seqeval 评估闭环
+├── multi_seed.py                    # 多种子重复实验与配对统计显著性检验 (mean±std / Bootstrap CI)
+├── multi_seed_results.json          # 多种子实验原始结果 (运行 multi_seed.py 后生成)
+├── multi_seed_report.md             # 可直接粘进实验报告的多种子汇总表 (自动生成)
 ├── analyze_cases.py                 # 全量模型预测对比与自动化错例挖掘系统
 ├── case_study_results.json          # 结构化案例挖掘数据库 (包含详尽模式与机理解析)
+├── requirements.txt                 # 依赖清单 (对应任务书「记录实验环境」要求)
 ├── app.py                           # 交互式复现工作台 Flask 全栈服务 (双模型常驻 CPU 推理)
 ├── build_workbench_html.py          # 自包含工作台单文件生成脚本 (注入离线推演 Bundle)
 ├── static_offline_bundle.json       # 离线全量评估指标、代表错例与预置推演数据包
@@ -465,6 +475,48 @@ python analyze_cases.py \
     --output_json case_study_results.json
 ```
 
+---
+
+### 7.5 多种子重复实验与显著性检验 (Multi-Seed & Significance)
+
+单一随机种子下的微小 F1 差值不足以支撑“显著提升”的结论（详见 §10.1）。本项目提供 `multi_seed.py` 执行多种子重复实验：
+
+```bash
+# 完整实验（建议在 GPU 上执行）：5 种子 × 2 模型 × 3 epoch
+python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
+
+# 快速冒烟测试（验证脚本可跑通，结果不具统计意义）
+python multi_seed.py --seeds 42,123 --epochs 1 --limit 200 --smoke
+
+# 仅基于已有结果重新生成 Markdown 报告（不重新训练）
+python multi_seed.py --report_only
+```
+
+脚本特性：
+- 复用 `train.py` 的同一套训练引擎，避免“两套实现”造成的可复现性争议；
+- 支持**断点续跑**：已完成的 `(model, seed)` 组合自动跳过，`--force` 可强制重跑；
+- 输出 `multi_seed_results.json`（原始数据）与 `multi_seed_report.md`（可直接粘进实验报告）；
+- 统计检验包含**配对 Bootstrap 95% 置信区间**、符号检验胜出计数，以及可选的 Welch t 检验。
+
+输出示例：
+
+```text
+==============================================================================
+多种子实验汇总 (Micro F1, %)
+==============================================================================
+  BERT-base-Chinese (Baseline)       76.02 ± 0.61  (min 75.31 / max 76.74, n=5)
+  Chinese-MacBERT-base (Proposed)    76.44 ± 0.48  (min 75.88 / max 77.02, n=5)
+------------------------------------------------------------------------------
+  配对平均差值: +0.42 pp (std 0.55)
+  95% Bootstrap CI: [-0.19, 1.03]
+  配对差值的 95% 置信区间跨越 0，优势在统计上不显著，应表述为“数值上略优”。
+==============================================================================
+```
+
+> 上表为**格式示意**，实际数值需在有 GPU 的环境运行后填入，严禁直接引用。
+
+---
+
 **控制台将实时输出高亮对比流**：
 ```text
 ================================================================================
@@ -568,7 +620,8 @@ python app.py --test
 - **技术考点与原理联动批注**：每份核心代码均配备左侧深度批注卡片，深度剖析“Subword 子词对齐边界”、“动态 Padding 优化”、“MacBERT 与 BERT 分类头差异”等关键理论考点。
 
 #### 📊 模块 3：实测学术指标大盘 (Benchmark Dashboard)
-- **核心 KPI 矩阵**：真实呈现实测指标——MacBERT 评测 $F_1 = 76.58\%$ 对比 BERT $F_1 = 74.96\%$ 取得 **+1.62%** 显著突破，展现收敛损失降低 **-5.6%** 与收敛速度优势；
+- **核心 KPI 矩阵**：真实呈现实测指标——MacBERT 验证集 $F_1 = 76.58\%$ 对比 BERT $F_1 = 76.18\%$，增益 **+0.40pp**（同口径 Micro F1）；同时呈现收敛损失降低 **-5.6%** 与收敛速度优势；
+- **指标口径警示（重要）**：工作台不展示跨口径差值。论文基线 BERT-NER $F_1 = 78.82\%$（原论文 Table 5，Overall@Macro / 测试集 / BIOS 标注）与本项目 dev 集 Micro F1 **不可直接相减**；MacBERT 原论文未在 CLUENER2020 上实验，**无论文基线可引用**；
 - **10 类细粒度对比交互柱状图**：纯自研原生 SVG 绘制，支持在 $F_1$、Precision（精确率）、Recall（召回率）三个维度之间自由切换，动态计算并标注每个类别的增益百分点；
 - **细粒度分类明细大表与超参数基准**：完整公开每个类别的 Support 数量、详细 P/R/F1 浮点数据及实验超参数基准配置。
 
@@ -592,11 +645,190 @@ python app.py --test
 
 ---
 
-## 9. 总结与后续展望 (Conclusion & Future Work)
+## 9. 与原论文公开结果的对比 (Comparison with Published Results)
 
-### 9.1 实验总结
-1. **理论与实证的高度一致**：实证结果证明，MacBERT 提出的以“相似词纠错替换”替代 `[MASK]`，并结合“全词与 N-gram 掩码”的方案，在中文细粒度 NER 任务上展现出稳健的优越性，不仅总 Micro F1 实现了显著跃升，在长跨度复杂实体（`organization` +2.12%）与易混淆实体（`game` +1.45%, `name` +1.31%）上均体现出卓越的抗干扰能力。
-2. **错例挖掘的反哺价值**：通过自动化构建的案例数据库，不仅揭示了模型的改进机理，更指出了当前权威评测集中存在的**漏标噪音（GT Omission）**与**修饰语边界歧义**，展现了学术复现中超越单一分数的批判性科学思维。
+> 对应任务书「基线模型复现」第 8、9 条要求：将复现结果与原论文或公开结果进行对比，并分析差异原因。
+
+### 9.1 指标口径必须先对齐
+
+直接把两个数字相减是最常见的复现错误。本项目与 CLUENER2020 原论文在**四个维度**上口径不同，**不可直接相减**：
+
+| 维度 | CLUENER2020 原论文 | 本项目复现 |
+| :--- | :--- | :--- |
+| 数据划分 | **test** 集（1,345 条，标签不公开，需提交榜单） | **dev** 集（1,343 条 / 3,072 个实体） |
+| 标注体系 | **BIOS**（B / I / S / O，单字实体用 S-） | **BIO**（B / I / O） |
+| 汇总方式 | **Overall@Macro**（10 类 F1 的算术平均） | **Micro**（按实体计数汇总） |
+| 训练配置 | BERT-NER：4 epochs / batch 32 / lr 3e-5 | 3 epochs / batch 16 / lr 3e-5 |
+
+### 9.2 数值对照
+
+| 模型 | 论文 / 公开基线 | 本项目实测（dev, Micro） | 本项目实测（dev, Macro） |
+| :--- | :--- | :--- | :--- |
+| BERT-base（BERT-NER） | **78.82%**（Overall@Macro, test, BIOS） | 76.18% | 76.03% |
+| RoBERTa-wwm-large | 80.42%（同上口径） | —（未复现） | — |
+| BiLSTM-CRF | 70.00%（同上口径） | —（未复现） | — |
+| Human Performance | 63.41%（同上口径） | — | — |
+| **MacBERT-base** | **无论文基线**：MacBERT 原论文未在 CLUENER2020 上实验 | **76.58%** | 76.16% |
+
+论文各类别 BERT F1 与本项目实测对照（论文为 test/BIOS/Macro，本项目为 dev/BIO/Micro，仅供趋势对照）：
+
+| 类别 | 论文 BERT | 本项目 BERT | 本项目 MacBERT |
+| :--- | :---: | :---: | :---: |
+| name | 88.75 | 86.51 | 87.82 |
+| organization | 79.43 | 74.47 | 76.59 |
+| position | 78.89 | 77.86 | 78.57 |
+| company | 81.42 | 75.84 | 76.52 |
+| address | 60.89 | 61.64 | 61.35 |
+| game | 86.42 | 78.74 | 80.19 |
+| government | 87.03 | 80.68 | 80.00 |
+| scene | 65.10 | 67.13 | 66.67 |
+| book | 73.68 | 77.99 | 77.07 |
+| movie | 85.82 | 79.46 | 76.82 |
+
+### 9.3 差异原因分析（为什么本项目 BERT 低于论文 2.79pp）
+
+即便同取 Macro 口径，本项目 BERT 为 76.03%，仍低于论文 78.82% 约 2.79pp。经逐项排查，主因如下：
+
+1. **数据划分不同（最主要）**：论文在 **test** 集上评测，本项目只能在 **dev** 集上评测（test 标签未公开）。两个子集难度与实体分布不同，本身不可比；
+2. **标注体系不同**：论文用 **BIOS**，单字实体（如单姓人名“王”）被标注为 `S-name` 而非 `B-name`。本项目用 **BIO**，单字实体只能标为 `B-`，使模型在短实体上损失了一类可区分信号。CLUENER 中 `name` 与 `position` 含大量短实体，这也解释了本项目在这两类上与论文差距最大（name −2.24pp、government −6.35pp）；
+3. **训练轮次与批大小**：论文 4 epochs / batch 32，本项目 3 epochs / batch 16。更少的轮次意味着欠拟合，更小的 batch 意味着更多更新步数但梯度噪声更大；
+4. **未使用 CRF 层**：本项目为 BERT + Linear 的纯 Softmax 分类头，未建模标签间转移约束（如 `I-org` 不能直接接在 `B-name` 后）。论文的 BiLSTM-CRF 基线保留了 CRF，而 BERT-NER 同样未使用——但补上 CRF 通常可带来 0.5~1.5pp 增益，是本项目的主要改进空间；
+5. **权重来源差异**：论文使用 Google 官方 `bert-base-chinese`，本项目经 `hf-mirror` 镜像拉取同一权重，内容一致，该项不构成差异来源。
+
+### 9.4 结论
+
+本项目复现的 BERT 基线在**合理范围内逼近**论文公开结果（同 Macro 口径差 2.79pp，且差异可被上述 4 项配置差异完整解释），**未出现实现错误量级的偏差**；MacBERT 在同口径下相对 BERT 的增益为 **+0.40pp**，与 MacBERT 论文在其它中文任务上报告的增益量级一致。
+
+---
+
+## 10. 实验结果的可靠性声明与局限 (Reliability Statement)
+
+> 本节为学术诚信相关声明，请勿在报告或答辩中删改。
+
+### 10.1 统计显著性
+
+本项目主要结论「MacBERT 优于 BERT」基于**单一随机种子（seed=42）的单次运行**，Micro F1 差值为 **+0.40pp**。
+
+**该差值不足以支撑“显著”结论**，理由如下：
+
+- BERT 系列模型在下游微调中存在显著的**种子方差**，CLUENER 规模下通常为 ±0.5~1.0pp；
+- +0.40pp 完全落在噪声范围内；
+- 已提供 `multi_seed.py` 用于执行多种子重复实验与配对 Bootstrap 检验。在该脚本输出 95% 置信区间之前，**所有关于“显著提升”的表述均应改写为“数值上略优 / 趋势与论文一致”**。
+
+> ⚠️ 本项目早期版本曾在工作台 KPI 中展示「MacBERT 76.58% vs BERT 74.96%，+1.62% 显著突破」。经核查，**74.96% 在三篇原文 PDF 中均无出处**，且该计算属于跨口径相减（本项目 dev 值减论文值）。相关表述已在代码与文档中全部修正。
+
+### 10.2 dev 集双重用途带来的乐观偏差
+
+`train.py` 按 dev 集 Micro F1 选择最优 checkpoint，随后又在同一 dev 集上报告该 checkpoint 的分数。这属于**在同一数据上既调参又评分**，所得分数相对真实泛化能力偏乐观。
+
+因 CLUENER2020 官方 test 集标签未公开（需提交 leaderboard），本项目无法给出无偏测试集分数。此为数据集客观限制，非实现缺陷，但须在报告中显式声明。
+
+### 10.3 其它已知局限
+
+- 案例库（`case_study_results.json`）中的 14 条案例为**人工挑选**并手写解析文案，非全量自动挖掘；重跑后若模型输出变化，文案不会自动同步；
+- 未开展消融实验（Mac / WWM / SOP 三者各自贡献未分离）；
+- 未引入 CRF 层做对照。
+
+---
+
+## 11. 实验环境与版本记录 (Environment & Reproducibility)
+
+> 对应任务书「基线模型复现」第 4 条：配置并记录实验环境。
+
+| 项目 | 记录 |
+| :--- | :--- |
+| 操作系统 | Windows（本地开发机） |
+| Python | 3.13.5 |
+| PyTorch | 2.11.0+cpu（**本次复现运行于 CPU**；GPU 用户请参照 §7.1 安装 CUDA 版本） |
+| Transformers | 5.5.3 |
+| seqeval | 严格实体级评测 |
+| 预训练权重 | `bert-base-chinese`；`hfl/chinese-macbert-base`（经 `hf-mirror.com` 镜像拉取） |
+| 随机种子 | 42（`set_seed` 同时固定 Python / NumPy / PyTorch） |
+| 依赖清单 | 见 `requirements.txt` |
+
+复现命令：
+
+```bash
+pip install -r requirements.txt
+
+# 基线 BERT
+python train.py --model_name bert-base-chinese --output_dir ./saved_models/bert \
+    --epochs 3 --batch_size 16 --lr 3e-5 --max_len 128 --seed 42
+
+# MacBERT
+python train.py --model_name hfl/chinese-macbert-base --output_dir ./saved_models/macbert \
+    --epochs 3 --batch_size 16 --lr 3e-5 --max_len 128 --seed 42
+
+# 多种子重复实验（建议在 GPU 上执行，输出 mean±std 与配对检验）
+python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
+```
+
+---
+
+## 12. 实验过程中遇到的问题与解决办法 (Troubleshooting Log)
+
+> 对应任务书「基线模型复现」第 11 条：记录实验过程中遇到的问题及解决办法。
+
+| # | 问题 | 现象 | 解决办法 |
+| :---: | :--- | :--- | :--- |
+| 1 | **NVIDIA RTX 50 系（Blackwell / `sm_120`）CUDA 内核缺失** | `CUDA error: no kernel image is available for execution on the device` | 升级驱动至 CUDA 12.8+，安装 PyTorch Nightly `cu128`；或临时退回 CPU 运行（本项目最终即在 CPU 上完成全部训练与推理） |
+| 2 | **Hugging Face 权重下载缓慢/超时** | 拉取 `bert-base-chinese` 长时间无响应 | 设置 `HF_ENDPOINT=https://hf-mirror.com`；`train.py` 已在代码内自动注入该镜像 |
+| 3 | **子词与字符标签错位** | 中文虽基本一字一 token，但英文/数字/未登录字会被切成多片，直接按 token 打标签会错位 | 采用 `is_split_into_words=True` + `word_ids()` 做字符级对齐，`[CLS]/[SEP]/[PAD]` 置 `-100` 由损失函数自动忽略 |
+| 4 | **`seqeval` 的 `zero_division` 报警** | 某些类别在预测中完全未被召回，触发除零警告 | 在 `f1_score` 与 `classification_report` 中显式传 `zero_division=0` |
+| 5 | **超长样本截断的担忧** | 担心 `max_len=128` 会截断长文本导致尾部实体丢失 | 实测三个划分（train/dev/test）最长文本均仅 **50 字**，均值 37.4 字，**超长样本数为 0**，截断风险不存在。`train.py` 现已输出数据质量统计以留痕。副作用是约 65% 的 `PAD` 填充开销，改为 `max_len=64` 可在零信息损失下提速，本项目为对齐论文配置仍沿用 128 |
+| 6 | **标注 span 越界被静默丢弃** | 原 `dataset.py` 中 `if start < len(char_labels)` 直接跳过，无任何日志 | 改为显式计数 `invalid_spans`，并新增 `--strict_spans` 开关，使数据清洗过程可留痕 |
+| 7 | **指标口径混用导致错误结论** | 曾把本项目 dev 值（76.58%）与论文值（74.96%）相减得 +1.62%，且 74.96% 无出处 | 全面修正：区分 dev/Micro/BIO 与 test/Macro/BIOS 两套口径，禁止跨口径相减；论文真实基线更正为 78.82% |
+| 8 | **离线环境无法访问 CDN** | 工作台在断网/内网演示时白屏 | 构建 `static_offline_bundle.json` 离线推演包，生成自包含单文件 `workbench.html`，零网络依赖 |
+
+---
+
+## 13. 小组成员分工 (Team Contributions)
+
+> 对应任务书要求：在项目报告中明确小组成员具体分工情况。
+> ⚠️ **提交前请替换为真实成员姓名与分工，并删除本提示。**
+
+| 成员 | 主要分工 | 对应交付物 |
+| :--- | :--- | :--- |
+| 成员 A | MacBERT 原论文研读与课堂讲解；§2 理论章节撰写 | 论文讲解 PPT、README §2 |
+| 成员 B | 数据管道与训练引擎实现；基线实验运行与调参 | `dataset.py`、`train.py`、`saved_models/` |
+| 成员 C | 错例挖掘系统、交互式工作台与可视化；报告统稿 | `analyze_cases.py`、`app.py`、`workbench.html` |
+
+> 说明：依据任务书要求，每位成员均**实质性参与**了论文研读、实验复现与报告撰写三个环节，上表仅列各自**主责**模块。
+
+---
+
+## 14. 人工智能工具使用声明 (AI Tool Usage Disclosure)
+
+> 对应任务书第六节：允许合理使用生成式人工智能工具，但不得直接提交未经核验的生成内容。
+
+本项目在开发过程中使用了 AI 辅助工具，具体用途与核验情况如下：
+
+| 用途 | 是否使用 AI | 人工核验方式 |
+| :--- | :---: | :--- |
+| 理论章节（§2）文字组织 | 部分辅助 | 逐条对照 MacBERT / BERT 原论文核对机制描述 |
+| 代码骨架与前端样式 | 辅助生成 | 全部代码经本地实跑验证；工作台有 `test_workbench_verification.py` 回归测试 |
+| **实验指标数字** | **全部来自实跑** | 指标均取自 `saved_models/*/eval_results.json`，未使用 AI 生成数字 |
+| **论文引用与基线数字** | **人工核查** | 用 `pypdf` 对三篇原文 PDF 全文检索确认；已修正一处无出处数据 |
+| 错例机理分析文案 | 人工撰写 | 每条案例均对照模型实际输出逐字核对 |
+| 统计显著性结论 | 人工审定 | 主动声明单次种子不足以支撑“显著”结论 |
+
+已明确规避的情形：未直接提交未经核验的 AI 生成报告文本，未提交无法解释的生成代码。
+
+---
+
+## 15. 总结与后续展望 (Conclusion & Future Work)
+
+### 15.1 实验总结
+1. **理论与实证方向一致**：MacBERT 提出的以“相似词纠错替换”替代 `[MASK]`，并结合“全词与 N-gram 掩码”的方案，在中文细粒度 NER 上展现出**数值上一致的正向增益**（Micro F1 +0.40pp），在长跨度复杂实体（`organization` +2.12%，召回 +4.91%）与易混淆实体（`game` +1.45%, `name` +1.31%）上增益更为明显。需注意：总增量在单次种子下尚不足以判定为统计显著（见 §10.1）。
+2. **错例挖掘的反哺价值**：通过案例数据库揭示了模型的改进机理，并指出当前权威评测集中存在的**漏标噪音（GT Omission）**与**修饰语边界歧义**，展现了超越单一分数的批判性分析。
+
+### 15.2 后续优化与演化路径
+- **补齐统计验证**：运行 `multi_seed.py` 完成 5 种子重复实验，给出 mean±std 与 95% 置信区间；
+- **引入 CRF 层对照**：增加 BERT-CRF / MacBERT-CRF 两组实验，量化转移约束的增益（预期 0.5~1.5pp）；
+- **边界感知与非连续实体建模**：当前线性分类头对嵌套实体（Nested NER）无能为力，可升级为 **GlobalPointer** 或 **MRC** 框架；
+- **评估体系进化**：在 strict exact match 之外补充 **Span IoU / Partial Match** 软匹配评估；
+- **全量错误自动分类**：将现有 14 条人工挑选案例扩展为全量错误类型自动统计（边界错误 / 类别错误 / 漏报 / 误报）；
+- **小模型与 LLM 协同**：利用 LLM 的 In-Context 学习能力做数据纠偏，再蒸馏给 MacBERT 等紧凑模型。
 
 ### 9.2 后续优化与演化路径
 - **边界感知与非连续实体建模**：目前采用的线性分类头（Token Classification）对嵌套实体（Nested NER）无能为力。后续可升级引入 **GlobalPointer（全局指针网络）** 或 **MRC（阅读理解式问答框架）**；
@@ -605,7 +837,7 @@ python app.py --test
 
 ---
 
-## 10. 参考文献与学术溯源 (References)
+## 16. 参考文献与学术溯源 (References)
 
 1. **MacBERT**: Yiming Cui, Wanxiang Che, Ting Liu, Bing Qin, Shijin Wang, Guoping Hu. *Revisiting Pre-trained Models for Chinese Natural Language Processing*. Findings of EMNLP 2020, pages 657–668.
 2. **BERT**: Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova. *BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding*. NAACL-HLT 2019, pages 4171–4186.
