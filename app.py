@@ -425,7 +425,11 @@ def get_cached_metrics() -> Dict[str, Any]:
                 "name": "bert-base-chinese",
                 "label": "BERT-base-Chinese (Baseline)",
                 "best_f1": round(bert_raw.get("best_f1", 0.7618) * 100, 2),
-                "paper_test_f1": 74.96,
+                "paper_test_f1": 78.82,
+                "paper_test_f1_note": (
+                    "CLUENER2020 原论文 Table 5 中 BERT-NER 的 Overall@Macro F1，"
+                    "于测试集、BIOS 标注体系下测得；与本项目 dev 集 / Micro / BIO 口径不一致，不可直接相减。"
+                ),
                 "best_epoch": bert_raw.get("best_epoch", 3),
                 "val_loss": round(bert_raw.get("val_loss", 0.2050), 4),
                 "macro_avg": bert_report.get("macro_avg", {}),
@@ -435,15 +439,27 @@ def get_cached_metrics() -> Dict[str, Any]:
                 "name": "hfl/chinese-macbert-base",
                 "label": "Chinese-MacBERT-base (Proposed)",
                 "best_f1": round(macbert_raw.get("best_f1", 0.7658) * 100, 2),
-                "paper_test_f1": 76.58,
+                "paper_test_f1": None,
+                "paper_test_f1_note": (
+                    "MacBERT 原论文（Cui et al., EMNLP 2020 Findings）未在 CLUENER2020 上开展实验，"
+                    "故无论文基线数字可引用；本字段置空以规避编造引用。"
+                ),
                 "best_epoch": macbert_raw.get("best_epoch", 2),
                 "val_loss": round(macbert_raw.get("val_loss", 0.1935), 4),
                 "macro_avg": macbert_report.get("macro_avg", {}),
                 "micro_avg": macbert_report.get("micro_avg", {})
             }
         },
-        "headline_delta_f1": 1.62,  # 论文实测测试基线提升值 76.58% - 74.96%
+        # 头条增益：本项目 dev 集同口径下 MacBERT 相对 BERT 的 Micro F1 差值（+0.40pp）。
+        # 注意：此前曾误用「MacBERT dev 76.58% − BERT 论文 74.96% = 1.62%」的跨口径相减，
+        # 且 74.96% 在三篇原文 PDF 中均无出处，现一并修正。
+        "headline_delta_f1": round((macbert_raw.get("best_f1", 0.7658) - bert_raw.get("best_f1", 0.7618)) * 100, 2),
         "dev_delta_f1": round((macbert_raw.get("best_f1", 0.7658) - bert_raw.get("best_f1", 0.7618)) * 100, 2),
+        "delta_f1_is_significant": False,
+        "delta_f1_caveat": (
+            "该差值基于单一随机种子 (seed=42) 的单次运行，未进行多种子重复实验，"
+            "量级处于 BERT 微调的种子方差范围内，不应表述为“显著提升”。"
+        ),
         "categories_comparison": categories_comparison,
         "dataset_stats": {
             "name": "CLUENER2020",

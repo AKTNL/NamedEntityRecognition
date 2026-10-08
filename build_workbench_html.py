@@ -1689,20 +1689,20 @@ def build():
       <!-- 顶部核心 KPI 卡片 -->
       <div class="kpi-grid">
         <div class="kpi-card highlight">
-          <div class="kpi-title">MacBERT 评测综合 F1</div>
+          <div class="kpi-title">MacBERT 验证集 Micro F1</div>
           <div class="kpi-value-row">
             <span class="kpi-value" id="kpiMacbertF1">76.58%</span>
-            <span class="kpi-delta pos">+1.62%</span>
+            <span class="kpi-delta pos">+0.40pp</span>
           </div>
-          <div class="kpi-subtext">较原生 BERT (74.96%) 取得显著突破提升</div>
+          <div class="kpi-subtext">较 BERT (76.18%) 略优；单次 seed=42，差距在种子方差范围内，尚未达统计显著</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-title">原生 BERT 评测 F1</div>
+          <div class="kpi-title">原生 BERT 验证集 Micro F1</div>
           <div class="kpi-value-row">
-            <span class="kpi-value" id="kpiBertF1">74.96%</span>
-            <span class="kpi-subtext">(Dev: 76.18%)</span>
+            <span class="kpi-value" id="kpiBertF1">76.18%</span>
+            <span class="kpi-subtext">论文 78.82*</span>
           </div>
-          <div class="kpi-subtext">微调基线收敛表现</div>
+          <div class="kpi-subtext">*论文 Overall@Macro，测试集、BIOS 标注，与本项目口径不同，不可直接相减</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-title">验证集最低损失 (Loss)</div>
@@ -2850,7 +2850,7 @@ def build():
             </td>
             <td>
               ${{item.delta.f1 >= 1.0 
-                ? '<span style="color:var(--text-main); font-weight:700;">★ 显著优势增益</span>' 
+                ? '<span style="color:var(--text-main); font-weight:700;">★ 明显增益 (&ge;1pp)</span>' 
                 : (item.delta.f1 > 0 ? '<span style="color:var(--text-secondary);">稳步提升</span>' : '<span style="color:var(--text-muted);">性能基本持平</span>')}}
             </td>
           </tr>

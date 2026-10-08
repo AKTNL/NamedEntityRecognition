@@ -5,7 +5,8 @@
         "name": "bert-base-chinese",
         "label": "BERT-base-Chinese (Baseline)",
         "best_f1": 76.18,
-        "paper_test_f1": 74.96,
+        "paper_test_f1": 78.82,
+        "paper_test_f1_note": "CLUENER2020 原论文 Table 5: BERT-NER Overall@Macro F1，测试集、BIOS 标注；与本项目 dev/Micro/BIO 口径不同，不可直接相减",
         "best_epoch": 3,
         "val_loss": 0.205,
         "macro_avg": {
@@ -27,7 +28,8 @@
         "name": "hfl/chinese-macbert-base",
         "label": "Chinese-MacBERT-base (Proposed)",
         "best_f1": 76.58,
-        "paper_test_f1": 76.58,
+        "paper_test_f1": null,
+        "paper_test_f1_note": "MacBERT 原论文未在 CLUENER2020 上进行实验，故无论文基线可引用；此处仅报告本项目自测 dev 结果",
         "best_epoch": 2,
         "val_loss": 0.1935,
         "macro_avg": {
@@ -46,7 +48,7 @@
         }
       }
     },
-    "headline_delta_f1": 1.62,
+    "headline_delta_f1": 0.4,
     "dev_delta_f1": 0.4,
     "categories_comparison": [
       {

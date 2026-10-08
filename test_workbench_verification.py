@@ -64,7 +64,12 @@ class WorkbenchSystemTests(unittest.TestCase):
         self.assertIn("macbert", data["models"])
         self.assertEqual(data["models"]["macbert"]["best_f1"], 76.58)
         self.assertEqual(data["models"]["bert"]["best_f1"], 76.18)
-        self.assertEqual(data["headline_delta_f1"], 1.62)
+        # 头条增益必须是同口径的 dev 差值 (+0.40pp)，不得再使用跨口径的 1.62
+        self.assertEqual(data["headline_delta_f1"], 0.4)
+        self.assertEqual(data["dev_delta_f1"], 0.4)
+        # 论文基线：BERT 有原文出处 78.82；MacBERT 论文未做 CLUENER，应为 None
+        self.assertEqual(data["models"]["bert"]["paper_test_f1"], 78.82)
+        self.assertIsNone(data["models"]["macbert"]["paper_test_f1"])
         
         # 验证 10 大细粒度类别
         comp = data["categories_comparison"]
