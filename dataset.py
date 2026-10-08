@@ -19,16 +19,38 @@ LABEL2ID = {label: i for i, label in enumerate(LABELS)}
 ID2LABEL = {i: label for i, label in enumerate(LABELS)}
 
 class CluenerDataset(Dataset):
-    def __init__(self, file_path, tokenizer, max_len=128):
+    def __init__(self, file_path, tokenizer, max_len=128, limit=None, strict_spans=False):
+        """
+        参数:
+            file_path: CLUENER 格式的 jsonl 数据文件
+            tokenizer: 分词器
+            max_len: 最大序列长度
+            limit: 仅取前 N 条样本（调试/冒烟测试用）
+            strict_spans: 为 True 时，统计越界或非法标注 span 的数量，
+                          便于完成“数据清洗过程留痕”的复现要求
+        """
         self.tokenizer = tokenizer
         self.max_len = max_len
         self.samples = []
+        self.invalid_spans = 0
 
         with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
-                if line:
-                    self.samples.append(json.loads(line))
+                if not line:
+                    continue
+                if limit is not None and len(self.samples) >= limit:
+                    break
+                self.samples.append(json.loads(line))
+
+        if strict_spans:
+            for item in self.samples:
+                n = len(item["text"])
+                for _cat, entities in item.get("label", {}).items():
+                    for _name, span_list in entities.items():
+                        for start, end in span_list:
+                            if start < 0 or end >= n or start > end:
+                                self.invalid_spans += 1
 
     def __len__(self):
         return len(self.samples)
@@ -42,8 +64,11 @@ class CluenerDataset(Dataset):
         for cat, entities in item.get("label", {}).items():
             for ent_name, span_list in entities.items():
                 for start, end in span_list:
-                    if start < len(char_labels):
-                        char_labels[start] = f"B-{cat}"
+                    # 越界/非法 span 静默跳过会导致数据清洗过程无留痕，此处显式计数
+                    if start < 0 or start >= len(char_labels) or end < start:
+                        self.invalid_spans += 1
+                        continue
+                    char_labels[start] = f"B-{cat}"
                     for i in range(start + 1, min(end + 1, len(char_labels))):
                         char_labels[i] = f"I-{cat}"
 

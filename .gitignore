@@ -4,10 +4,19 @@ __pycache__/
 *$py.class
 
 # Large model binary weights (>100MB)
+# 注意：这会导致交付"完整实验源代码压缩包"时丢失模型权重。
+# 若需将权重一并打包提交，请临时注释掉下面两行，或用 `git add -f saved_models/**/*.safetensors` 强制加入。
 *.safetensors
 *.bin
 *.pt
 *.pth
+
+# 多种子实验产物（体积大，可随时由 multi_seed.py 重新生成）
+saved_models_multiseed/
+
+# 本地协同记忆与缓存（非项目源码）
+.workbuddy/
+.trellis/workspace/
 
 # OS and IDE configurations
 .vscode/

@@ -35,8 +35,14 @@ def set_seed(seed: int = 42):
         torch.cuda.manual_seed_all(seed)
 
 
-def parse_args():
-    """解析命令行参数"""
+def parse_args(args_list=None):
+    """
+    解析命令行参数。
+
+    参数:
+        args_list: 可选的参数列表，默认 None 表示读取 sys.argv。
+                   传入 [] 可获取全部默认值，便于 multi_seed.py 等脚本以编程方式复用本训练引擎。
+    """
     parser = argparse.ArgumentParser(description="Train and evaluate BERT/MacBERT on CLUENER2020 dataset.")
 
     # 模型与数据路径参数
@@ -131,8 +137,19 @@ def parse_args():
         action="store_true",
         help="Only evaluate the model on dev_file without training"
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="仅使用前 N 条样本（调试/冒烟测试用，会显著影响最终 F1）"
+    )
+    parser.add_argument(
+        "--strict_spans",
+        action="store_true",
+        help="统计并打印数据集中的越界/非法标注 span 数量（数据清洗留痕）"
+    )
 
-    return parser.parse_args()
+    return parser.parse_args(args_list)
 
 
 def evaluate(model, dataloader, device):
@@ -204,9 +221,36 @@ def train(args):
 
     # 2. 准备数据集与 DataLoader
     print(f"[*] 正在加载验证集: {args.dev_file} ...")
-    dev_dataset = CluenerDataset(args.dev_file, tokenizer, max_len=args.max_len)
+    dev_dataset = CluenerDataset(
+        args.dev_file, tokenizer, max_len=args.max_len, strict_spans=args.strict_spans
+    )
     dev_dataloader = DataLoader(dev_dataset, batch_size=args.batch_size, shuffle=False)
     print(f"[*] 验证集样本数: {len(dev_dataset)}")
+
+    # 统计训练/验证集中超过 max_len 的样本（截断会导致尾部字符标签丢失）
+    train_samples = []
+    with open(args.train_file, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                train_samples.append(json.loads(line))
+    if args.limit:
+        train_samples = train_samples[: args.limit]
+    n_train_long = sum(1 for s in train_samples if len(s["text"]) > args.max_len)
+    n_dev_long = sum(1 for s in dev_dataset.samples if len(s["text"]) > args.max_len)
+    data_quality = {
+        "train_samples": len(train_samples),
+        "dev_samples": len(dev_dataset),
+        "train_exceed_max_len": n_train_long,
+        "dev_exceed_max_len": n_dev_long,
+        "train_exceed_ratio": round(n_train_long / max(len(train_samples), 1) * 100, 3),
+        "dev_exceed_ratio": round(n_dev_long / max(len(dev_dataset), 1) * 100, 3),
+        "invalid_spans_dev": dev_dataset.invalid_spans,
+    }
+    print(
+        f"[*] 数据质量: 超长(>{args.max_len})样本 train {n_train_long} / dev {n_dev_long}; "
+        f"非法标注 span (dev): {dev_dataset.invalid_spans}"
+    )
 
     # 3. 加载预训练模型
     print(f"[*] 正在加载预训练模型: {args.model_name} ...")
@@ -226,13 +270,27 @@ def train(args):
         print(f"[*] 实体级 F1 (Entity F1): {val_f1:.4f}")
         print("\n[分类报告 (Classification Report)]:")
         print(report)
-        return
+        return {
+            "model_name": args.model_name,
+            "seed": args.seed,
+            "best_f1": val_f1,
+            "best_epoch": None,
+            "val_loss": val_loss,
+            "classification_report": report,
+        }
 
     # 4. 加载训练集
     print(f"[*] 正在加载训练集: {args.train_file} ...")
-    train_dataset = CluenerDataset(args.train_file, tokenizer, max_len=args.max_len)
+    train_dataset = CluenerDataset(
+        args.train_file,
+        tokenizer,
+        max_len=args.max_len,
+        limit=args.limit,
+        strict_spans=args.strict_spans,
+    )
     train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     print(f"[*] 训练集样本数: {len(train_dataset)}")
+    data_quality["invalid_spans_train"] = train_dataset.invalid_spans
 
     # 5. 配置优化器与学习率 Warmup 调度器
     no_decay = ["bias", "LayerNorm.weight"]
@@ -259,7 +317,10 @@ def train(args):
 
     # 6. 训练主循环
     best_f1 = -1.0
+    best_epoch = 0
+    best_val_loss = 0.0
     global_step = 0
+    per_epoch_history = []
 
     print("\n" + "=" * 60)
     print(f"开始训练: {args.model_name}")
@@ -321,9 +382,17 @@ def train(args):
         print("\n[分类报告 (Classification Report)]:")
         print(report)
 
+        per_epoch_history.append({
+            "epoch": epoch + 1,
+            "val_loss": round(val_loss, 6),
+            "micro_f1": round(val_f1, 6),
+        })
+
         # 检查并保存更优模型
         if val_f1 > best_f1:
             best_f1 = val_f1
+            best_epoch = epoch + 1
+            best_val_loss = val_loss
             print(f"[*] >>> 突破历史最佳 F1 ({best_f1:.4f})，正在保存模型至 {args.output_dir} <<<")
             os.makedirs(args.output_dir, exist_ok=True)
             model_to_save = model.module if hasattr(model, "module") else model
@@ -349,6 +418,26 @@ def train(args):
     print(f"训练流程顺利结束！最优实体级验证 F1: {best_f1:.4f}")
     print(f"模型与分词器保存路径: {args.output_dir}")
     print("=" * 60)
+
+    return {
+        "model_name": args.model_name,
+        "seed": args.seed,
+        "best_f1": best_f1,
+        "best_epoch": best_epoch,
+        "val_loss": best_val_loss,
+        "output_dir": args.output_dir,
+        "per_epoch_history": per_epoch_history,
+        "data_quality": data_quality,
+        "hyperparameters": {
+            "max_len": args.max_len,
+            "batch_size": args.batch_size,
+            "lr": args.lr,
+            "epochs": args.epochs,
+            "warmup_ratio": args.warmup_ratio,
+            "weight_decay": args.weight_decay,
+            "max_grad_norm": args.max_grad_norm,
+        },
+    }
 
 
 def main():

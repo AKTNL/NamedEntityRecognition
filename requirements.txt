@@ -1,0 +1,20 @@
+# CLUENER2020 中文细粒度命名实体识别：BERT vs MacBERT 复现实验
+# 依赖清单（对应任务书「配置并记录实验环境」要求）
+#
+# 安装：
+#   pip install -r requirements.txt
+#
+# 建议使用 Python 3.10+。以下为本实验实际使用版本（见 README §11 环境记录）。
+
+torch>=2.0.0
+transformers>=4.30.0
+seqeval>=1.2.2
+tqdm>=4.65.0
+numpy>=1.24.0
+flask>=2.3.0
+
+# 可选：multi_seed.py 的 Welch t 检验需要（缺失时脚本会自动跳过该检验）
+scipy>=1.10.0
+
+# 可选：工作台前端逻辑测试需要
+# node>=18
