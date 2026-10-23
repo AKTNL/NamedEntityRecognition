@@ -1,9 +1,10 @@
-# MacBERT 与 BERT 中文细粒度命名实体识别（CLUENER2020）复现实验与深度案例分析系统
+# 中文细粒度命名实体识别（CLUENER2020）：抽取式与生成式双范式对照研究
 
 <p align="center">
   <img src="https://img.shields.io/badge/Task-Chinese_Fine--Grained_NER-blue.svg" alt="Task">
   <img src="https://img.shields.io/badge/Dataset-CLUENER2020-orange.svg" alt="Dataset">
-  <img src="https://img.shields.io/badge/Base_Models-BERT_|_MacBERT-green.svg" alt="Models">
+  <img src="https://img.shields.io/badge/Paradigm-Extractive_|_Generative-brightgreen.svg" alt="Paradigm">
+  <img src="https://img.shields.io/badge/Base_Models-BERT_|_MacBERT_|_GPT--NER-green.svg" alt="Models">
   <img src="https://img.shields.io/badge/Framework-PyTorch_&_Transformers-red.svg" alt="Framework">
   <img src="https://img.shields.io/badge/Evaluation-Seqeval_(Strict_Entity--Level)-purple.svg" alt="Evaluation">
   <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="License">
@@ -11,7 +12,7 @@
 
 > **《自然语言处理》课程综合实践 · 经典论文研读、全流程基线复现与深度错例挖掘**  
 > 
-> 本项目以 **MacBERT** (*MLM as Correction BERT*, Cui et al., EMNLP 2020 Findings) 为核心技术突破点，以 **BERT** (*Devlin et al., NAACL 2019*) 为技术演进渊源，以中文细粒度命名实体识别权威基准 **CLUENER2020** (*Xu et al., 2020*) 为实证检验场景。构建了从**理论深度剖析**、**严格统一的端到端基线训练闭环**，到基于 1,343 条开发集样本的**全量实体级自动化错例挖掘与对比分析系统**。
+> 本项目围绕**中文细粒度命名实体识别**展开，以 **CLUENER2020**（Xu et al., 2020）为数据与评测基准，采用**双范式对照**的研究设计：**抽取式**一侧以 **BERT**（Devlin et al., NAACL 2019）为基线、以 **MacBERT**（Cui et al., EMNLP 2020 Findings）为对照变量；**生成式**一侧以 **GPT-NER**（Wang et al., 2023, arXiv:2304.10428）为方法原型，将序列标注转化为文本生成，并提供可选的自验证机制（当前展示的实验未开启）。项目包含理论剖析、严格受控的端到端训练闭环，以及基于 1,343 条开发集样本的全量实体级错例挖掘系统。
 
 ---
 
@@ -23,6 +24,8 @@
   - [2.2 原生 BERT 在中文序列标注中的局限](#22-原生-bert-在中文序列标注中的局限)
   - [2.3 MacBERT 核心架构与机制创新](#23-macbert-核心架构与机制创新)
   - [2.4 下游序列标注适配建模 (Sequence Labeling Head)](#24-下游序列标注适配建模-sequence-labeling-head)
+  - [2.5 生成式 NER 范式：GPT-NER (Generative Paradigm)](#25-生成式-ner-范式gpt--ner-generative-paradigm)
+  - [2.6 两种范式的结构性对照](#26-两种范式的结构性对照)
 - [3. 实验配置与评测基准 (Benchmark & Experimental Setup)](#3-实验配置与评测基准-benchmark--experimental-setup)
   - [3.1 CLUENER2020 细粒度数据集](#31-cluener2020-细粒度数据集)
   - [3.2 严格实体级评测标准 (Strict Entity-Level F1)](#32-严格实体级评测标准-strict-entity-level-f1)
@@ -43,8 +46,9 @@
 - [8. 交互式复现工作台与全栈模型体验系统 (Interactive Reproduction Workbench & Model Arena)](#8-交互式复现工作台与全栈模型体验系统-interactive-reproduction-workbench--model-arena)
   - [8.1 工作台设计架构与核心特性](#81-工作台设计架构与核心特性)
   - [8.2 快速启动与双模运行指南](#82-快速启动与双模运行指南)
-  - [8.3 四大核心交互功能模块](#83-四大核心交互功能模块)
+  - [8.3 六大交互模块](#83-六大交互模块)
   - [8.4 RESTful API 规范与扩展接口](#84-restful-api-规范与扩展接口)
+  - [8.5 数据来源、更新与验证](#85-数据来源更新与验证)
 - [9. 与原论文公开结果的对比 (Comparison with Published Results)](#9-与原论文公开结果的对比-comparison-with-published-results)
 - [10. 实验结果的可靠性声明与局限 (Reliability Statement)](#10-实验结果的可靠性声明与局限-reliability-statement)
 - [11. 实验环境与版本记录 (Environment & Reproducibility)](#11-实验环境与版本记录-environment--reproducibility)
@@ -63,7 +67,22 @@
 2. **多义性与长跨度复合结构**：实体内部常嵌套常见动词、形容词或空间方位修饰词（如“中国房地产及住宅研究会”）；
 3. **分词歧义传递**：若采用分词预处理引入外部词典，易受到分词错误传递的次生污染；若纯以单字切分，又极易丢失词汇级的完整语义块表达。
 
-针对上述难题，哈工大讯飞联合实验室（HFL）在 2020 年提出了 **MacBERT**。为了验证其在中文细粒度实体抽取中的真实增益，本项目在统一的硬件与超参数约束下，在 CLUENER2020 基准上完成了 **BERT-base-chinese** 与 **chinese-macbert-base** 的严格实体级评测比对，并自主研发了跨模型错例挖掘工具，输出了包含量化指标、错例溯源及语言学分析的完整学术闭环。
+针对上述难题，本项目采用**双范式对照（Dual-Paradigm Comparison）**的研究设计，在同一份 CLUENER2020 数据与同一套严格实体级评测口径下，对两条技术路线进行平行考察：
+
+| 维度 | **抽取式范式（Extractive）** | **生成式范式（Generative）** |
+| :--- | :--- | :--- |
+| 代表方法 | BERT / MacBERT + Token Classification Head | GPT-NER（LLM + 上下文示例 + 自验证） |
+| 骨干架构 | Encoder-only（双向 Transformer） | Decoder-only（自回归 Transformer） |
+| 任务形式化 | 逐字符多分类（序列标注 $21$ 类） | 文本到文本生成（`@@实体##` 标记序列） |
+| 输出解码 | BIO 标签链 → 贪心/Viterbi 解码为 span | 生成文本 → 正则解析回 span 集合 |
+| 监督信号 | 全量 10,748 条标注数据微调 | 少样本（Few-shot）提示 + 示例检索 |
+| 本项目状态 | **已完成**（含训练、评测、错例挖掘） | **已接入检索消融、LoRA 评测与失败案例展示**；网页未提供实时生成（见 §8） |
+
+**抽取式一侧**已完整落地：在统一的硬件与超参数约束下，完成了 **BERT-base-chinese** 与 **chinese-macbert-base** 的严格实体级评测比对，并自主研发了跨模型错例挖掘工具，输出了包含量化指标、错例溯源及语言学分析的完整学术闭环。
+
+**生成式一侧**以 **GPT-NER**（Wang et al., 2023）为方法原型，考察"将 NER 转化为文本生成任务"这一路线在低资源条件下的行为特征，与抽取式基线形成数据量维度上的对照。
+
+> **关于研究范围的说明**：本项目的"复现"定位为**下游任务复现（Downstream Reproduction）**——即复用公开的预训练骨干权重，在 CLUENER2020 上复现并检验其下游 NER 性能，而非从零预训练语言模型。二者的工程量与算力需求相差数个数量级（见 §9.1 的口径声明）。
 
 ---
 
@@ -89,6 +108,14 @@
 |            v                                                                                  |
 |  【中文针对性纠错演进】      MacBERT (纠错式 MLM 消除预训练微调鸿沟 + 全词掩码 WWM + N-gram + SOP) |
 +-----------------------------------------------------------------------------------------------+
+                                              |
+                                              v
+                        +---------------------+---------------------+
+                        |                                           |
+              【抽取式路线 · 判别式标注】               【生成式路线 · 自回归生成】
+              BERT / MacBERT + Softmax              GPT-NER / LLM + In-Context
+              逐 token 打 BIO 标签                    直接生成 @@实体## 标记文本
+              (本项目已完成，见 §4)                    (方法与实测展示，见 §2.5、§8)
 ```
 
 ### 2.2 原生 BERT 在中文序列标注中的局限
@@ -143,6 +170,152 @@ MacBERT (本项目): [CLS]  我  们  在  华  夏  房  地  产  协  会  �
 - 训练损失采用交叉熵损失函数（Cross-Entropy Loss），在计算时通过屏蔽向量（`-100` Mask）严格忽略 `[CLS]`, `[SEP]`, `[PAD]` 等非文本字符：
   $$\mathcal{L}_{CE} = - \sum_{t=1}^{T} \mathbb{I}(y_t \neq -100) \log P(y_t \mid \mathbf{x})$$
 
+### 2.5 生成式 NER 范式：GPT-NER (Generative Paradigm)
+
+前述 §2.1–§2.4 均属**抽取式范式（Extractive Paradigm）**：模型为每个字符输出一个标签，再由解码器还原实体 span。该范式依赖全量标注数据微调，且标签空间固定、无法处理嵌套实体。
+
+**GPT-NER**（Wang et al., 2023, *arXiv:2304.10428*）提出了一条截然不同的路线：借助大语言模型（LLM）天然的生成能力，将 NER **形式化为文本到文本的生成任务**，仅需少样本示例即可工作。
+
+#### 2.5.1 机制一：任务的生成式形式化 —— `@@实体##` 标记协议
+
+GPT-NER 不要求模型输出 BIO 标签，而是要求模型**把原文中的实体用特殊标记包裹后原样输出**。对每种实体类型单独构造一次提示（per-type prompting）：
+
+```
+================= 抽取式 vs 生成式：同一句话的两种输出形态 =================
+
+原文:      北京时间 3 月 15 日，华为在东莞松山湖基地发布了新款折叠屏手机
+
+【抽取式输出】(BIO 标签链，长度 = 字符数)
+  北(B-TIME) 京(I-TIME) 时(I-TIME) 间(I-TIME) 3(I-TIME) 月(I-TIME) 1(I-TIME) 5(I-TIME) 日(I-TIME)
+  ，(O) 华(B-ORG) 为(I-ORG) 在(O) 东(B-LOC) 莞(I-LOC) 松(I-LOC) 山(I-LOC) 湖(I-LOC) 基(B-LOC)...
+
+【生成式输出】(标记文本，长度 ≈ 原文 + 标记符)
+  提示类型 = LOC
+  输出: 北京时间 3 月 15 日，华为在 @@东莞## @@松山湖## 基地发布了新款折叠屏手机
+  解析: 提取 @@...## 内部内容 -> {"LOC": ["东莞", "松山湖"]}
+============================================================================
+```
+
+这一设计的巧妙之处在于：**输出空间与输入文本强耦合**，模型只需"圈出"而非"凭空写出"，从而将开放式生成约束为近似的选择题，显著降低了搜索空间。
+
+#### 2.5.2 机制二：实体级 kNN 示例检索 (Entity-Level kNN Retrieval)
+
+少样本提示的成败高度依赖示例质量。GPT-NER 的关键实证发现是：**随机选示例效果很差，且检索粒度必须落在"实体级"而非"句子级"**。
+
+原因在于 NER 数据的极端稀疏性——一个句子中绝大多数 token 都是 `O`（非实体）。若用整句语义向量做检索，句子表示会被大量 `O` token 稀释，导致检索到的示例与待测实体类型无关。
+
+```
+========================= 三种示例检索策略的消融（论文原表） =========================
+  随机选择示例 (Random)           ->  CoNLL2003 F1 = 72.62
+  句子级 kNN 检索 (Sentence-level) ->  CoNLL2003 F1 = 84.36   (+11.74)
+  实体级 kNN 检索 (Entity-level)   ->  CoNLL2003 F1 = 89.97   (+17.35)
+=====================================================================================
+```
+
+实体级检索的实现分三步（论文 Figure 2）：
+
+```
+Step 1  构建 Datastore
+        用一个【微调好的 NER 模型】为训练集每个句子抽取实体，
+        构造 (key = 实体表示, value = 原句) 键值对集合。
+
+Step 2  表示提取
+        对输入句子，用同一个微调 NER 模型编码为向量序列，
+        再经 softmax 打标签，识别出句中的候选实体（如 "Washington"）。
+
+Step 3  kNN 搜索
+        以候选实体的 embedding 作为 query，在 Datastore 中检索 k 近邻，
+        其关联的 value（原句）即作为 few-shot 示例。
+        更精确地说：对长度为 N 的输入序列，逐 token 各取 K 个近邻得 K×N 个候选，
+        再从这 K×N 个候选中取 top k，用其所属句子作为示例。
+```
+
+> **⚠ 对本项目至关重要的一点**：论文明确指出，实体级检索**依赖一个"微调好的 NER 模型"**来提供实体表示与候选实体识别。
+> 本项目恰好已经训练好了 BERT 与 MacBERT 两个 NER 模型（见 §4），因此**可直接复用其作为检索编码器**。
+> 这意味着两条技术路线并非彼此孤立——**生成式一侧的示例检索，恰恰建立在抽取式一侧已训模型的基础之上**，
+> 二者在本项目中构成了一个有机的整体，而非两个平行无关的实验。
+
+#### 2.5.3 机制三：自验证策略 (Self-Verification)
+
+生成式方法最大的风险是论文所称的**过预测（Over-prediction）**——LLM 倾向于"过度自信地把非实体标注为实体"。论文给出的真实例子：
+
+```
+任务：标注 location 实体
+  Input:  Columbus is a city            Output: @@Columbus## is a city
+  Input:  Rare Hendrix song sells for $17
+  GPT-3 输出: Rare @@Hendrix## song sells for $17
+                   ^^^^^^^^ "Hendrix"（实为人名）被错误标注为地点实体
+```
+
+自验证策略的做法：将上一阶段提取出的实体逐个回喂给 LLM，要求其以 **yes/no** 判定该实体是否真属于目标类型，否定的结果直接剔除。
+
+```
+自验证提示（论文 Figure 3 结构，中文场景改写示意）:
+  [任务描述] 下面的任务是判断给定句子中的词语是否为"地点"实体。
+  [示例 1]   The input sentence: Only France and Britain backed Fischler's proposal
+             Is the word "France" in the input sentence a location entity?
+             Please answer with yes or no.
+             Yes.
+  ...（多个示例）...
+  [待测]     Sentence: 华为在东莞松山湖基地发布了新款折叠屏手机
+             Is the word "东莞" in the input sentence a location entity?
+             Please answer with yes or no.
+```
+
+注意：**自验证环节本身同样需要 few-shot 示例**，且论文指出此处的示例检索也应使用 entity-level embedding（因为问题的核心是"某个实体是否属于某类型"，而非整句语义）。
+
+消融结果显示自验证带来的增益（CoNLL2003 全量集，entity-level 检索下）：
+
+| 配置 | Precision | Recall | F1 |
+| :--- | :--- | :--- | :--- |
+| 无自验证 | 88.54 | 91.40 | 89.97 |
+| + 自验证（zero-shot） | 89.47 | 91.77 | 90.62 |
+| + 自验证（few-shot） | **89.76** | **92.06** | **90.91** |
+
+可见自验证的增益集中在 **Precision（+1.22）** 而非 Recall —— 这与其"过滤幻觉"的设计意图完全吻合。
+
+#### 2.5.4 生成式范式的真实定位：低资源占优，全量仍落后
+
+关于低资源表现，论文的定性结论是：
+
+> *"GPT-NER exhibits impressive proficiency in low-resource and few-shot NER setups: when the amount of training data is extremely scarce, GPT-NER performs significantly better than supervised models."*
+
+但必须**同时**看到另一半事实——在**全量训练数据**上，GPT-NER 并未超过监督基线：
+
+| 数据集（全量） | 监督基线 BERT-Tagger | GPT-NER（最优配置） | 监督 SOTA |
+| :--- | :--- | :--- | :--- |
+| CoNLL2003 | **92.8** | 90.91 | 94.6 |
+| OntoNotes5.0 | **89.16** | 82.20 | 92.07 |
+
+论文自身也明确承认这一差距：*"there still remains a gap between the supervised SOTA model: 94.6 v.s. 90.91 on the full CoNLL2003 dataset."*
+
+这带来一个必须诚实传达的结论：**生成式 NER 的价值不在于全量数据上击败 BERT，而在于标注成本受限时提供一条可行的替代路径**。两种范式之间存在一条随数据量移动的"性能交叉线"，而刻画这条线正是本项目设计**低资源分档对照实验**（见 §15.2 P0）的直接动机。
+
+> **注**：论文中低资源场景的具体数值以曲线图（Figure）形式给出，PDF 文本层无法提取，故此处仅引用论文的定性结论，不转述未经核实的数字。待本项目实测后，将用本项目自身的分档实验数据填补这一空白。
+
+#### 2.5.5 本项目对 GPT-NER 的复现定位与已知风险
+
+将 GPT-NER 迁移到本项目场景时，存在两项必须诚实声明的偏移（依据任务书 P4 条款）：
+
+1. **跨语言与跨数据集迁移**：GPT-NER 原论文实验基于英文数据集（CoNLL2003 / OntoNotes / ACE2004 / GENIA），本项目改用中文 CLUENER2020。因此**绝对 F1 数值不可与原论文直接比较**，本项目仅比较"同一数据集上两种范式的相对表现"。
+2. **基座模型降级**：原论文使用 GPT-3（`text-davinci-003`，175B 级闭源 API），本项目受本地硬件约束（RTX 5060 8GB），拟采用 **Qwen2.5-1.5B-Instruct** 等可在单卡部署的开源指令微调模型。参数量相差约两个数量级，预期绝对性能显著低于原论文报告值，此差异须在结果解读时明确归因于"基座规模"而非"方法失效"。
+
+> **状态说明（2026-10-23）**：工作台已接入本地 Qwen2.5-1.5B 的检索策略消融、LoRA 评测及失败案例。生成式页面提供已完成实验的展示与导出，不调用模型生成新结果；协议演示使用明确标注的固定教学示例。所展示运行均未开启自验证，不能将自验证的理论收益当作本项目实测结论。
+
+### 2.6 两种范式的结构性对照
+
+| 对比维度 | 抽取式（BERT / MacBERT） | 生成式（GPT-NER） |
+| :--- | :--- | :--- |
+| 骨干架构 | Encoder-only，双向注意力 | Decoder-only，因果注意力 |
+| 标签空间 | 固定 $21$ 维，扩展需重训 | 由提示词定义，增删类型零成本 |
+| 数据需求 | 依赖全量标注微调 | 少样本即可启动 |
+| 嵌套实体 | 单层 BIO 无法表达 | 理论上可通过多轮生成覆盖 |
+| 主要失效模式 | 边界切分错误、类别混淆 | 幻觉实体、漏检、格式不遵循 |
+| 推理成本 | 单次前向，毫秒级 | 自回归逐 token 解码 + 多类型多轮 |
+| 可解释性 | 需借助注意力/错例反推 | 生成过程本身具备一定可读性 |
+
+两者并非简单的优劣替代关系，而是**在不同资源约束下的取舍**：抽取式在吞吐与全量数据精度上占优，生成式在冷启动与类型灵活扩展上占优。本项目将二者置于同一评测口径下对照，正是为了定量刻画这一取舍边界。
+
 ---
 
 ## 3. 实验配置与评测基准 (Benchmark & Experimental Setup)
@@ -181,6 +354,8 @@ CLUENER2020 是中文语言理解评测基准（CLUE）发布的高质量细粒�
   > **注意**：哪怕边界差一个汉字（例如将“滨江路围合区域”预测为“滨江路”），在 strict 评测下同时被记为一次 False Positive（错报）和一次 False Negative（漏报），惩罚极严苛。
 
 ### 3.3 训练与评估超参数
+
+> 本节和 §4 保留早期 batch=16、3 epoch 实验记录；§9、§10 的相应分数讨论沿用该轮实验。新版工作台快照来自后续 batch=32、4 epoch 运行，见 §8.5。请勿将不同运行的损失、轮次或分类指标拼接比较。
 
 为了保障两组基线实验具有高度可比性与实验公平性，实验全程基于相同的物理运行环境，固定随机种子并采用同一套超参数配置：
 
@@ -349,13 +524,15 @@ NamedEntityRecognition/
 │   └── macbert/                     # 训练好的 MacBERT 改进模型
 │       ├── config.json
 │       ├── model.safetensors
-│       ├── eval_results.json        # 验证集评测指标 (Micro F1 76.58%)
+│       ├── eval_results.json        # 对应检查点的验证集指标，以文件内容为准
 │       └── tokenizer.json
 ├── docs/                            # 理论研究文献与课程指引
-│   ├── BERT.pdf                     # BERT 原始论文 (Devlin et al., NAACL 2019)
-│   ├── MacBERT中文预训练.pdf          # MacBERT 核心论文 (Cui et al., EMNLP 2020)
-│   ├── CLUENER2020.pdf              # CLUENER 基准论文 (Xu et al., 2020)
-│   └── 作业说明.pdf                  # 课程综合实践任务书与评分细则
+│   ├── CLUENER2020.pdf              # 【主讲·任务与数据】中文细粒度 NER 数据集与基准 (Xu et al., 2020)
+│   ├── GPT-NER_生成式NER.pdf          # 【主讲·方法】生成式 NER 代表作 (Wang et al., 2023, arXiv:2304.10428)
+│   ├── 作业说明.pdf                  # 课程综合实践任务书与评分细则
+│   └── supplementary/               # 支撑文献（第二档：需理解核心创新，非主讲）
+│       ├── BERT.pdf                 # 抽取式基座 (Devlin et al., NAACL 2019)
+│       └── MacBERT中文预训练.pdf      # 抽取式基座 · 实验对照变量 (Cui et al., EMNLP 2020)
 ├── dataset.py                       # CLUENER 数据集加载与字符级 BIO 动态对齐管道
 ├── train.py                         # 统一的微调训练引擎与 Seqeval 评估闭环
 ├── multi_seed.py                    # 多种子重复实验与配对统计显著性检验 (mean±std / Bootstrap CI)
@@ -365,7 +542,15 @@ NamedEntityRecognition/
 ├── case_study_results.json          # 结构化案例挖掘数据库 (包含详尽模式与机理解析)
 ├── requirements.txt                 # 依赖清单 (对应任务书「记录实验环境」要求)
 ├── app.py                           # 交互式复现工作台 Flask 全栈服务 (双模型常驻 CPU 推理)
-├── build_workbench_html.py          # 自包含工作台单文件生成脚本 (注入离线推演 Bundle)
+├── build_workbench_html.py          # 构建入口：内联样式、逻辑、实验记录与离线 Bundle
+├── frontend/
+│   ├── dual-paradigm.html           # 双范式总览与生成式实验室
+│   ├── dual-paradigm.css            # 黑白设计系统与响应式布局
+│   ├── dual-paradigm.js             # 实验切换、案例展示、数据同步与导航
+│   └── README.md                   # 前端维护说明
+├── test_dual_paradigm_frontend.js   # 生成页面的真实函数回归测试
+├── test_frontend_logic.js           # 静态 Bundle 与内联脚本检查
+├── test_workbench_verification.py  # Flask 路由与本地模型集成测试
 ├── static_offline_bundle.json       # 离线全量评估指标、代表错例与预置推演数据包
 ├── templates/
 │   └── index.html                   # Flask 动态托管的交互式工作台前端模板
@@ -533,115 +718,103 @@ MacBERT:  [莫斯科中央陆军] (organization)
 
 ## 8. 交互式复现工作台与全栈模型体验系统 (Interactive Reproduction Workbench & Model Arena)
 
-为了让学术复现成果从纯终端脚本走向生动直观的高质量交互式体验，本项目打造了 **MacBERT 与中文 NER 交互式复现工作台（Reproduction Workbench & Live Model Arena）**。该系统集“跑起来的真实双模型对决打靶”、“全流程复现源码逐行透视与考点批注”、“实测学术指标多维大盘”与“经典错例展厅与现场重测”于一体，展现了工业级全栈工程交付能力。
-
-```
-+---------------------------------------------------------------------------------------------------+
-|                        MacBERT × CLUENER2020 交互式复现工作台体系架构                              |
-+---------------------------------------------------------------------------------------------------+
-|                                                                                                   |
-|   +-------------------------------------------------------------------------------------------+   |
-|   |                       Web 前端交互层 (现代化学术科技风格 UI · 自适应深浅主题)                |   |
-|   |   +---------------------+ +--------------------+ +--------------------+ +-----------------+   |
-|   |   | ⚡ 实时模型对决打靶 | | 💻 复现代码深度透视 | | 📊 实测学术指标大盘 | | 🔍 真实错例深度展厅 |   |
-|   |   | (Diff 差异/探针/用例) | | (数据流/训练/评测) | | (10 类细粒度对比)  | | (一键载入现场重测)  |   |
-|   |   +---------------------+ +--------------------+ +--------------------+ +-----------------+   |
-|   +---------------------------------------------^---------------------------------------------+   |
-|                                                 | (双模自适应交互协议)                            |
-|             +-----------------------------------+-----------------------------------+             |
-|             |                                                                       |             |
-|             v (模式 A：在线真实推理)                                                 v (模式 B：脱机离线降级)
-|   +-----------------------------------+                   +-----------------------------------+   |
-|   |  Flask RESTful 服务 (app.py)      |                   |  自包含静态推演引擎 (Bundle)      |   |
-|   |  - 常驻加载 BERT & MacBERT 权重   |                   |  - 离线 100% 独立单文件运行       |   |
-|   |  - Token 对齐与 BIO 抽取状态机    |                   |  - 包含 14 条典型错例与全量指标   |   |
-|   |  - 实时 Diff 差异分析计算         |                   |  - 零网络请求、零后端依赖         |   |
-|   +-----------------------------------+                   +-----------------------------------+   |
-|                                                                                                   |
-+---------------------------------------------------------------------------------------------------+
-```
-
----
+**NER Lab** 将抽取式与生成式 NER 整合到同一个中文工作台：抽取式支持 BERT/MacBERT 实时推理，生成式展示 GPT-NER / Qwen2.5 的已完成实验。页面使用 Flask + 原生 JavaScript/CSS，不需要安装前端框架或下载 CDN 资源。
 
 ### 8.1 工作台设计架构与核心特性
 
-1. **双模自由切换与优雅降级 (Dual Running Modes)**：
-   - **在线实时推理模式（Live PyTorch Mode）**：启动 `python app.py` 后，后端在 CPU 上常驻加载 `saved_models/bert` 与 `saved_models/macbert` 真实模型权重，接收前端任意中文打靶输入，在 **50~100ms** 内同屏返回双模型序列标注与实体抽取结果。
-   - **零依赖脱机运行模式（Standalone Offline Mode）**：直接在任何现代浏览器中双击打开根目录的 `workbench.html`。前端具备**智能连通性嗅探能力**，在未开启 Flask 后端时自动无缝降级为离线模式，利用内置的离线推演包支持指标浏览、代码研读、错例库体验以及预设案例交互，**绝不白屏、绝不报错**。
-2. **极简现代学术设计系统 (Modern Academic UI)**：
-   - 科技深色（Deep Slate，默认沉浸式体验）与高校学术浅色（Academic Light）一键秒切，支持 `LocalStorage` 记忆偏好；
-   - 零外部 CDN 网络依赖，字体图标内联自绘 SVG，断网/离线完全无忧；
-   - 10 种细粒度实体分类赋予独立的主题色与语义标签，交互清晰直观。
-
----
+- **双范式入口**：总览页解释 BIO 序列标注和 `@@实体##` 文本生成两条路线，提供独立入口和实验指标摘要。
+- **黑白简约界面**：深色/浅色主题、本地主题记忆、桌面与手机布局；实体通过明暗、边框和文字标签区分。
+- **明确结果来源**：实时模型预测、已保存预测快照、词典匹配演示分别标注。词典演示不提供模型置信度、模型耗时或 BIO 探针。
+- **离线可展示**：`workbench.html` 内嵌所需样式、脚本和实验快照。离线可浏览实验、代码与案例，但不能执行真实模型推理。
+- **生成式范围**：支持实验切换、指标可视化、JSON 导出及协议教学示意；尚未接入网页实时生成接口。
 
 ### 8.2 快速启动与双模运行指南
 
-#### 方式一：启动 Flask 全栈在线服务（推荐，体验实时模型推理）
+#### 方式一：直接查看已生成的页面
+
+用浏览器打开根目录的 **`workbench.html`**。无需 Python 或模型权重即可查看随页面交付的实验快照。
+
+#### 方式二：启动 Flask，体验抽取式实时识别
+
+先按 §7.1 安装 Python 依赖，并准备 `saved_models/bert` 与 `saved_models/macbert` 模型检查点。模型权重不包含在普通 Git 提交中，需要本地训练或自行准备。
 
 ```bash
-# 1. 一键启动后端服务（默认自动加载已保存的双模型权重并在浏览器中打开）
+# 默认加载两组模型并自动打开浏览器
 python app.py
 
-# 2. 自定义端口与主机
-python app.py --port 8080 --host 0.0.0.0
-
-# 3. 运行端到端自检与冒烟测试 (CLI Self-Test)
-python app.py --test
+# 不自动打开浏览器；仅监听本机
+python app.py --host 127.0.0.1 --port 5000 --no-browser
 ```
 
-服务启动后，在浏览器访问 `http://127.0.0.1:5000` 即可畅享完整交互系统。控制台将输出清晰的推理引擎就绪日志。
+浏览器访问 [http://127.0.0.1:5000](http://127.0.0.1:5000)。实际推理时延取决于硬件、文本和运行环境，以本次响应显示为准。
 
-#### 方式二：直接脱机浏览（单文件静态演示）
+#### 修改前端后重新构建
 
-无需安装 Python 或任何深度学习环境，直接用浏览器双击打开项目根目录下的 **`workbench.html`**，即可全景体验工作台的全部交互与数据可视化。
+```bash
+python build_workbench_html.py
+```
 
----
+构建器从 `frontend/dual-paradigm.{html,css,js}` 和现有工作台源码生成相同的 `templates/index.html`、`workbench.html`。请修改源文件后重建，不要只编辑某一份生成 HTML。更新页面后刷新浏览器；Flask 使用模板缓存时需重启服务。
 
-### 8.3 四大核心交互功能模块
+> 构建时会读取本地可选的 `results/generative/*.json`。这些原始运行文件不随本次前端提交上传；没有原始文件时仍可直接浏览已生成页面中的快照，但重新构建会省略缺失实验，并在无实验时显示空状态。
 
-#### ⚡ 模块 1：模型对决与在线打靶工作台 (Model Arena & Interactive Playground)
-- **多功能文本输入区**：支持字数实时统计（最大 128 字符）、一键清空与预置 10 类经典测试句一键填装；
-- **用户自定义测试用例管理系统 (Custom Cases System)**：
-  - 用户可随时将当前输入的测试句一键点击“**⭐ 保存当前用例**”，为用例设置标题、标签分类及预期备注；
-  - 完整支持自定义用例的**快捷载入打靶、在线编辑修改与单条删除**；
-  - 数据基于浏览器 `LocalStorage` 本地持久化，页面关闭刷新不丢失；
-  - 提供 **“📥 导出 JSON”** 与 **“📤 导入 JSON”** 功能，便于实验团队成员之间快速沉淀、共享测试样本集；
-- **同屏双模型 PK 与实体高亮视窗**：
-  - 左右分屏实时对比 **Chinese-MacBERT-base** 与 **BERT-base-Chinese**；
-  - 10 类实体（地址、书籍、公司、游戏、政府、电影、姓名、组织、职位、景点）采用不同彩色徽章高亮包裹，鼠标悬浮显示实体类型、Span 区间 `[start:end]` 及预测置信度；
-- **智能差异对比视窗 (Diff Mode)**：
-  - 当两模型预测存在分歧时，自动触发差异警报卡片，逐项标明 MacBERT 纠错修复了原生 BERT 的哪些“碎片化截断”或“细粒度混淆”；
-- **底层 Token 探针 (可展开)**：
-  - 逐字探查输入序列每个字符对应的 BERT BIO 与 MacBERT BIO 预测值及 Softmax 置信度概率，直观展示底层转移分歧。
+### 8.3 六大交互模块
 
-#### 💻 模块 2：复现代码深度透视 (Codebase Walkthrough)
-- **模块化源码切换**：一键在 `dataset.py`（数据管道/BIO字符级对齐）、`train.py`（训练循环/混合精度/梯度累积）、`analyze_cases.py`（自动化错例挖掘/Seqeval算法）间切换；
-- **技术考点与原理联动批注**：每份核心代码均配备左侧深度批注卡片，深度剖析“Subword 子词对齐边界”、“动态 Padding 优化”、“MacBERT 与 BERT 分类头差异”等关键理论考点。
+| 模块 | 内容与操作 |
+| :--- | :--- |
+| **工作台总览** | 双范式原理简介、指标摘要、10 类实体说明与功能入口 |
+| **抽取式识别** | 中文文本输入、BERT/MacBERT 对比、实体高亮、差异分析、逐字 BIO 探针、自定义用例保存和导入导出 |
+| **生成式实验室** | 选择 LoRA 或检索实验，查看 P/R/F1、格式异常率、幻觉率、10 类指标及运行配置，导出当前实验 JSON |
+| **复现代码** | 查看数据处理、训练与错例挖掘的源码快照及批注 |
+| **抽取式评测** | 总体指标、10 类 P/R/F1 图表与表格、训练配置和论文口径说明 |
+| **案例分析** | 抽取式纠错/边界难例与生成式失败案例筛选、关键词搜索、原始生成文本和机制分析 |
 
-#### 📊 模块 3：实测学术指标大盘 (Benchmark Dashboard)
-- **核心 KPI 矩阵**：真实呈现实测指标——MacBERT 验证集 $F_1 = 76.58\%$ 对比 BERT $F_1 = 76.18\%$，增益 **+0.40pp**（同口径 Micro F1）；同时呈现收敛损失降低 **-5.6%** 与收敛速度优势；
-- **指标口径警示（重要）**：工作台不展示跨口径差值。论文基线 BERT-NER $F_1 = 78.82\%$（原论文 Table 5，Overall@Macro / 测试集 / BIOS 标注）与本项目 dev 集 Micro F1 **不可直接相减**；MacBERT 原论文未在 CLUENER2020 上实验，**无论文基线可引用**；
-- **10 类细粒度对比交互柱状图**：纯自研原生 SVG 绘制，支持在 $F_1$、Precision（精确率）、Recall（召回率）三个维度之间自由切换，动态计算并标注每个类别的增益百分点；
-- **细粒度分类明细大表与超参数基准**：完整公开每个类别的 Support 数量、详细 P/R/F1 浮点数据及实验超参数基准配置。
-
-#### 🔍 模块 4：真实错例深度展厅 (Bad Case Gallery)
-- **多维度案例筛选**：分类汇聚 14 条代表性案例，支持按“全部案例”、“类别 A：MacBERT 优势与纠错案例”、“类别 B：中文 NER 固有瓶颈与顽疾错例”进行筛选；
-- **现场重测联动引擎 (1-Click Re-Test)**：错例卡片上配有 **“🚀 载入工作台现场重测”** 按钮，点击后自动切换至打靶视窗并填入该样本文本，实时重现模型在真实样本上的识别表现。
-
----
+生成式实验室还包含可切换“姓名 / 地址 / 公司”的固定教学示例，展示提示词、带标记文本和从 0 开始的实体闭区间。这是协议示意，不是模型预测。案例注释保留原运行背景，不代表当前选中实验的结果。
 
 ### 8.4 RESTful API 规范与扩展接口
 
-后端 `app.py` 暴露了一套清晰规范的 RESTful API，方便第三方脚本或自动化测试工具调用：
+| 接口 | 作用 | 主要字段 |
+| :--- | :--- | :--- |
+| `POST /api/predict` | 抽取式预测；请求体 `{"text":"文本","model":"both"}` | `results.macbert`、`results.bert`、`diff` |
+| `GET /api/metrics` | 抽取式指标 | `data.models`、`data.categories_comparison`、`data.headline_delta_f1` |
+| `GET /api/cases` | 案例记录 | `data.category_a_macbert_advantages`、`data.category_b_hard_cases`；扩展数据可包含 `data.category_c_generative_failures` |
+| `GET /api/code` | 源码与批注 | `data.files` |
+| `GET /api/health` | 服务与模型状态 | `status`、`device`、`models` |
 
-| 接口端点 (Endpoint) | 请求方式 | 说明 | 请求参数 / Body 示例 | 返回数据结构核心字段 |
-| :--- | :---: | :--- | :--- | :--- |
-| `POST /api/predict` | `POST` | 实时序列标注预测与模型 Diff 比对 | `{"text": "文本", "model": "both"}` | `results.macbert`, `results.bert`, `diff` |
-| `GET /api/metrics` | `GET` | 获取双模型真实评测指标与细粒度对比 | 无 | `models`, `categories_comparison`, `headline_delta_f1` |
-| `GET /api/cases` | `GET` | 获取挖掘的代表性错例库数据 | 无 | `category_a_macbert_advantages`, `category_b_hard_cases` |
-| `GET /api/code` | `GET` | 获取核心工程源码与技术解析批注 | 无 | `files: [{filename, source_code, annotations}]` |
-| `GET /api/health` | `GET` | 检查后端运行状态与模型常驻情况 | 无 | `status: "ok"`, `models: {bert: true, macbert: true}` |
+HTTP 模式会刷新 `/api/metrics` 和 `/api/cases`；失败时保留内嵌数据，并在页脚标明来源。生成式指标来自构建时嵌入的原始运行记录，不使用可能混合早期样本范围的汇总接口，也不调用实时生成接口。
+
+### 8.5 数据来源、更新与验证
+
+**2026-10-23 随页面交付的实验快照：**
+
+| 实验 | 评测范围与配置 | Micro F1 |
+| :--- | :--- | ---: |
+| BERT | 开发集 1,343 句；batch=32，4 epoch | 76.05% |
+| MacBERT | 开发集 1,343 句；batch=32，4 epoch | 76.61% |
+| Qwen + LoRA | 开发集 1,343 句；0-shot，max_new_tokens=96 | 41.59% |
+| Qwen 随机示例检索 | 前 120 句；8-shot，max_new_tokens=72 | 7.46% |
+| Qwen 句子级语义检索 | 前 120 句；8-shot，max_new_tokens=72 | 27.55% |
+| Qwen 实体级示例检索 | 前 120 句；8-shot，max_new_tokens=72 | 33.57% |
+
+三组检索实验具有相同样本范围与生成长度，可比较检索策略；LoRA 与抽取式运行的训练设置不同，不能将其差值归因于单一机制。所有展示的生成式运行均未开启自验证。早期 100 句 LoRA 运行也单独保留在实验选择器中。
+
+数据来源与优先级：
+
+1. `static_offline_bundle.json` 提供原有指标、案例、预设预测和源码快照。
+2. 构建时将选定的 `results/generative/*.json` 嵌入 `bundle.experiments`，保留原始文件名、样本数及配置；生成式页面展示来源并支持导出。
+3. `saved_models/*/eval_results.json` 提供本地训练配置；HTTP 访问时抽取式指标还会从后端刷新，因此可与交付快照不同。
+4. 原始生成指标中的 P/R/F1 为百分数，格式异常率和幻觉率为 0–1 比例，前端转换为百分比显示；例如 `0.0015` 显示为 `0.15%`。
+
+```bash
+# 前端数据、脚本和行为回归（需要 Node.js，无需 npm install）
+node test_frontend_logic.js
+node test_dual_paradigm_frontend.js
+
+# Flask 与真实本地模型集成测试（需要依赖和检查点）
+python -m unittest test_workbench_verification
+```
+
+前端回归覆盖真实生成函数、数据单位、实体偏移、内容转义、筛选和空数据状态。浏览器验收覆盖在线推理、API 不可用时的回退、键盘导航、深浅主题及 390px / 1440px 布局。维护细节见 [frontend/README.md](frontend/README.md)。
 
 ---
 
@@ -779,6 +952,8 @@ python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
 | 6 | **标注 span 越界被静默丢弃** | 原 `dataset.py` 中 `if start < len(char_labels)` 直接跳过，无任何日志 | 改为显式计数 `invalid_spans`，并新增 `--strict_spans` 开关，使数据清洗过程可留痕 |
 | 7 | **指标口径混用导致错误结论** | 曾把本项目 dev 值（76.58%）与论文值（74.96%）相减得 +1.62%，且 74.96% 无出处 | 全面修正：区分 dev/Micro/BIO 与 test/Macro/BIOS 两套口径，禁止跨口径相减；论文真实基线更正为 78.82% |
 | 8 | **离线环境无法访问 CDN** | 工作台在断网/内网演示时白屏 | 构建 `static_offline_bundle.json` 离线推演包，生成自包含单文件 `workbench.html`，零网络依赖 |
+| 9 | **生成式标记符与原文冲突** | GPT-NER 用 `@@实体##` 包裹实体，但 CLUENER 原文中本就含 `#` `@`（多为微博话题标签），存在解析歧义风险 | 编写 `scan_marker_collision()` 分级扫描：实测 **train 10,748 条中仅 1 条含连续 `@@`/`##`（高危），dev 1,343 条中 0 条**。因评测在 dev 上进行，实际影响为零；该高危样本在构建检索库时予以剔除 |
+| 10 | **GPU 环境误判与依赖冲突** | 曾误记本机为"无 GPU"，实际为 **RTX 5060 8GB / 驱动 592.01 / CUDA 13.1**，只是安装了 CPU 版 `torch`；且直接 `pip install` CUDA 版会被判定"已满足"而跳过 | 先 `pip uninstall -y torch` 再指定 `cu128` 源安装；硬件与驱动均满足，仅软件栈需替换 |
 
 ---
 
@@ -819,21 +994,24 @@ python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
 ## 15. 总结与后续展望 (Conclusion & Future Work)
 
 ### 15.1 实验总结
+
+> 以下抽取式分析对应 §4 的早期实验；当前展示快照与生成式结果见 §8.5。
 1. **理论与实证方向一致**：MacBERT 提出的以“相似词纠错替换”替代 `[MASK]`，并结合“全词与 N-gram 掩码”的方案，在中文细粒度 NER 上展现出**数值上一致的正向增益**（Micro F1 +0.40pp），在长跨度复杂实体（`organization` +2.12%，召回 +4.91%）与易混淆实体（`game` +1.45%, `name` +1.31%）上增益更为明显。需注意：总增量在单次种子下尚不足以判定为统计显著（见 §10.1）。
 2. **错例挖掘的反哺价值**：通过案例数据库揭示了模型的改进机理，并指出当前权威评测集中存在的**漏标噪音（GT Omission）**与**修饰语边界歧义**，展现了超越单一分数的批判性分析。
 
 ### 15.2 后续优化与演化路径
-- **补齐统计验证**：运行 `multi_seed.py` 完成 5 种子重复实验，给出 mean±std 与 95% 置信区间；
+
+**优先级 P0（直接支撑课程评分项）**：
+- **补齐生成式交互与验证**：在现有实验展示基础上接入网页实时生成，并开展开启/关闭自验证的受控对照；
+- **低资源分档对照实验**：在 100 / 500 / 2,000 / 10,748 四档训练规模下平行对比抽取式与生成式，复现论文"少样本优势"结论或给出反证；
+- **补齐统计验证**：运行 `multi_seed.py` 完成 5 种子重复实验，给出 mean±std 与 95% 置信区间，为 §10.1 的"未观察到显著差异"提供统计支撑。
+
+**优先级 P1（有余力再做）**：
 - **引入 CRF 层对照**：增加 BERT-CRF / MacBERT-CRF 两组实验，量化转移约束的增益（预期 0.5~1.5pp）；
 - **边界感知与非连续实体建模**：当前线性分类头对嵌套实体（Nested NER）无能为力，可升级为 **GlobalPointer** 或 **MRC** 框架；
 - **评估体系进化**：在 strict exact match 之外补充 **Span IoU / Partial Match** 软匹配评估；
 - **全量错误自动分类**：将现有 14 条人工挑选案例扩展为全量错误类型自动统计（边界错误 / 类别错误 / 漏报 / 误报）；
 - **小模型与 LLM 协同**：利用 LLM 的 In-Context 学习能力做数据纠偏，再蒸馏给 MacBERT 等紧凑模型。
-
-### 9.2 后续优化与演化路径
-- **边界感知与非连续实体建模**：目前采用的线性分类头（Token Classification）对嵌套实体（Nested NER）无能为力。后续可升级引入 **GlobalPointer（全局指针网络）** 或 **MRC（阅读理解式问答框架）**；
-- **评估体系进化**：在 strict exact match 之外，补充 **Span IoU / 软匹配评估（Partial Match）**，对仅存在轻微修饰词分歧的实体进行渐进式置信度评定；
-- **小模型与大语言模型（LLM）协同**：在工业落地场景中，可利用 LLM 的 In-Context 学习能力对无标签数据进行高质量标注与数据纠偏，再蒸馏给 MacBERT 等紧凑型判别小模型，兼顾工业级吞吐速度与高精度。
 
 ---
 
@@ -842,8 +1020,9 @@ python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
 1. **MacBERT**: Yiming Cui, Wanxiang Che, Ting Liu, Bing Qin, Shijin Wang, Guoping Hu. *Revisiting Pre-trained Models for Chinese Natural Language Processing*. Findings of EMNLP 2020, pages 657–668.
 2. **BERT**: Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova. *BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding*. NAACL-HLT 2019, pages 4171–4186.
 3. **CLUENER2020**: Liang Xu, Hai Hu, Xuanwei Zhang, Lu Li, Chenjie Cao, Yudong Li, Yishi Xu, Kai Sun, Dianyu Fang, Cong Yu, et al. *CLUENER2020: Fine-grained Named Entity Recognition Dataset and Benchmark for Chinese*. arXiv preprint arXiv:2001.04351 (2020).
-4. **Seqeval**: Hiroki Nakayama. *seqeval: A Python framework for sequence labeling evaluation*. [GitHub Repository](https://github.com/chakki-works/seqeval) (2018).
-5. **Transformers**: Thomas Wolf et al. *Transformers: State-of-the-Art Natural Language Processing*. EMNLP 2020 System Demonstrations, pages 38–45.
+4. **GPT-NER**: Shuhe Wang, Xiaofei Sun, Xiaoya Li, Rongbin Ouyang, Fei Wu, Tianwei Zhang, Jiwei Li, Guoyin Wang. *GPT-NER: Named Entity Recognition via Large Language Models*. arXiv preprint arXiv:2304.10428 (2023).
+5. **Seqeval**: Hiroki Nakayama. *seqeval: A Python framework for sequence labeling evaluation*. [GitHub Repository](https://github.com/chakki-works/seqeval) (2018).
+6. **Transformers**: Thomas Wolf et al. *Transformers: State-of-the-Art Natural Language Processing*. EMNLP 2020 System Demonstrations, pages 38–45.
 
 ---
 

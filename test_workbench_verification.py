@@ -62,11 +62,15 @@ class WorkbenchSystemTests(unittest.TestCase):
         self.assertIn("models", data)
         self.assertIn("bert", data["models"])
         self.assertIn("macbert", data["models"])
-        self.assertEqual(data["models"]["macbert"]["best_f1"], 76.58)
-        self.assertEqual(data["models"]["bert"]["best_f1"], 76.18)
-        # 头条增益必须是同口径的 dev 差值 (+0.40pp)，不得再使用跨口径的 1.62
-        self.assertEqual(data["headline_delta_f1"], 0.4)
-        self.assertEqual(data["dev_delta_f1"], 0.4)
+        raw = {}
+        for model in ("bert", "macbert"):
+            with open(os.path.join(APP_ROOT, "saved_models", model, "eval_results.json"), encoding="utf-8") as f:
+                raw[model] = json.load(f)
+            self.assertEqual(data["models"][model]["best_f1"], round(raw[model]["best_f1"] * 100, 2))
+        # Compare the current run artifacts, not historical hardcoded scores.
+        delta = round((raw["macbert"]["best_f1"] - raw["bert"]["best_f1"]) * 100, 2)
+        self.assertEqual(data["headline_delta_f1"], delta)
+        self.assertEqual(data["dev_delta_f1"], delta)
         # 论文基线：BERT 有原文出处 78.82；MacBERT 论文未做 CLUENER，应为 None
         self.assertEqual(data["models"]["bert"]["paper_test_f1"], 78.82)
         self.assertIsNone(data["models"]["macbert"]["paper_test_f1"])

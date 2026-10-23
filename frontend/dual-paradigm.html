@@ -1,0 +1,44 @@
+    <section class="tab-pane active" id="tab-overview">
+      <div class="workbench-hero">
+        <div class="hero-copy">
+          <div class="eyebrow">NATURAL LANGUAGE PROCESSING / CLUENER2020</div>
+          <h2>让文本中的实体，<br><span>清晰可见。</span></h2>
+          <p>从逐字标注到文本生成，在同一个工作台探索中文命名实体识别的两条技术路线。</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-navigate="tab-arena">体验抽取式识别 <span aria-hidden="true">↗</span></button>
+            <button class="btn btn-secondary" data-navigate="tab-generative">探索生成式实验 <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-footnote">10 类细粒度实体 <span>·</span> 双范式研究 <span>·</span> 可追溯的实验记录</div>
+        </div>
+        <div class="hero-example" aria-label="实体标注教学示意">
+          <div class="panel-kicker"><span>ENTITY RECOGNITION</span><span class="stat-chip">标注示意 · 非模型预测</span></div>
+          <div class="example-sentence"><span class="example-entity">张三<small>姓名</small></span>在<span class="example-entity outline">北京<small>地址</small></span>加入了<span class="example-entity dashed">腾讯<small>公司</small></span>。</div>
+          <div class="example-divider"><span>一段文本，两种表达</span></div>
+          <div class="representation"><span>01 / 抽取式</span><code>张 / B-name　 三 / I-name　 在 / O</code></div>
+          <div class="representation"><span>02 / 生成式 · 姓名</span><code>@@张三##在北京加入了腾讯。</code></div>
+        </div>
+      </div>
+      <div class="overview-stats" id="overviewStats"></div>
+      <div class="section-heading"><div><div class="eyebrow">TWO APPROACHES, ONE TASK</div><h3>选择一条路线，开始探索</h3></div><span class="muted">从方法原理到实验观察</span></div>
+      <div class="route-grid">
+        <article class="route-card"><span class="route-number">01 / EXTRACTIVE</span><div class="route-title"><h3>抽取式命名实体识别</h3><span class="stat-chip">BERT · MacBERT</span></div><p>为每个字符预测 BIO 标签，再将连续标签解码为实体边界与类别。</p><div class="method-flow"><span>输入文本</span><b>→</b><span>双向编码</span><b>→</b><span>BIO 标注</span><b>→</b><span>实体集合</span></div><div class="route-footer"><span>双模型对比 / 实体高亮 / Token 探针</span><button class="text-button" data-navigate="tab-arena">进入识别工作台 ↗</button></div></article>
+        <article class="route-card"><span class="route-number">02 / GENERATIVE</span><div class="route-title"><h3>生成式命名实体识别</h3><span class="stat-chip">GPT-NER · Qwen2.5</span></div><p>用自然语言指定实体类别，生成带有 @@ 与 ## 标记的文本，再解析实体。</p><div class="method-flow"><span>检索示例</span><b>→</b><span>构造提示</span><b>→</b><span>文本生成</span><b>→</b><span>解析实体</span></div><div class="route-footer"><span>检索消融 / LoRA 评测 / 失败案例</span><button class="text-button" data-navigate="tab-generative">进入生成式实验室 ↗</button></div></article>
+      </div>
+      <div class="taxonomy-strip"><span class="eyebrow">实体类别</span><div id="overviewTaxonomy"></div></div>
+    </section>
+
+    <section class="tab-pane" id="tab-generative">
+      <div class="section-heading page-heading"><div><div class="eyebrow">02 / GENERATIVE NER</div><h2>生成式实验室</h2><p class="muted">GPT-NER 方法 · Qwen2.5-1.5B-Instruct 基座 · 已完成实验回放</p></div><span class="stat-chip">实验展示 · 未接入实时生成</span></div>
+      <div class="generation-layout">
+        <aside class="experiment-sidebar card"><div class="eyebrow">EXPERIMENTS</div><h3>选择实验配置</h3><p class="muted small">切换查看指标、类别表现与实验参数。</p><div id="experimentList"></div><div class="experiment-note">自验证属于方法设计；所展示运行均以各自配置为准，不将未运行机制标作已启用。</div></aside>
+        <div class="experiment-main">
+          <div class="experiment-header"><div><h3 id="experimentTitle">暂无实验记录</h3><p class="muted small" id="experimentScope"></p></div><button class="btn btn-secondary btn-sm" id="exportExperiment">导出实验 JSON ↓</button></div>
+          <div id="experimentStats" class="experiment-stats" aria-live="polite"></div>
+          <div class="card experiment-detail"><div class="section-heading"><h3>10 类实体表现</h3><label class="small">指标 <select id="generationMetric" aria-label="生成式类别指标"><option value="f1">F1</option><option value="precision">Precision</option><option value="recall">Recall</option></select></label></div><div id="generationBars"></div><div id="experimentConfig" class="config-strip"></div></div>
+        </div>
+      </div>
+      <div class="card experiment-detail"><div class="section-heading"><div><div class="eyebrow">CONTROLLED ABLATION</div><h3>示例检索策略消融</h3></div><span class="stat-chip">前 120 句 · 8-shot · 72 tokens</span></div><p class="muted small">这组三种检索策略使用相同样本范围与生成长度。LoRA 全量开发集结果在上方独立查看，不能据此把不同运行的差值归因于单一因素。</p><div class="table-scroll"><table class="benchmark-table"><thead><tr><th>检索策略</th><th>Precision</th><th>Recall</th><th>Micro F1</th><th>格式异常率</th><th>幻觉率</th></tr></thead><tbody id="retrievalAblation"></tbody></table></div></div>
+      <div class="section-heading"><div><div class="eyebrow">HOW IT WORKS</div><h3>从提示到实体</h3></div><span class="muted small">交互式协议示意 · 不调用模型</span></div>
+      <div class="protocol-grid"><div class="card experiment-detail"><label for="protocolCategory">目标实体类别</label><select id="protocolCategory"><option value="name">姓名 / name</option><option value="address">地址 / address</option><option value="company">公司 / company</option></select><p class="muted small">固定教学示例：张三在北京加入了腾讯。</p><div class="protocol-stage"><span>01 / 提示词</span><pre id="protocolPrompt"></pre></div><div class="protocol-stage"><span>02 / 标记文本</span><pre id="protocolOutput"></pre></div><div class="protocol-stage"><span>03 / 解析为实体 · 0 起始闭区间</span><pre id="protocolEntities"></pre></div></div><div class="mechanism-stack"><article class="mechanism"><span>01</span><div><h3>原文复写与标记</h3><p>保留原文，只在目标实体两端插入 @@ 与 ##。解析时检查标记闭合和原文对齐；格式约定本身不能保证模型始终遵守。</p></div></article><article class="mechanism"><span>02</span><div><h3>示例检索</h3><p>随机、句子级、实体级检索提供不同上下文示例。上方消融记录展示检索策略对识别质量和格式稳定性的影响。</p></div></article><article class="mechanism"><span>03</span><div><h3>自验证 · 可选机制</h3><p>对候选实体追加“是否属于目标类别”的判断。当前展示的实验没有开启自验证，不据此宣称获得性能提升。</p></div></article><button class="btn btn-secondary" id="viewGenerativeCases">查看生成式失败案例 →</button></div></div>
+      <div class="source-note" id="generationSource"></div>
+    </section>

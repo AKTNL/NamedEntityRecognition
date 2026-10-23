@@ -20,6 +20,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| [Dual-Paradigm Contract](./dual-paradigm-contract.md) | Generated sources, experiment units, offline/live boundaries and verification | Implemented |
 
 ---
 

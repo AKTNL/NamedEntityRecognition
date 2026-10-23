@@ -5,20 +5,54 @@ Workbench HTML & Template Builder
 
 import os
 import json
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 def build():
     bundle_path = os.path.join(ROOT, "static_offline_bundle.json")
     with open(bundle_path, "r", encoding="utf-8") as f:
-        bundle_json_str = f.read()
+        bundle = json.load(f)
+    # Embed original experiment records, not the historical API summary. Optional
+    # artifacts can be absent on a fresh checkout; the UI then shows an empty state.
+    experiments = [
+        ("lora_full", "LoRA · 全量开发集", "lora", "gptner_sentence_k0_lora.json"),
+        ("random", "随机示例检索", "retrieval", "gptner_random_k8_n120.json"),
+        ("sentence", "句子级语义检索", "retrieval", "gptner_sentence_k8_n120.json"),
+        ("entity", "实体级示例检索", "retrieval", "gptner_entity_k8_n120.json"),
+        ("lora_100", "LoRA · 早期 100 句实验", "lora", "gptner_sentence_k0_lora_n100.json"),
+    ]
+    bundle["experiments"] = []
+    for experiment_id, label, group, filename in experiments:
+        source = Path("results/generative") / filename
+        path = Path(ROOT) / source
+        if path.exists():
+            record = json.loads(path.read_text(encoding="utf-8"))
+            bundle["experiments"].append({
+                "id": experiment_id, "label": label, "group": group,
+                "source": source.as_posix(), "config": record["config"],
+                "metrics": record["metrics"],
+            })
+    bundle["training_runs"] = {}
+    for model in ("bert", "macbert"):
+        path = Path(ROOT) / "saved_models" / model / "eval_results.json"
+        if path.exists():
+            record = json.loads(path.read_text(encoding="utf-8"))
+            bundle["training_runs"][model] = {key: record.get(key) for key in
+                ("model_name", "epochs", "best_epoch", "batch_size", "lr", "max_len")}
+    # Prevent embedded user text from terminating the script element.
+    bundle_json_str = json.dumps(bundle, ensure_ascii=False, indent=2).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    frontend = Path(ROOT) / "frontend"
+    dual_html = (frontend / "dual-paradigm.html").read_text(encoding="utf-8")
+    dual_css = (frontend / "dual-paradigm.css").read_text(encoding="utf-8")
+    dual_js = (frontend / "dual-paradigm.js").read_text(encoding="utf-8")
 
     html_content = f'''<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MacBERT × CLUENER2020 交互式复现工作台与全栈模型体验系统</title>
+  <title>NER Lab · 中文命名实体识别双范式工作台</title>
   <style>
     /* ==========================================================================
        1. 全局设计系统与主题变量（Pure Minimalist Monochrome / 黑白极简）
@@ -1463,6 +1497,7 @@ def build():
       color: var(--text-muted);
       background: var(--bg-card);
     }}
+    {dual_css}
   </style>
 </head>
 <body>
@@ -1470,10 +1505,10 @@ def build():
   <!-- 1. 顶部导航与状态条 -->
   <header class="navbar">
     <div class="nav-brand">
-      <div class="nav-logo">M</div>
+      <div class="nav-logo">N/</div>
       <div class="nav-title-group">
-        <h1>MacBERT × CLUENER2020 <span class="nav-badge">v2.0 Academic Workbench</span></h1>
-        <div class="sub-title">细粒度中文命名实体识别复现工作台与全栈模型对决体验系统</div>
+        <h1>NER Lab <span class="nav-badge">CLUENER2020</span></h1>
+        <div class="sub-title">中文命名实体识别 · 双范式研究工作台</div>
       </div>
     </div>
     <div class="nav-actions">
@@ -1490,37 +1525,41 @@ def build():
 
   <!-- 2. 选项卡导航栏 -->
   <nav class="tab-nav-container">
-    <button class="tab-btn active" data-tab="tab-arena">
+    <button class="tab-btn active" data-tab="tab-overview">工作台总览</button>
+    <button class="tab-btn" data-tab="tab-arena">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-      ⚡ 模型对决与在线打靶 (Arena)
+      抽取式识别
     </button>
+    <button class="tab-btn" data-tab="tab-generative">生成式实验室</button>
     <button class="tab-btn" data-tab="tab-code">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-      💻 复现代码深度透视 (Codebase)
+      复现代码
     </button>
     <button class="tab-btn" data-tab="tab-benchmark">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-      📊 实测学术指标大盘 (Benchmark)
+      抽取式评测
     </button>
     <button class="tab-btn" data-tab="tab-gallery">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      🔍 真实错例深度展厅 (Bad Cases)
+      案例分析
     </button>
   </nav>
 
   <!-- 3. 主界面容器 -->
   <main class="main-container">
+    {dual_html}
 
     <!-- ====================================================================
          TAB 1: 模型对决与在线打靶 (Arena)
          ==================================================================== -->
-    <section class="tab-pane active" id="tab-arena">
+    <section class="tab-pane" id="tab-arena">
+      <div class="section-heading page-heading"><div><div class="eyebrow">01 / EXTRACTIVE NER</div><h2>抽取式识别工作台</h2><p class="muted">同一段文本，观察 BERT 与 MacBERT 的实体边界与类别差异。</p></div><span class="stat-chip">BIO 序列标注 · 10 类实体</span></div>
       
       <!-- 离线模式降级提醒横幅（默认隐藏，离线时展现） -->
       <div id="offlineNoticeBanner" style="display:none; background: var(--bg-card-subtle); border: 1px solid var(--border-main); border-left: 4px solid var(--text-muted); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
         <div>
           <strong>当前处于离线演示模式 (Offline Simulation Active)</strong>：
-          未检测到后端 Flask 服务，系统已自动切换至内置的 100% 离线推演引擎与真实预置预测集。
+          未检测到后端 Flask 服务；预设文本显示已保存预测，其他文本仅作词典匹配演示，不代表模型能力。
           若需体验 PyTorch 真实权重实时推理，只需在终端执行 <code>python app.py</code>。
         </div>
       </div>
@@ -1529,7 +1568,7 @@ def build():
       <div class="card">
         <div class="input-section">
           <div class="textarea-wrapper">
-            <textarea id="arenaInput" class="arena-textarea" placeholder="请输入任意中文文本进行命名实体识别打靶测试（支持地址、书籍、公司、游戏、政府、电影、姓名、组织、职位、景点 10 类实体抽取）..." maxlength="128"></textarea>
+            <textarea id="arenaInput" class="arena-textarea" aria-label="待识别中文文本" placeholder="请输入任意中文文本进行命名实体识别打靶测试（支持地址、书籍、公司、游戏、政府、电影、姓名、组织、职位、景点 10 类实体抽取）..." maxlength="128"></textarea>
             <span class="char-count" id="charCount">0 / 128 字</span>
           </div>
 
@@ -1578,6 +1617,7 @@ def build():
       </div>
 
       <!-- 差异对比视窗 (Diff Mode Alert) -->
+      <div id="predictionSource" class="result-provenance" role="status">选择预设文本或输入内容，开始识别。</div>
       <div id="diffAlertContainer"></div>
 
       <!-- 双模型同屏对决展示网格 (MacBERT vs BERT) -->
@@ -1692,9 +1732,9 @@ def build():
           <div class="kpi-title">MacBERT 验证集 Micro F1</div>
           <div class="kpi-value-row">
             <span class="kpi-value" id="kpiMacbertF1">76.58%</span>
-            <span class="kpi-delta pos">+0.40pp</span>
+            <span class="kpi-delta pos" id="benchmarkDelta">—</span>
           </div>
-          <div class="kpi-subtext">较 BERT (76.18%) 略优；单次 seed=42，差距在种子方差范围内，尚未达统计显著</div>
+          <div class="kpi-subtext" id="benchmarkDeltaNote"></div>
         </div>
         <div class="kpi-card">
           <div class="kpi-title">原生 BERT 验证集 Micro F1</div>
@@ -1707,18 +1747,16 @@ def build():
         <div class="kpi-card">
           <div class="kpi-title">验证集最低损失 (Loss)</div>
           <div class="kpi-value-row">
-            <span class="kpi-value">0.1935</span>
-            <span class="kpi-delta pos">-5.6%</span>
+            <span class="kpi-value" id="benchmarkLoss">—</span>
           </div>
-          <div class="kpi-subtext">MacBERT 收敛拟合更优 (BERT 0.2050)</div>
+          <div class="kpi-subtext" id="benchmarkLossNote"></div>
         </div>
         <div class="kpi-card">
           <div class="kpi-title">最优收敛轮次 (Best Epoch)</div>
           <div class="kpi-value-row">
-            <span class="kpi-value">Epoch 2</span>
-            <span class="kpi-subtext">早于 BERT (Ep.3)</span>
+            <span class="kpi-value" id="benchmarkEpoch">—</span>
           </div>
-          <div class="kpi-subtext">全词掩码增强先验，收敛速度更快</div>
+          <div class="kpi-subtext" id="benchmarkEpochNote"></div>
         </div>
       </div>
 
@@ -1765,7 +1803,7 @@ def build():
         <div class="card-header">
           <div class="card-title">⚙️ 实验复现环境与训练超参数基准表</div>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; font-size:0.85rem;">
+        <div id="trainingRunConfig" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; font-size:0.85rem;">
           <div style="background:var(--bg-card-subtle); padding:0.75rem 1rem; border-radius:var(--radius-md);">
             <strong>预训练基础模型：</strong> <code>bert-base-chinese</code> vs <code>hfl/chinese-macbert-base</code>
           </div>
@@ -1796,16 +1834,18 @@ def build():
         <div class="card-header">
           <div>
             <div class="card-title">🔍 真实错例与典型案例全集展厅 (Bad Case Gallery)</div>
-            <div class="card-subtitle">系统挖掘 1,343 条真实样本中 MacBERT 对 BERT 的边界纠错修复，以及中文命名实体识别的固有边界瓶颈</div>
+            <div class="card-subtitle">对照真实标注、模型输出与案例分析，观察抽取式的边界问题和生成式的格式失效。</div>
           </div>
         </div>
 
         <!-- 错例分类筛选 -->
         <div class="gallery-filter-bar">
-          <button class="gallery-filter-btn active" data-filter="all">全部代表性案例 (14)</button>
-          <button class="gallery-filter-btn" data-filter="advantages">类别 A：MacBERT 优势/纠错案例 (8)</button>
-          <button class="gallery-filter-btn" data-filter="hard">类别 B：中文 NER 固有瓶颈与双错案例 (6)</button>
+          <button class="gallery-filter-btn active" data-filter="all">全部案例</button>
+          <button class="gallery-filter-btn" data-filter="advantages">抽取式 · 纠错案例</button>
+          <button class="gallery-filter-btn" data-filter="hard">抽取式 · 边界难例</button>
+          <button class="gallery-filter-btn" data-filter="generative">生成式 · 失败案例</button>
         </div>
+        <div class="gallery-toolbar"><input id="caseSearch" class="gallery-search" type="search" placeholder="搜索文本、实体类别或失败现象…" aria-label="搜索案例"><span id="caseCount" class="muted small" role="status"></span></div>
 
         <!-- 错例网格卡片 -->
         <div class="cases-grid" id="casesGridContainer"></div>
@@ -1849,7 +1889,8 @@ def build():
 
   <!-- 6. 统一页脚 -->
   <footer class="footer">
-    MacBERT × CLUENER2020 细粒度中文命名实体识别复现工作台 · Reproduction Workbench & Live Model Arena · 基于 PyTorch 与 Transformers
+    NER Lab · 中文命名实体识别双范式工作台 · CLUENER2020
+    <div id="dataSourceStatus" class="source-note" role="status">数据来源：内置实验快照</div>
   </footer>
 
   <!-- ==========================================================================
@@ -1869,7 +1910,7 @@ def build():
       // 全局状态管理
       const state = {{
         isOnline: false,
-        activeTab: 'tab-arena',
+        activeTab: 'tab-overview',
         activeMetric: 'f1',
         activeFilter: 'all',
         activeCodeFile: 'dataset',
@@ -2009,6 +2050,7 @@ def build():
          ======================================================================== */
       async function detectBackend() {{
         try {{
+          if (location.protocol === 'file:') throw new Error('Standalone mode');
           const controller = new AbortController();
           const timer = setTimeout(() => controller.abort(), 1200);
           const res = await fetch('/api/health', {{ signal: controller.signal }});
@@ -2018,7 +2060,7 @@ def build():
             if (data.status === 'ok') {{
               state.isOnline = true;
               el.statusDot.className = 'status-dot online';
-              el.statusText.textContent = '后端服务在线 (PyTorch CPU 实时推理)';
+              el.statusText.textContent = `抽取式服务在线 · ${{data.device || 'PyTorch'}}`;
               el.offlineNoticeBanner.style.display = 'none';
               return;
             }}
@@ -2029,7 +2071,7 @@ def build():
 
         state.isOnline = false;
         el.statusDot.className = 'status-dot';
-        el.statusText.textContent = '离线演示模式 (本地静态推演引擎)';
+        el.statusText.textContent = '离线模式 · 实验与示例可用';
         el.offlineNoticeBanner.style.display = 'flex';
       }}
 
@@ -2288,6 +2330,8 @@ def build():
 
       // 执行对决打靶分析（核心推理路由）
       async function runArenaAnalysis(text, presetId = null) {{
+        const requestId = (state.analysisRequestId || 0) + 1;
+        state.analysisRequestId = requestId;
         setLoading(true);
 
         try {{
@@ -2295,20 +2339,25 @@ def build():
 
           // 1. 若在线，向后端发起请求
           if (state.isOnline) {{
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 30000);
             try {{
               const res = await fetch('/api/predict', {{
                 method: 'POST',
+                signal: controller.signal,
                 headers: {{ 'Content-Type': 'application/json' }},
                 body: JSON.stringify({{ text: text, model: 'both' }})
               }});
               if (res.ok) {{
                 const resJson = await res.json();
                 if (resJson.success) {{
-                  data = resJson;
+                  data = {{ ...resJson, source: 'live' }};
                 }}
               }}
             }} catch (netErr) {{
               console.warn('后端推理请求失败，自动切换离线推演引擎:', netErr);
+            }} finally {{
+              clearTimeout(timer);
             }}
           }}
 
@@ -2317,19 +2366,21 @@ def build():
             data = runOfflineSimulation(text, presetId);
           }}
 
+          if (requestId !== state.analysisRequestId) return;
           state.lastPredictResult = data;
           renderArenaResults(text, data);
         }} catch (err) {{
           console.error('Arena 执行异常:', err);
           alert('打靶分析失败: ' + err.message);
         }} finally {{
-          setLoading(false);
+          if (requestId === state.analysisRequestId) setLoading(false);
         }}
       }}
 
       function setLoading(isLoading) {{
         el.btnRunArena.disabled = isLoading;
         if (isLoading) {{
+          document.getElementById('predictionSource').textContent = '正在识别当前文本… 下方暂时保留上次结果。';
           el.btnRunIcon.textContent = '⏳';
           el.btnRunText.textContent = '正在同屏前向推理...';
         }} else {{
@@ -2344,21 +2395,18 @@ def build():
 
         // 检查是否有预置推演记录
         if (presetId && predictions[presetId]) {{
-          return predictions[presetId];
+          return {{ ...predictions[presetId], source: 'recorded' }};
         }}
         if (predictions[text]) {{
-          return predictions[text];
+          return {{ ...predictions[text], source: 'recorded' }};
         }}
 
-        // 启发式匹配已有错例
-        for (const k in predictions) {{
-          if (predictions[k] && (k === text || text.includes(k) || k.includes(text))) {{
-            return predictions[k];
-          }}
-        }}
+        // Only exact text matches may reuse stored spans.
+        const preset = (bundle.presets || []).find(item => item.text === text);
+        if (preset && predictions[preset.id]) return {{ ...predictions[preset.id], source: 'recorded' }};
 
         // 通用兜底模拟推演
-        return simulateArbitraryText(text);
+        return {{ ...simulateArbitraryText(text), source: 'dictionary' }};
       }}
 
       function simulateArbitraryText(text) {{
@@ -2394,7 +2442,7 @@ def build():
               category_cn: meta[item.cat]?.cn || item.cat,
               color: 'var(--text-main)',
               text: item.w,
-              confidence: 0.965
+              confidence: null
             }});
             idx = text.indexOf(item.w, idx + item.w.length);
           }}
@@ -2447,11 +2495,16 @@ def build():
         const mRes = data.results?.macbert || {{ entities: [], tokens: [], latency_ms: 0 }};
         const bRes = data.results?.bert || {{ entities: [], tokens: [], latency_ms: 0 }};
         const diff = data.diff || {{}};
+        const dictionary = data.source === 'dictionary';
+        document.getElementById('predictionSource').textContent = data.source === 'live'
+          ? '实时模型推理 · 当前文本已发送至本地 BERT / MacBERT 服务'
+          : dictionary ? '词典匹配演示 · 非模型预测，不提供模型耗时、置信度或 BIO 探针'
+          : '已保存的预测快照 · 当前显示历史结果，非本次实时推理';
 
         // 1. 延迟与数量
-        el.macbertLatency.textContent = `推理: ${{mRes.latency_ms}} ms`;
+        el.macbertLatency.textContent = dictionary ? '耗时: 不适用' : `推理: ${{mRes.latency_ms}} ms`;
         el.macbertCount.textContent = `实体: ${{mRes.entities.length}} 个`;
-        el.bertLatency.textContent = `推理: ${{bRes.latency_ms}} ms`;
+        el.bertLatency.textContent = dictionary ? '耗时: 不适用' : `推理: ${{bRes.latency_ms}} ms`;
         el.bertCount.textContent = `实体: ${{bRes.entities.length}} 个`;
 
         // 2. 渲染高亮文本框
@@ -2459,14 +2512,17 @@ def build():
         el.bertVisualBox.innerHTML = renderHighlightedSpanText(text, bRes.entities);
 
         // 3. 渲染结构化实体 Chips 列表
-        el.macbertEntitiesList.innerHTML = renderEntitiesChips(mRes.entities);
-        el.bertEntitiesList.innerHTML = renderEntitiesChips(bRes.entities);
+        el.macbertEntitiesList.innerHTML = dictionary ? renderEntitiesInlineBadges(mRes.entities) : renderEntitiesChips(mRes.entities);
+        el.bertEntitiesList.innerHTML = dictionary ? renderEntitiesInlineBadges(bRes.entities) : renderEntitiesChips(bRes.entities);
 
         // 4. 渲染差异报告视窗
-        renderDiffAlert(diff);
+        if (dictionary) el.diffAlertContainer.innerHTML = '';
+        else renderDiffAlert(diff);
 
         // 5. 渲染底层 Token 探针
-        renderTokenProbe(text, mRes.tokens, bRes.tokens);
+        renderTokenProbe(text, dictionary ? [] : mRes.tokens, dictionary ? [] : bRes.tokens);
+        el.btnToggleProbe.disabled = dictionary;
+        if (dictionary) el.probeTableWrapper.style.display = 'none';
       }}
 
       // 将文本按实体切分并插入高亮标签
@@ -2485,7 +2541,7 @@ def build():
           }}
           const cat = ent.category;
           const catCn = ent.category_cn || cat;
-          const confStr = (ent.confidence * 100).toFixed(1) + '%';
+          const confStr = typeof ent.confidence === 'number' ? (ent.confidence * 100).toFixed(1) + '%' : '不适用';
           const spanText = escapeHtml(text.slice(ent.start, ent.end + 1));
 
           html += `<span class="entity-span badge-${{cat}}" title="${{catCn}} [${{ent.start}}, ${{ent.end}}] ${{confStr}}">
@@ -2877,22 +2933,28 @@ def build():
         const casesData = bundle.cases || {{}};
         const catA = casesData.category_a_macbert_advantages || [];
         const catB = casesData.category_b_hard_cases || [];
+        const catC = casesData.category_c_generative_failures || [];
 
         let list = [];
         if (state.activeFilter === 'advantages') {{
           list = catA;
         }} else if (state.activeFilter === 'hard') {{
           list = catB;
+        }} else if (state.activeFilter === 'generative') {{
+          list = catC;
         }} else {{
-          list = [...catA, ...catB];
+          list = [...catA, ...catB, ...catC];
         }}
+        const query = (document.getElementById('caseSearch').value || '').trim().toLowerCase();
+        list = list.filter(c => [c.text, c.pattern_name, c.primary_category, c.model_type, c.technical_reason].some(value => String(value || '').toLowerCase().includes(query)));
+        document.getElementById('caseCount').textContent = `显示 ${{list.length}} 个案例`;
 
         if (list.length === 0) {{
           el.casesGridContainer.innerHTML = '<div style="font-size:0.85rem; color:var(--text-muted); padding:2rem 0; text-align:center;">暂无案例</div>';
           return;
         }}
 
-        el.casesGridContainer.innerHTML = list.map(c => `
+        el.casesGridContainer.innerHTML = list.map(c => catC.includes(c) ? renderGenerativeCase(c) : `
           <div class="case-card">
             <div class="case-top-meta">
               <span class="case-id-badge">${{escapeHtml(c.case_id)}}</span>
@@ -2940,8 +3002,8 @@ def build():
           return '<span style="color:var(--text-muted); font-size:0.75rem;">(无实体)</span>';
         }}
         return ents.map(e => `
-          <span class="entity-span badge-${{e.category}}" style="font-size:0.72rem; padding:0.1rem 0.35rem; margin:0;">
-            ${{escapeHtml(e.text)}} (${{e.category}})
+          <span class="entity-span badge-${{escapeHtml(e.category)}}" style="font-size:0.72rem; padding:0.1rem 0.35rem; margin:0;">
+            ${{escapeHtml(e.text)}} (${{escapeHtml(e.category)}})
           </span>
         `).join('');
       }}
@@ -2962,6 +3024,8 @@ def build():
         state.activeTab = tabId;
         document.querySelectorAll('.tab-btn').forEach(b => {{
           b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+          b.setAttribute('aria-selected', String(b.dataset.tab === tabId));
+          b.tabIndex = b.dataset.tab === tabId ? 0 : -1;
         }});
         document.querySelectorAll('.tab-pane').forEach(p => {{
           p.classList.toggle('active', p.id === tabId);
@@ -3018,6 +3082,8 @@ def build():
       /* ========================================================================
          应用初始化启动
          ======================================================================== */
+      {dual_js}
+
       function main() {{
         initTheme();
         initTabNavigation();
@@ -3026,6 +3092,7 @@ def build():
         initBenchmark();
         initGallery();
         loadCustomCases();
+        initDualParadigm();
         detectBackend();
       }}
 
