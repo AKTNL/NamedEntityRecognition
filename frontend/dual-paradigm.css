@@ -100,6 +100,23 @@ select { background: var(--bg-input); border: 1px solid var(--border-subtle); co
 .gallery-toolbar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
 .gallery-search { flex: 1; min-width: 180px; border: 1px solid var(--border-main); background: var(--bg-input); color: var(--text-main); border-radius: 6px; padding: .65rem; font: inherit; font-size: .8rem; }
 .empty-state { padding: 2rem; color: var(--text-secondary); text-align: center; }
+.live-generation { margin-bottom: 2rem; }
+.live-generation textarea { min-height: 100px; width: 100%; }
+.live-input-meta, .live-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .75rem; margin: .6rem 0 1rem; }
+.live-categories { border: 1px solid var(--border-main); border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0; }
+.live-categories legend { padding: 0 .4rem; font-size: .8rem; }
+#generativeCategories { display: flex; flex-wrap: wrap; gap: .65rem 1.1rem; }
+#generativeCategories label { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; cursor: pointer; }
+#generativeCategories input { accent-color: var(--text-main); }
+.live-category-actions { display: flex; gap: 1rem; margin-top: .9rem; }
+.live-generation [hidden] { display: none !important; }
+.live-generation [data-error="true"] { border-left-width: 4px; font-weight: 600; }
+.live-generation .config-strip { margin-top: 0; margin-bottom: 1rem; }
+.live-generation .visual-text-box { white-space: pre-wrap; overflow-wrap: anywhere; }
+.live-raw-heading { margin: 1.5rem 0 .7rem; font-size: .9rem; }
+.live-output { margin-top: .65rem; padding: .75rem 1rem; border: 1px solid var(--border-main); border-radius: 7px; }
+.live-output summary { cursor: pointer; font-size: .8rem; }
+.live-output p { margin-top: .5rem; }
 button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--text-main); outline-offset: 4px; }
 .arena-controls > div:last-child { flex-wrap: wrap; }
 @media (max-width: 1000px) { .workbench-hero { gap: 2rem; } .generation-layout { grid-template-columns: 220px minmax(0,1fr); } .experiment-stats { grid-template-columns: repeat(3,1fr); } .route-footer { align-items: flex-start; } }

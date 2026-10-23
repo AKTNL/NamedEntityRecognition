@@ -46,6 +46,7 @@ def build():
     dual_html = (frontend / "dual-paradigm.html").read_text(encoding="utf-8")
     dual_css = (frontend / "dual-paradigm.css").read_text(encoding="utf-8")
     dual_js = (frontend / "dual-paradigm.js").read_text(encoding="utf-8")
+    dual_js += "\n" + (frontend / "generative-live.js").read_text(encoding="utf-8")
 
     html_content = f'''<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
@@ -3093,6 +3094,7 @@ def build():
         initGallery();
         loadCustomCases();
         initDualParadigm();
+        initLiveGeneration();
         detectBackend();
       }}
 

@@ -76,7 +76,7 @@
 | 任务形式化 | 逐字符多分类（序列标注 $21$ 类） | 文本到文本生成（`@@实体##` 标记序列） |
 | 输出解码 | BIO 标签链 → 贪心/Viterbi 解码为 span | 生成文本 → 正则解析回 span 集合 |
 | 监督信号 | 全量 10,748 条标注数据微调 | 少样本（Few-shot）提示 + 示例检索 |
-| 本项目状态 | **已完成**（含训练、评测、错例挖掘） | **已接入检索消融、LoRA 评测与失败案例展示**；网页未提供实时生成（见 §8） |
+| 本项目状态 | **已完成**（含训练、评测、错例挖掘） | **已接入训练后 LoRA 实时识别、检索消融、评测与失败案例**（见 §8） |
 
 **抽取式一侧**已完整落地：在统一的硬件与超参数约束下，完成了 **BERT-base-chinese** 与 **chinese-macbert-base** 的严格实体级评测比对，并自主研发了跨模型错例挖掘工具，输出了包含量化指标、错例溯源及语言学分析的完整学术闭环。
 
@@ -300,7 +300,7 @@ Step 3  kNN 搜索
 1. **跨语言与跨数据集迁移**：GPT-NER 原论文实验基于英文数据集（CoNLL2003 / OntoNotes / ACE2004 / GENIA），本项目改用中文 CLUENER2020。因此**绝对 F1 数值不可与原论文直接比较**，本项目仅比较"同一数据集上两种范式的相对表现"。
 2. **基座模型降级**：原论文使用 GPT-3（`text-davinci-003`，175B 级闭源 API），本项目受本地硬件约束（RTX 5060 8GB），拟采用 **Qwen2.5-1.5B-Instruct** 等可在单卡部署的开源指令微调模型。参数量相差约两个数量级，预期绝对性能显著低于原论文报告值，此差异须在结果解读时明确归因于"基座规模"而非"方法失效"。
 
-> **状态说明（2026-10-23）**：工作台已接入本地 Qwen2.5-1.5B 的检索策略消融、LoRA 评测及失败案例。生成式页面提供已完成实验的展示与导出，不调用模型生成新结果；协议演示使用明确标注的固定教学示例。所展示运行均未开启自验证，不能将自验证的理论收益当作本项目实测结论。
+> **状态说明（2026-10-23）**：工作台已接入本地 Qwen2.5-1.5B 的检索策略消融、LoRA 评测及失败案例。生成式页面已接入训练后的 Qwen + LoRA 实时识别，并保留历史实验展示与导出；页面下方的协议教学示例仍为固定示意。所展示运行均未开启自验证，不能将自验证的理论收益当作本项目实测结论。
 
 ### 2.6 两种范式的结构性对照
 
@@ -547,10 +547,13 @@ NamedEntityRecognition/
 │   ├── dual-paradigm.html           # 双范式总览与生成式实验室
 │   ├── dual-paradigm.css            # 黑白设计系统与响应式布局
 │   ├── dual-paradigm.js             # 实验切换、案例展示、数据同步与导航
+│   ├── generative-live.js            # 生成式实时请求、校验和结果渲染
 │   └── README.md                   # 前端维护说明
 ├── test_dual_paradigm_frontend.js   # 生成页面的真实函数回归测试
 ├── test_frontend_logic.js           # 静态 Bundle 与内联脚本检查
 ├── test_workbench_verification.py  # Flask 路由与本地模型集成测试
+├── generative_service.py             # 懒加载 LoRA、请求限流和原文对齐
+├── test_generative_api.py            # 生成式接口与实体偏移回归测试
 ├── static_offline_bundle.json       # 离线全量评估指标、代表错例与预置推演数据包
 ├── templates/
 │   └── index.html                   # Flask 动态托管的交互式工作台前端模板
@@ -718,7 +721,7 @@ MacBERT:  [莫斯科中央陆军] (organization)
 
 ## 8. 交互式复现工作台与全栈模型体验系统 (Interactive Reproduction Workbench & Model Arena)
 
-**NER Lab** 将抽取式与生成式 NER 整合到同一个中文工作台：抽取式支持 BERT/MacBERT 实时推理，生成式展示 GPT-NER / Qwen2.5 的已完成实验。页面使用 Flask + 原生 JavaScript/CSS，不需要安装前端框架或下载 CDN 资源。
+**NER Lab** 将抽取式与生成式 NER 整合到同一个中文工作台：抽取式支持 BERT/MacBERT 实时推理，生成式支持训练后的 Qwen2.5 + LoRA 实时识别，并展示已完成实验。页面使用 Flask + 原生 JavaScript/CSS，不需要安装前端框架或下载 CDN 资源。
 
 ### 8.1 工作台设计架构与核心特性
 
@@ -726,7 +729,7 @@ MacBERT:  [莫斯科中央陆军] (organization)
 - **黑白简约界面**：深色/浅色主题、本地主题记忆、桌面与手机布局；实体通过明暗、边框和文字标签区分。
 - **明确结果来源**：实时模型预测、已保存预测快照、词典匹配演示分别标注。词典演示不提供模型置信度、模型耗时或 BIO 探针。
 - **离线可展示**：`workbench.html` 内嵌所需样式、脚本和实验快照。离线可浏览实验、代码与案例，但不能执行真实模型推理。
-- **生成式范围**：支持实验切换、指标可视化、JSON 导出及协议教学示意；尚未接入网页实时生成接口。
+- **生成式实时识别**：输入文本并选择实体类别，使用本地 Qwen 基座与训练后的 LoRA 适配器生成标记文本；显示实体高亮、原始输出、校验提示与 JSON 导出。历史实验与实时请求独立展示。
 
 ### 8.2 快速启动与双模运行指南
 
@@ -764,7 +767,7 @@ python build_workbench_html.py
 | :--- | :--- |
 | **工作台总览** | 双范式原理简介、指标摘要、10 类实体说明与功能入口 |
 | **抽取式识别** | 中文文本输入、BERT/MacBERT 对比、实体高亮、差异分析、逐字 BIO 探针、自定义用例保存和导入导出 |
-| **生成式实验室** | 选择 LoRA 或检索实验，查看 P/R/F1、格式异常率、幻觉率、10 类指标及运行配置，导出当前实验 JSON |
+| **生成式实验室** | 使用训练后 LoRA 实时识别新文本；另可切换历史实验、查看 P/R/F1 和异常率、导出预测或实验 JSON |
 | **复现代码** | 查看数据处理、训练与错例挖掘的源码快照及批注 |
 | **抽取式评测** | 总体指标、10 类 P/R/F1 图表与表格、训练配置和论文口径说明 |
 | **案例分析** | 抽取式纠错/边界难例与生成式失败案例筛选、关键词搜索、原始生成文本和机制分析 |
@@ -779,9 +782,44 @@ python build_workbench_html.py
 | `GET /api/metrics` | 抽取式指标 | `data.models`、`data.categories_comparison`、`data.headline_delta_f1` |
 | `GET /api/cases` | 案例记录 | `data.category_a_macbert_advantages`、`data.category_b_hard_cases`；扩展数据可包含 `data.category_c_generative_failures` |
 | `GET /api/code` | 源码与批注 | `data.files` |
-| `GET /api/health` | 服务与模型状态 | `status`、`device`、`models` |
+| `GET /api/health` | 抽取式服务与模型状态 | `status`、`device`、`models` |
+| `GET /api/generative/status` | 生成式权重可用性、加载与忙碌状态（不加载模型） | `data.available`、`data.loaded`、`data.busy`、`data.device` |
+| `POST /api/generative/predict` | 训练后 Qwen + LoRA 实时预测 | `data.entities`、`data.outputs`、`data.timing`、`data.warning_count` |
 
-HTTP 模式会刷新 `/api/metrics` 和 `/api/cases`；失败时保留内嵌数据，并在页脚标明来源。生成式指标来自构建时嵌入的原始运行记录，不使用可能混合早期样本范围的汇总接口，也不调用实时生成接口。
+HTTP 模式会刷新 `/api/metrics` 和 `/api/cases`；失败时保留内嵌数据，并在页脚标明来源。历史生成式指标来自构建时嵌入的原始运行记录，不使用可能混合早期样本范围的汇总接口。实时识别单独调用 `/api/generative/predict`，失败时报告错误，不以离线结果替代。
+
+#### 生成式模型配置与调用
+
+默认读取以下本地文件，不下载模型，也不会在适配器缺失时退回未微调基座：
+
+- `models/Qwen2.5-1.5B-Instruct/`：Qwen 基座配置、分词器与权重。
+- `saved_models/gptner_lora/adapter_config.json` 和 `adapter_model.safetensors`：你训练后的 LoRA 适配器。
+
+安装依赖后启动 `python app.py`，进入“生成式实验室 → 生成式实时识别”。首次请求懒加载模型，后续复用；优先 CUDA，未提供 CUDA 时使用 CPU（可能较慢）。可在启动前设置 `NER_GENERATIVE_MODEL_DIR`、`NER_GENERATIVE_LORA_DIR` 和 `NER_GENERATIVE_DEVICE=auto|cuda|cpu` 覆盖默认配置。
+
+```python
+import json
+from urllib.request import Request, urlopen
+
+payload = {
+    "text": "腾讯公司位于深圳，马化腾担任董事会主席。",
+    "categories": ["company", "address", "name"],
+    "max_new_tokens": 96,
+}
+request = Request(
+    "http://127.0.0.1:5000/api/generative/predict",
+    data=json.dumps(payload).encode("utf-8"),
+    headers={"Content-Type": "application/json"},
+)
+with urlopen(request, timeout=180) as response:
+    print(json.load(response))
+```
+
+`text` 为最多 128 个 Unicode 字符的非空单行文本，不能含协议保留标记 `@@` / `##`；不自动截断输入。`categories` 可省略（默认十类），或提供 1–10 个不重复的 CLUENER 类别。`max_new_tokens` 为 32–256 的整数，默认 96。当前实时模式固定使用训练时的 `zh_mrc` 提示、0-shot、贪心解码，不开启检索或自验证。
+
+成功响应为 `{success: true, data: ...}`，含闭区间实体位置、每类原始输出、GPU/CPU 与耗时。只有去除成对标记后严格等于原文的输出才产生实体；否则保留原始生成并给出提示。同一文本被预测为不同类别时全部保留，格式校验不能证明语义类别正确。这个严格策略与历史评测脚本的宽松字符串定位不同，不能据此重算或替代历史 F1。
+
+输入错误返回 400，模型正忙返回 409（带 `Retry-After`），缺少权重或推理失败返回 503。每进程同时只允许一个生成请求；前端等待上限 3 分钟，客户端超时不会终止服务器上的生成，可稍后刷新状态重试。
 
 ### 8.5 数据来源、更新与验证
 
@@ -811,7 +849,7 @@ node test_frontend_logic.js
 node test_dual_paradigm_frontend.js
 
 # Flask 与真实本地模型集成测试（需要依赖和检查点）
-python -m unittest test_workbench_verification
+python -m unittest test_workbench_verification test_generative_api
 ```
 
 前端回归覆盖真实生成函数、数据单位、实体偏移、内容转义、筛选和空数据状态。浏览器验收覆盖在线推理、API 不可用时的回退、键盘导航、深浅主题及 390px / 1440px 布局。维护细节见 [frontend/README.md](frontend/README.md)。
@@ -1002,7 +1040,7 @@ python multi_seed.py --seeds 42,123,2024,3407,8888 --epochs 3
 ### 15.2 后续优化与演化路径
 
 **优先级 P0（直接支撑课程评分项）**：
-- **补齐生成式交互与验证**：在现有实验展示基础上接入网页实时生成，并开展开启/关闭自验证的受控对照；
+- **补齐生成式验证**：在已接入的 LoRA 实时识别基础上，开展开启/关闭自验证的受控对照，并评估检索示例对实时识别的影响；
 - **低资源分档对照实验**：在 100 / 500 / 2,000 / 10,748 四档训练规模下平行对比抽取式与生成式，复现论文"少样本优势"结论或给出反证；
 - **补齐统计验证**：运行 `multi_seed.py` 完成 5 种子重复实验，给出 mean±std 与 95% 置信区间，为 §10.1 的"未观察到显著差异"提供统计支撑。
 

@@ -101,7 +101,7 @@ async function refreshWorkbenchData() {
     } finally { clearTimeout(timer); }
   }));
   const refreshed = names.filter((_, index) => results[index].status === 'fulfilled');
-  status.textContent = refreshed.length === 2 ? '抽取式指标与案例：已同步后端 · 生成式：原始实验文件构建快照' : refreshed.length ? `已同步${refreshed[0] === 'metrics' ? '抽取式指标' : '案例'}；其余使用内置快照` : '数据来源：内置实验快照 · 后端数据暂不可用';
+  status.textContent = refreshed.length === 2 ? '抽取式指标与案例：已同步后端 · 生成式历史评测：原始实验文件构建快照' : refreshed.length ? `已同步${refreshed[0] === 'metrics' ? '抽取式指标' : '案例'}；其余使用内置快照` : '数据来源：内置实验快照 · 后端数据暂不可用';
   renderOverview(); syncBenchmarkSummary(); renderBenchmarkTable(); renderBenchmarkChart(); renderGalleryCases();
 }
 

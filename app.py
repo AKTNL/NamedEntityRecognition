@@ -22,6 +22,7 @@ from typing import List, Dict, Any, Tuple
 import torch
 from transformers import AutoTokenizer, AutoModelForTokenClassification
 from flask import Flask, request, jsonify, render_template, send_from_directory
+from generative_service import GenerativeNERService, GenerativeServiceError
 
 # 保证控制台 UTF-8 输出
 if hasattr(sys.stdout, "reconfigure"):
@@ -59,6 +60,11 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(APP_ROOT, "templates")
 DEFAULT_BERT_DIR = os.path.join(APP_ROOT, "saved_models", "bert")
 DEFAULT_MACBERT_DIR = os.path.join(APP_ROOT, "saved_models", "macbert")
+GENERATIVE_SERVICE = GenerativeNERService(
+    model_dir=os.environ.get("NER_GENERATIVE_MODEL_DIR", os.path.join(APP_ROOT, "models", "Qwen2.5-1.5B-Instruct")),
+    lora_dir=os.environ.get("NER_GENERATIVE_LORA_DIR", os.path.join(APP_ROOT, "saved_models", "gptner_lora")),
+    device=os.environ.get("NER_GENERATIVE_DEVICE", "auto"),
+)
 
 
 def load_models(bert_dir: str = DEFAULT_BERT_DIR, macbert_dir: str = DEFAULT_MACBERT_DIR):
@@ -711,6 +717,27 @@ def api_metrics():
         return jsonify({"success": True, "data": data})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route("/api/generative/status", methods=["GET"])
+def api_generative_status():
+    """Report local model availability without loading its weights."""
+    return jsonify({"success": True, "data": GENERATIVE_SERVICE.status()})
+
+
+@app.route("/api/generative/predict", methods=["POST"])
+def api_generative_predict():
+    """Run trained Qwen + LoRA completion and validate spans against the input."""
+    try:
+        result = GENERATIVE_SERVICE.predict(request.get_json(silent=True))
+        return jsonify({"success": True, "data": result})
+    except GenerativeServiceError as exc:
+        if exc.code == "inference_failed":
+            app.logger.exception("Local generative inference failed")
+        response = jsonify({"success": False, "error": str(exc), "code": exc.code})
+        if exc.code == "busy":
+            response.headers["Retry-After"] = "3"
+        return response, exc.status
 
 
 @app.route("/api/cases", methods=["GET"])

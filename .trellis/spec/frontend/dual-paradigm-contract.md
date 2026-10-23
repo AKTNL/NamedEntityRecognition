@@ -3,6 +3,8 @@
 ## 1. Scope / Trigger
 The generative presentation interface consumes original experiment artifacts alongside the existing extraction API and standalone bundle.
 
+Live inference is implemented in `frontend/generative-live.js`, inlined into the same closure. It uses independent `liveGenerationState` and `/api/generative/status` plus `/api/generative/predict`; the historical experiment selector never changes the live model. See [backend contract](../backend/generative-inference.md). Validate the live response's source, input and Unicode code-point spans before rendering; errors clear previous results and never fall back to simulation.
+
 ## 2. Signatures
 - Build: `python build_workbench_html.py`.
 - Read: `GET /api/metrics`, `GET /api/cases`; both return `{success, data}`.

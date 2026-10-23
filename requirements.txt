@@ -7,11 +7,15 @@
 # 建议使用 Python 3.10+。以下为本实验实际使用版本（见 README §11 环境记录）。
 
 torch>=2.0.0
-transformers>=4.30.0
+transformers>=4.45.0
 seqeval>=1.2.2
 tqdm>=4.65.0
 numpy>=1.24.0
 flask>=2.3.0
+
+# 本地 Qwen + 训练后 LoRA 适配器推理
+peft>=0.13.0
+accelerate>=0.34.0
 
 # 可选：multi_seed.py 的 Welch t 检验需要（缺失时脚本会自动跳过该检验）
 scipy>=1.10.0

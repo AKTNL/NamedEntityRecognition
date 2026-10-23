@@ -1550,6 +1550,23 @@ select { background: var(--bg-input); border: 1px solid var(--border-subtle); co
 .gallery-toolbar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
 .gallery-search { flex: 1; min-width: 180px; border: 1px solid var(--border-main); background: var(--bg-input); color: var(--text-main); border-radius: 6px; padding: .65rem; font: inherit; font-size: .8rem; }
 .empty-state { padding: 2rem; color: var(--text-secondary); text-align: center; }
+.live-generation { margin-bottom: 2rem; }
+.live-generation textarea { min-height: 100px; width: 100%; }
+.live-input-meta, .live-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .75rem; margin: .6rem 0 1rem; }
+.live-categories { border: 1px solid var(--border-main); border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0; }
+.live-categories legend { padding: 0 .4rem; font-size: .8rem; }
+#generativeCategories { display: flex; flex-wrap: wrap; gap: .65rem 1.1rem; }
+#generativeCategories label { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; cursor: pointer; }
+#generativeCategories input { accent-color: var(--text-main); }
+.live-category-actions { display: flex; gap: 1rem; margin-top: .9rem; }
+.live-generation [hidden] { display: none !important; }
+.live-generation [data-error="true"] { border-left-width: 4px; font-weight: 600; }
+.live-generation .config-strip { margin-top: 0; margin-bottom: 1rem; }
+.live-generation .visual-text-box { white-space: pre-wrap; overflow-wrap: anywhere; }
+.live-raw-heading { margin: 1.5rem 0 .7rem; font-size: .9rem; }
+.live-output { margin-top: .65rem; padding: .75rem 1rem; border: 1px solid var(--border-main); border-radius: 7px; }
+.live-output summary { cursor: pointer; font-size: .8rem; }
+.live-output p { margin-top: .5rem; }
 button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--text-main); outline-offset: 4px; }
 .arena-controls > div:last-child { flex-wrap: wrap; }
 @media (max-width: 1000px) { .workbench-hero { gap: 2rem; } .generation-layout { grid-template-columns: 220px minmax(0,1fr); } .experiment-stats { grid-template-columns: repeat(3,1fr); } .route-footer { align-items: flex-start; } }
@@ -1613,7 +1630,7 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-
           <p>从逐字标注到文本生成，在同一个工作台探索中文命名实体识别的两条技术路线。</p>
           <div class="hero-actions">
             <button class="btn btn-primary" data-navigate="tab-arena">体验抽取式识别 <span aria-hidden="true">↗</span></button>
-            <button class="btn btn-secondary" data-navigate="tab-generative">探索生成式实验 <span aria-hidden="true">→</span></button>
+            <button class="btn btn-secondary" data-navigate="tab-generative">体验生成式识别 <span aria-hidden="true">→</span></button>
           </div>
           <div class="hero-footnote">10 类细粒度实体 <span>·</span> 双范式研究 <span>·</span> 可追溯的实验记录</div>
         </div>
@@ -1629,13 +1646,33 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-
       <div class="section-heading"><div><div class="eyebrow">TWO APPROACHES, ONE TASK</div><h3>选择一条路线，开始探索</h3></div><span class="muted">从方法原理到实验观察</span></div>
       <div class="route-grid">
         <article class="route-card"><span class="route-number">01 / EXTRACTIVE</span><div class="route-title"><h3>抽取式命名实体识别</h3><span class="stat-chip">BERT · MacBERT</span></div><p>为每个字符预测 BIO 标签，再将连续标签解码为实体边界与类别。</p><div class="method-flow"><span>输入文本</span><b>→</b><span>双向编码</span><b>→</b><span>BIO 标注</span><b>→</b><span>实体集合</span></div><div class="route-footer"><span>双模型对比 / 实体高亮 / Token 探针</span><button class="text-button" data-navigate="tab-arena">进入识别工作台 ↗</button></div></article>
-        <article class="route-card"><span class="route-number">02 / GENERATIVE</span><div class="route-title"><h3>生成式命名实体识别</h3><span class="stat-chip">GPT-NER · Qwen2.5</span></div><p>用自然语言指定实体类别，生成带有 @@ 与 ## 标记的文本，再解析实体。</p><div class="method-flow"><span>检索示例</span><b>→</b><span>构造提示</span><b>→</b><span>文本生成</span><b>→</b><span>解析实体</span></div><div class="route-footer"><span>检索消融 / LoRA 评测 / 失败案例</span><button class="text-button" data-navigate="tab-generative">进入生成式实验室 ↗</button></div></article>
+        <article class="route-card"><span class="route-number">02 / GENERATIVE</span><div class="route-title"><h3>生成式命名实体识别</h3><span class="stat-chip">GPT-NER · Qwen2.5</span></div><p>用自然语言指定实体类别，生成带有 @@ 与 ## 标记的文本，再解析实体。</p><div class="method-flow"><span>按类提示</span><b>→</b><span>训练后 LoRA</span><b>→</b><span>生成标记</span><b>→</b><span>解析实体</span></div><div class="route-footer"><span>LoRA 实时识别 / 检索消融 / 失败案例</span><button class="text-button" data-navigate="tab-generative">进入生成式实验室 ↗</button></div></article>
       </div>
       <div class="taxonomy-strip"><span class="eyebrow">实体类别</span><div id="overviewTaxonomy"></div></div>
     </section>
 
     <section class="tab-pane" id="tab-generative">
-      <div class="section-heading page-heading"><div><div class="eyebrow">02 / GENERATIVE NER</div><h2>生成式实验室</h2><p class="muted">GPT-NER 方法 · Qwen2.5-1.5B-Instruct 基座 · 已完成实验回放</p></div><span class="stat-chip">实验展示 · 未接入实时生成</span></div>
+      <div class="section-heading page-heading"><div><div class="eyebrow">02 / GENERATIVE NER</div><h2>生成式实验室</h2><p class="muted">用训练后的 Qwen + LoRA 识别新文本，也可回看已有实验。</p></div><span class="stat-chip">实时识别 / 实验记录</span></div>
+      <div class="card experiment-detail live-generation">
+        <div class="section-heading"><div><div class="eyebrow">LIVE INFERENCE</div><h3>生成式实时识别</h3></div><button class="btn btn-secondary btn-sm" id="refreshGenerativeStatus">刷新模型状态</button></div>
+        <p id="generativeModelStatus" class="result-provenance" role="status">正在检查本地 Qwen 与 LoRA 权重…</p>
+        <label class="form-label" for="generativeInput">待识别文本</label>
+        <textarea id="generativeInput" class="arena-textarea" rows="3" placeholder="输入一段中文文本，使用你训练后的 LoRA 模型识别实体。">腾讯公司位于深圳，马化腾担任董事会主席。</textarea>
+        <div class="live-input-meta"><span class="muted small">单行文本；首次识别会加载模型，请稍候。</span><span id="generativeCharCount" class="muted small">20 / 128 字</span></div>
+        <fieldset class="live-categories"><legend>识别类别</legend><div id="generativeCategories"></div><div class="live-category-actions"><button class="text-button" id="selectAllGenerativeTypes">全部类别</button><button class="text-button" id="selectCommonGenerativeTypes">仅姓名、地址、公司</button></div></fieldset>
+        <div class="live-actions"><label class="small" for="generativeTokenLimit">生成长度 <select id="generativeTokenLimit"><option value="96">96 tokens · 默认</option><option value="160">160 tokens · 较长文本</option><option value="256">256 tokens · 更完整输出</option></select></label><button class="btn btn-primary" id="runGenerative" disabled>开始生成式识别 ↗</button></div>
+        <p class="source-note">使用已训练的 LoRA 适配器，0-shot 逐类别生成；此处不会回退到词典或历史预测。</p>
+        <div id="generativeLiveMessage" class="result-provenance" role="status">输入文本并选择类别，即可开始识别。</div>
+        <div id="generativeLiveResults" hidden>
+          <div class="section-heading"><h3>本次识别结果</h3><button class="btn btn-secondary btn-sm" id="exportGenerativePrediction">导出本次结果 JSON ↓</button></div>
+          <div id="generativeLiveSummary" class="config-strip"></div>
+          <div id="generativeHighlight" class="visual-text-box"></div>
+          <p class="muted small">同一词被预测为多个类别时全部保留，按区间分段高亮。位置为从 0 开始的 Unicode 字符闭区间；原文对齐检查不代表类别判断一定正确。</p>
+          <div class="table-scroll"><table class="benchmark-table"><thead><tr><th>实体文本</th><th>类别</th><th>起始位置</th><th>结束位置（含）</th></tr></thead><tbody id="generativeEntityRows"></tbody></table></div>
+          <h3 class="live-raw-heading">逐类别原始输出</h3><div id="generativeRawOutputs"></div>
+        </div>
+      </div>
+      <div class="section-heading"><div><div class="eyebrow">EXPERIMENT ARCHIVE</div><h3>历史实验记录</h3></div><span class="muted small">以下指标来自已保存的评测，与上方实时请求独立。</span></div>
       <div class="generation-layout">
         <aside class="experiment-sidebar card"><div class="eyebrow">EXPERIMENTS</div><h3>选择实验配置</h3><p class="muted small">切换查看指标、类别表现与实验参数。</p><div id="experimentList"></div><div class="experiment-note">自验证属于方法设计；所展示运行均以各自配置为准，不将未运行机制标作已启用。</div></aside>
         <div class="experiment-main">
@@ -20752,7 +20789,7 @@ async function refreshWorkbenchData() {
     } finally { clearTimeout(timer); }
   }));
   const refreshed = names.filter((_, index) => results[index].status === 'fulfilled');
-  status.textContent = refreshed.length === 2 ? '抽取式指标与案例：已同步后端 · 生成式：原始实验文件构建快照' : refreshed.length ? `已同步${refreshed[0] === 'metrics' ? '抽取式指标' : '案例'}；其余使用内置快照` : '数据来源：内置实验快照 · 后端数据暂不可用';
+  status.textContent = refreshed.length === 2 ? '抽取式指标与案例：已同步后端 · 生成式历史评测：原始实验文件构建快照' : refreshed.length ? `已同步${refreshed[0] === 'metrics' ? '抽取式指标' : '案例'}；其余使用内置快照` : '数据来源：内置实验快照 · 后端数据暂不可用';
   renderOverview(); syncBenchmarkSummary(); renderBenchmarkTable(); renderBenchmarkChart(); renderGalleryCases();
 }
 
@@ -20805,6 +20842,159 @@ function initDualParadigm() {
   refreshWorkbenchData();
 }
 
+// Live Qwen + LoRA interaction. Historical experiment state stays independent.
+const liveGenerationState = {running: false, available: false, result: null};
+
+function validateLiveGeneration(data, inputText) {
+  if (!data || data.source !== 'live' || data.text !== inputText || !Array.isArray(data.entities) || !Array.isArray(data.outputs)) {
+    throw new Error('服务返回了无效的实时预测结果，请重试。');
+  }
+  const chars = Array.from(inputText);
+  for (const entity of data.entities) {
+    if (!Object.hasOwn(bundle.category_meta || {}, entity.category)
+        || !Number.isInteger(entity.start) || !Number.isInteger(entity.end)
+        || entity.start < 0 || entity.end < entity.start || entity.end >= chars.length
+        || chars.slice(entity.start, entity.end + 1).join('') !== entity.text) {
+      throw new Error('服务返回的实体位置无法与原文对齐，请重试。');
+    }
+  }
+  for (const output of data.outputs) {
+    if (!Object.hasOwn(bundle.category_meta || {}, output.category) || typeof output.output !== 'string'
+        || !Array.isArray(output.entities) || !Array.isArray(output.warnings)
+        || output.warnings.some(warning => typeof warning !== 'string') || typeof output.valid !== 'boolean') {
+      throw new Error('服务返回的逐类别输出格式无效，请重试。');
+    }
+  }
+  return data;
+}
+
+function renderLiveHighlight(text, entities) {
+  const chars = Array.from(text);
+  const cuts = [...new Set([0, chars.length, ...entities.flatMap(entity => [entity.start, entity.end + 1])])].sort((a, b) => a - b);
+  return cuts.slice(0, -1).map((start, index) => {
+    const end = cuts[index + 1];
+    const value = escapeHtml(chars.slice(start, end).join(''));
+    const covering = entities.filter(entity => entity.start <= start && entity.end >= end - 1);
+    if (!covering.length) return value;
+    const labels = [...new Set(covering.map(entity => bundle.category_meta[entity.category]?.cn || entity.category))].join(' / ');
+    return `<span class="entity-span badge-${escapeHtml(covering[0].category)}" title="${escapeHtml(labels)} · [${start}, ${end - 1}]"><span class="ent-text">${value}</span><span class="ent-label">${escapeHtml(labels)}</span></span>`;
+  }).join('');
+}
+
+function renderLiveGeneration(data) {
+  document.getElementById('generativeHighlight').innerHTML = renderLiveHighlight(data.text, data.entities);
+  document.getElementById('generativeEntityRows').innerHTML = data.entities.length ? data.entities.map(entity => `<tr><td>${escapeHtml(entity.text)}</td><td>${escapeHtml(bundle.category_meta[entity.category]?.cn || entity.category)}</td><td>${entity.start}</td><td>${entity.end}</td></tr>`).join('') : '<tr><td colspan="4">本次没有通过格式和原文对齐检查的实体，请结合下方原始输出查看。</td></tr>';
+  document.getElementById('generativeRawOutputs').innerHTML = data.outputs.map(output => `<details class="live-output" ${output.valid ? '' : 'open'}><summary>${escapeHtml(bundle.category_meta[output.category]?.cn || output.category)} · ${output.valid ? `${output.entities.length} 个实体` : '输出校验未通过'}</summary><pre class="generation-raw">${escapeHtml(output.output)}</pre>${output.warnings.map(warning => `<p class="small">${escapeHtml(warning)}</p>`).join('')}</details>`).join('');
+  const elapsed = typeof data.timing?.total_ms === 'number' ? `${(data.timing.total_ms / 1000).toFixed(2)} 秒` : '—';
+  document.getElementById('generativeLiveSummary').textContent = `实时推理 · ${data.model} + ${data.adapter} · ${data.device} · ${data.entities.length} 个实体 · 总耗时 ${elapsed}${data.timing?.load_ms > 0 ? '（含首次加载）' : ''}`;
+  const warnings = data.outputs.filter(output => !output.valid).length;
+  const message = document.getElementById('generativeLiveMessage');
+  message.textContent = warnings ? `识别完成，${warnings} 个类别的输出未通过校验，已保留原始文本供检查。可尝试缩短输入或增加生成长度。` : '识别完成 · 本次结果来自你本地训练后的 LoRA 模型。';
+  message.dataset.error = 'false';
+  document.getElementById('generativeLiveResults').hidden = false;
+}
+
+async function refreshGenerativeStatus() {
+  const statusNode = document.getElementById('generativeModelStatus');
+  const runButton = document.getElementById('runGenerative');
+  liveGenerationState.available = false;
+  runButton.disabled = true;
+  if (location.protocol === 'file:') {
+    statusNode.textContent = '当前为离线页面。运行 python app.py 后，通过 http://127.0.0.1:5000 使用生成式实时识别。';
+    return;
+  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 5000);
+  try {
+    const response = await fetch('/api/generative/status', {signal: controller.signal});
+    if (response.status === 404) throw new Error('当前后端尚未提供生成式接口，请重启更新后的 python app.py。');
+    if (!response.ok) throw new Error('无法连接生成式服务，请检查本地后端后刷新状态。');
+    const payload = await response.json();
+    if (!payload.success || typeof payload.data?.available !== 'boolean') throw new Error('模型状态响应无效，请重启本地服务。');
+    const status = payload.data;
+    liveGenerationState.available = status.available && !status.busy;
+    statusNode.textContent = !status.available ? status.error : status.busy ? '模型正在加载或生成中，请稍后刷新状态。'
+      : status.error ? `${status.error} 可重新尝试识别。`
+      : status.loaded ? `${status.model} + ${status.adapter} 已就绪 · ${status.device} · 训练后权重`
+      : `${status.model} + ${status.adapter} 权重已找到 · 首次识别时加载${status.device === 'auto' ? '，优先使用 GPU' : ` · ${status.device}`}`;
+  } catch (error) {
+    statusNode.textContent = error.name === 'AbortError' ? '模型状态检查超时，请稍后刷新。' : error.message;
+  } finally {
+    clearTimeout(timer);
+    runButton.disabled = liveGenerationState.running || !liveGenerationState.available;
+  }
+}
+
+async function runLiveGeneration() {
+  if (liveGenerationState.running) return;
+  const message = document.getElementById('generativeLiveMessage');
+  const text = document.getElementById('generativeInput').value;
+  const categories = Array.from(document.querySelectorAll('#generativeCategories input:checked')).map(input => input.value);
+  message.dataset.error = 'false';
+  liveGenerationState.result = null;
+  document.getElementById('generativeLiveResults').hidden = true;
+  if (!text.trim() || !categories.length || Array.from(text).length > 128 || /[\r\n\u0000]|@@|##/.test(text)) {
+    message.textContent = '请输入 1–128 字的单行文本并选择至少一个类别；文本不能包含 @@ 或 ## 保留标记。';
+    message.dataset.error = 'true';
+    return;
+  }
+  liveGenerationState.running = true;
+  const button = document.getElementById('runGenerative');
+  button.disabled = true; button.textContent = '正在加载 / 生成，请稍候…';
+  document.getElementById('refreshGenerativeStatus').disabled = true;
+  document.getElementById('generativeInput').disabled = true;
+  document.querySelectorAll('#generativeCategories input').forEach(input => { input.disabled = true; });
+  ['selectAllGenerativeTypes', 'selectCommonGenerativeTypes', 'generativeTokenLimit'].forEach(id => { document.getElementById(id).disabled = true; });
+  message.textContent = `正在使用训练后的 LoRA 模型识别 ${categories.length} 类实体，首次加载可能需要较长时间…`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 180000);
+  try {
+    const response = await fetch('/api/generative/predict', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, signal: controller.signal,
+      body: JSON.stringify({text, categories, max_new_tokens: Number(document.getElementById('generativeTokenLimit').value)}),
+    });
+    if (response.status === 404) throw new Error('当前后端没有生成式预测接口，请重启更新后的 python app.py。');
+    const payload = await response.json();
+    if (!response.ok || !payload.success) throw new Error(payload.error || '生成式识别失败，请重试。');
+    const data = validateLiveGeneration(payload.data, text);
+    liveGenerationState.result = data;
+    renderLiveGeneration(data);
+  } catch (error) {
+    message.dataset.error = 'true';
+    message.textContent = error.name === 'AbortError'
+      ? '等待超过 3 分钟。后端可能仍在处理，请稍后刷新模型状态；本次未显示预测结果。'
+      : `识别未完成：${error.message}。本次未使用离线结果替代。`;
+  } finally {
+    clearTimeout(timer);
+    liveGenerationState.running = false;
+    button.textContent = '开始生成式识别 ↗';
+    document.getElementById('refreshGenerativeStatus').disabled = false;
+    document.getElementById('generativeInput').disabled = false;
+    document.querySelectorAll('#generativeCategories input').forEach(input => { input.disabled = false; });
+    ['selectAllGenerativeTypes', 'selectCommonGenerativeTypes', 'generativeTokenLimit'].forEach(id => { document.getElementById(id).disabled = false; });
+    await refreshGenerativeStatus();
+  }
+}
+
+function initLiveGeneration() {
+  document.getElementById('generativeCategories').innerHTML = Object.entries(bundle.category_meta || {}).map(([category, meta]) => `<label><input type="checkbox" value="${escapeHtml(category)}" checked> ${escapeHtml(meta.cn || category)}</label>`).join('');
+  const updateCount = () => { document.getElementById('generativeCharCount').textContent = `${Array.from(document.getElementById('generativeInput').value).length} / 128 字`; };
+  document.getElementById('generativeInput').addEventListener('input', updateCount);
+  updateCount();
+  document.getElementById('selectAllGenerativeTypes').addEventListener('click', () => document.querySelectorAll('#generativeCategories input').forEach(input => { input.checked = true; }));
+  document.getElementById('selectCommonGenerativeTypes').addEventListener('click', () => document.querySelectorAll('#generativeCategories input').forEach(input => { input.checked = ['name', 'company', 'address'].includes(input.value); }));
+  document.getElementById('runGenerative').addEventListener('click', runLiveGeneration);
+  document.getElementById('refreshGenerativeStatus').addEventListener('click', refreshGenerativeStatus);
+  document.getElementById('exportGenerativePrediction').addEventListener('click', () => {
+    if (!liveGenerationState.result) return;
+    const url = URL.createObjectURL(new Blob([JSON.stringify(liveGenerationState.result, null, 2)], {type: 'application/json'}));
+    const anchor = document.createElement('a');
+    anchor.href = url; anchor.download = 'qwen-lora-prediction.json'; anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  refreshGenerativeStatus();
+}
+
 
       function main() {
         initTheme();
@@ -20815,6 +21005,7 @@ function initDualParadigm() {
         initGallery();
         loadCustomCases();
         initDualParadigm();
+        initLiveGeneration();
         detectBackend();
       }
 

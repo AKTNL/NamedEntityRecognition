@@ -13,12 +13,12 @@ const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].
 assert.equal(scripts.length, 2);
 const nodes = new Map();
 function getNode(id) {
-  if (!nodes.has(id)) nodes.set(id, {value: '', textContent: '', innerHTML: '', style: {}, classList: {add() {}, remove() {}, toggle() {}}, setAttribute() {}});
+  if (!nodes.has(id)) nodes.set(id, {value: '', textContent: '', innerHTML: '', style: {}, dataset: {}, classList: {add() {}, remove() {}, toggle() {}}, setAttribute() {}});
   return nodes.get(id);
 }
 const context = vm.createContext({
-  window: {}, document: {getElementById: getNode}, console,
-  setTimeout, clearTimeout, Blob, URL,
+  window: {}, document: {getElementById: getNode, querySelectorAll: () => [{value: 'name'}]}, console,
+  setTimeout, clearTimeout, Blob, URL, AbortController, location: {protocol: 'http:'},
 });
 vm.runInContext(scripts[0], context);
 const boot = /if \(document\.readyState === 'loading'\) \{[\s\S]*?\} else \{\s*main\(\);\s*\}/;
@@ -26,6 +26,7 @@ assert.match(scripts[1], boot);
 const executable = scripts[1].replace(boot, `window.testAPI = {
   state, bundle, percent, runOfflineSimulation, renderHighlightedSpanText,
   renderGeneration, renderProtocol, renderGenerativeCase, renderGalleryCases,
+  validateLiveGeneration, renderLiveHighlight, renderLiveGeneration, runLiveGeneration, refreshGenerativeStatus,
   selectExperiment(index) { selectedExperiment = experiments[index]; },
   clearExperiment() { selectedExperiment = null; }
 };`);
@@ -93,3 +94,45 @@ api.renderGeneration();
 assert.equal(getNode('exportExperiment').disabled, true);
 assert.ok(getNode('experimentStats').innerHTML.includes('暂无实验数据'));
 console.log('✓ Generated frontend: artifact fidelity, units, exact spans, protocol, XSS, case filtering, empty state');
+
+const liveText = '😀张三遇见张三。';
+const liveData = {
+  source: 'live', text: liveText, model: 'Qwen', adapter: 'trained', device: 'cuda', timing: {total_ms: 1000},
+  entities: [{text: '张三', category: 'name', start: 1, end: 2}, {text: '张三', category: 'name', start: 5, end: 6}],
+  outputs: [{category: 'name', output: '😀@@张三##遇见@@张三##。', entities: [], warnings: [], valid: true}],
+};
+assert.equal(api.validateLiveGeneration(liveData, liveText), liveData);
+assert.throws(() => api.validateLiveGeneration({...liveData, source: 'dictionary'}, liveText));
+assert.throws(() => api.validateLiveGeneration({...liveData, text: 'different'}, liveText));
+assert.throws(() => api.validateLiveGeneration({...liveData, entities: [{...liveData.entities[0], start: 2}]}, liveText));
+assert.equal((api.renderLiveHighlight(liveText, liveData.entities).match(/class="ent-text">张三/g) || []).length, 2);
+api.renderLiveGeneration({...liveData, outputs: [{category: 'name', output: hostile, entities: [], warnings: [hostile], valid: false}]});
+assert.ok(!getNode('generativeRawOutputs').innerHTML.includes('<img'));
+assert.ok(getNode('generativeRawOutputs').innerHTML.includes('&lt;img'));
+
+(async () => {
+  getNode('generativeInput').value = liveText;
+  getNode('generativeTokenLimit').value = '96';
+  let calls = [];
+  context.fetch = async (url, options) => {
+    calls.push([url, options]);
+    return {ok: true, status: 200, json: async () => ({success: true, data: url.endsWith('/status')
+      ? {available: true, loaded: true, model: 'Qwen', adapter: 'trained', device: 'cuda'} : liveData})};
+  };
+  await api.runLiveGeneration();
+  assert.equal(getNode('generativeLiveResults').hidden, false);
+  assert.equal(JSON.parse(calls[0][1].body).text, liveText);
+  assert.equal(getNode('generativeInput').disabled, false);
+  context.fetch = async url => ({ok: !url.endsWith('/predict'), status: url.endsWith('/predict') ? 503 : 200,
+    json: async () => url.endsWith('/predict') ? {success: false, error: 'missing adapter'} : {success: true, data: {available: false, error: 'missing adapter'}}});
+  await api.runLiveGeneration();
+  assert.equal(getNode('generativeLiveResults').hidden, true, 'Failed requests must not retain old predictions');
+  assert.ok(getNode('generativeLiveMessage').textContent.includes('missing adapter'));
+  assert.equal(getNode('runGenerative').disabled, true);
+  context.location.protocol = 'file:';
+  context.fetch = () => { throw new Error('file mode must not call the API'); };
+  await api.refreshGenerativeStatus();
+  assert.equal(getNode('runGenerative').disabled, true);
+  assert.ok(getNode('generativeModelStatus').textContent.includes('离线'));
+  console.log('✓ Live generation: Unicode spans, response validation, raw output escaping, HTTP errors and offline state');
+})().catch(error => { console.error(error); process.exitCode = 1; });

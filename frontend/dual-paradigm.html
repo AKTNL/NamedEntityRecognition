@@ -6,7 +6,7 @@
           <p>从逐字标注到文本生成，在同一个工作台探索中文命名实体识别的两条技术路线。</p>
           <div class="hero-actions">
             <button class="btn btn-primary" data-navigate="tab-arena">体验抽取式识别 <span aria-hidden="true">↗</span></button>
-            <button class="btn btn-secondary" data-navigate="tab-generative">探索生成式实验 <span aria-hidden="true">→</span></button>
+            <button class="btn btn-secondary" data-navigate="tab-generative">体验生成式识别 <span aria-hidden="true">→</span></button>
           </div>
           <div class="hero-footnote">10 类细粒度实体 <span>·</span> 双范式研究 <span>·</span> 可追溯的实验记录</div>
         </div>
@@ -22,13 +22,33 @@
       <div class="section-heading"><div><div class="eyebrow">TWO APPROACHES, ONE TASK</div><h3>选择一条路线，开始探索</h3></div><span class="muted">从方法原理到实验观察</span></div>
       <div class="route-grid">
         <article class="route-card"><span class="route-number">01 / EXTRACTIVE</span><div class="route-title"><h3>抽取式命名实体识别</h3><span class="stat-chip">BERT · MacBERT</span></div><p>为每个字符预测 BIO 标签，再将连续标签解码为实体边界与类别。</p><div class="method-flow"><span>输入文本</span><b>→</b><span>双向编码</span><b>→</b><span>BIO 标注</span><b>→</b><span>实体集合</span></div><div class="route-footer"><span>双模型对比 / 实体高亮 / Token 探针</span><button class="text-button" data-navigate="tab-arena">进入识别工作台 ↗</button></div></article>
-        <article class="route-card"><span class="route-number">02 / GENERATIVE</span><div class="route-title"><h3>生成式命名实体识别</h3><span class="stat-chip">GPT-NER · Qwen2.5</span></div><p>用自然语言指定实体类别，生成带有 @@ 与 ## 标记的文本，再解析实体。</p><div class="method-flow"><span>检索示例</span><b>→</b><span>构造提示</span><b>→</b><span>文本生成</span><b>→</b><span>解析实体</span></div><div class="route-footer"><span>检索消融 / LoRA 评测 / 失败案例</span><button class="text-button" data-navigate="tab-generative">进入生成式实验室 ↗</button></div></article>
+        <article class="route-card"><span class="route-number">02 / GENERATIVE</span><div class="route-title"><h3>生成式命名实体识别</h3><span class="stat-chip">GPT-NER · Qwen2.5</span></div><p>用自然语言指定实体类别，生成带有 @@ 与 ## 标记的文本，再解析实体。</p><div class="method-flow"><span>按类提示</span><b>→</b><span>训练后 LoRA</span><b>→</b><span>生成标记</span><b>→</b><span>解析实体</span></div><div class="route-footer"><span>LoRA 实时识别 / 检索消融 / 失败案例</span><button class="text-button" data-navigate="tab-generative">进入生成式实验室 ↗</button></div></article>
       </div>
       <div class="taxonomy-strip"><span class="eyebrow">实体类别</span><div id="overviewTaxonomy"></div></div>
     </section>
 
     <section class="tab-pane" id="tab-generative">
-      <div class="section-heading page-heading"><div><div class="eyebrow">02 / GENERATIVE NER</div><h2>生成式实验室</h2><p class="muted">GPT-NER 方法 · Qwen2.5-1.5B-Instruct 基座 · 已完成实验回放</p></div><span class="stat-chip">实验展示 · 未接入实时生成</span></div>
+      <div class="section-heading page-heading"><div><div class="eyebrow">02 / GENERATIVE NER</div><h2>生成式实验室</h2><p class="muted">用训练后的 Qwen + LoRA 识别新文本，也可回看已有实验。</p></div><span class="stat-chip">实时识别 / 实验记录</span></div>
+      <div class="card experiment-detail live-generation">
+        <div class="section-heading"><div><div class="eyebrow">LIVE INFERENCE</div><h3>生成式实时识别</h3></div><button class="btn btn-secondary btn-sm" id="refreshGenerativeStatus">刷新模型状态</button></div>
+        <p id="generativeModelStatus" class="result-provenance" role="status">正在检查本地 Qwen 与 LoRA 权重…</p>
+        <label class="form-label" for="generativeInput">待识别文本</label>
+        <textarea id="generativeInput" class="arena-textarea" rows="3" placeholder="输入一段中文文本，使用你训练后的 LoRA 模型识别实体。">腾讯公司位于深圳，马化腾担任董事会主席。</textarea>
+        <div class="live-input-meta"><span class="muted small">单行文本；首次识别会加载模型，请稍候。</span><span id="generativeCharCount" class="muted small">20 / 128 字</span></div>
+        <fieldset class="live-categories"><legend>识别类别</legend><div id="generativeCategories"></div><div class="live-category-actions"><button class="text-button" id="selectAllGenerativeTypes">全部类别</button><button class="text-button" id="selectCommonGenerativeTypes">仅姓名、地址、公司</button></div></fieldset>
+        <div class="live-actions"><label class="small" for="generativeTokenLimit">生成长度 <select id="generativeTokenLimit"><option value="96">96 tokens · 默认</option><option value="160">160 tokens · 较长文本</option><option value="256">256 tokens · 更完整输出</option></select></label><button class="btn btn-primary" id="runGenerative" disabled>开始生成式识别 ↗</button></div>
+        <p class="source-note">使用已训练的 LoRA 适配器，0-shot 逐类别生成；此处不会回退到词典或历史预测。</p>
+        <div id="generativeLiveMessage" class="result-provenance" role="status">输入文本并选择类别，即可开始识别。</div>
+        <div id="generativeLiveResults" hidden>
+          <div class="section-heading"><h3>本次识别结果</h3><button class="btn btn-secondary btn-sm" id="exportGenerativePrediction">导出本次结果 JSON ↓</button></div>
+          <div id="generativeLiveSummary" class="config-strip"></div>
+          <div id="generativeHighlight" class="visual-text-box"></div>
+          <p class="muted small">同一词被预测为多个类别时全部保留，按区间分段高亮。位置为从 0 开始的 Unicode 字符闭区间；原文对齐检查不代表类别判断一定正确。</p>
+          <div class="table-scroll"><table class="benchmark-table"><thead><tr><th>实体文本</th><th>类别</th><th>起始位置</th><th>结束位置（含）</th></tr></thead><tbody id="generativeEntityRows"></tbody></table></div>
+          <h3 class="live-raw-heading">逐类别原始输出</h3><div id="generativeRawOutputs"></div>
+        </div>
+      </div>
+      <div class="section-heading"><div><div class="eyebrow">EXPERIMENT ARCHIVE</div><h3>历史实验记录</h3></div><span class="muted small">以下指标来自已保存的评测，与上方实时请求独立。</span></div>
       <div class="generation-layout">
         <aside class="experiment-sidebar card"><div class="eyebrow">EXPERIMENTS</div><h3>选择实验配置</h3><p class="muted small">切换查看指标、类别表现与实验参数。</p><div id="experimentList"></div><div class="experiment-note">自验证属于方法设计；所展示运行均以各自配置为准，不将未运行机制标作已启用。</div></aside>
         <div class="experiment-main">
