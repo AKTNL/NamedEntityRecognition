@@ -1,0 +1,104 @@
+{
+  "config": {
+    "strategy": "sentence",
+    "k": 0,
+    "lang": "zh_mrc",
+    "chat_template": false,
+    "self_verify": false,
+    "limit": 100,
+    "types": null,
+    "seed": 42,
+    "batch_size": 16,
+    "max_new_tokens": 96,
+    "elapsed_minutes": 2.26
+  },
+  "metrics": {
+    "micro_f1": 41.87,
+    "micro_p": 43.12,
+    "micro_r": 40.69,
+    "report": "              precision    recall  f1-score   support\n\n     address     0.3519    0.5938    0.4419        32\n        book     0.1600    0.4444    0.2353         9\n     company     0.4000    0.4762    0.4348        21\n        game     0.6250    0.4545    0.5263        22\n  government     0.4783    0.6471    0.5500        17\n       movie     0.7143    0.2273    0.3448        22\n        name     0.6970    0.6970    0.6970        33\norganization     0.5385    0.2917    0.3784        24\n    position     0.2353    0.1379    0.1739        29\n       scene     0.2000    0.0455    0.0741        22\n\n   micro avg     0.4312    0.4069    0.4187       231\n   macro avg     0.4400    0.4015    0.3856       231\nweighted avg     0.4582    0.4069    0.4011       231\n",
+    "n_sentences": 100,
+    "n_gold_entities": 231,
+    "n_pred_entities": 468,
+    "n_queries": 1000,
+    "n_hallucination": 1,
+    "n_malformed": 0,
+    "hallucination_rate": 0.001,
+    "malformed_rate": 0.0,
+    "hallucination_samples": [
+      "阿森纳"
+    ],
+    "per_type": {
+      "address": {
+        "precision": 35.19,
+        "recall": 59.38,
+        "f1": 44.19,
+        "support": 32,
+        "predicted": 54
+      },
+      "book": {
+        "precision": 16.0,
+        "recall": 44.44,
+        "f1": 23.53,
+        "support": 9,
+        "predicted": 25
+      },
+      "company": {
+        "precision": 40.0,
+        "recall": 47.62,
+        "f1": 43.48,
+        "support": 21,
+        "predicted": 25
+      },
+      "game": {
+        "precision": 62.5,
+        "recall": 45.45,
+        "f1": 52.63,
+        "support": 22,
+        "predicted": 16
+      },
+      "government": {
+        "precision": 47.83,
+        "recall": 64.71,
+        "f1": 55.0,
+        "support": 17,
+        "predicted": 23
+      },
+      "movie": {
+        "precision": 71.43,
+        "recall": 22.73,
+        "f1": 34.48,
+        "support": 22,
+        "predicted": 7
+      },
+      "name": {
+        "precision": 69.7,
+        "recall": 69.7,
+        "f1": 69.7,
+        "support": 33,
+        "predicted": 33
+      },
+      "organization": {
+        "precision": 53.85,
+        "recall": 29.17,
+        "f1": 37.84,
+        "support": 24,
+        "predicted": 13
+      },
+      "position": {
+        "precision": 23.53,
+        "recall": 13.79,
+        "f1": 17.39,
+        "support": 29,
+        "predicted": 17
+      },
+      "scene": {
+        "precision": 20.0,
+        "recall": 4.55,
+        "f1": 7.41,
+        "support": 22,
+        "predicted": 5
+      }
+    }
+  }
+}

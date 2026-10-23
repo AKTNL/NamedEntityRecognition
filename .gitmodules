@@ -1,0 +1,9 @@
+[submodule "GPT-NER"]
+	path = GPT-NER
+	url = https://github.com/ShuheWang1998/GPT-NER.git
+[submodule "models/Qwen2.5-1.5B-Instruct"]
+	path = models/Qwen2.5-1.5B-Instruct
+	url = https://www.modelscope.cn/Qwen/Qwen2.5-1.5B-Instruct.git
+[submodule "models/nlp_gte_sentence-embedding_chinese-base"]
+	path = models/nlp_gte_sentence-embedding_chinese-base
+	url = https://www.modelscope.cn/iic/nlp_gte_sentence-embedding_chinese-base.git

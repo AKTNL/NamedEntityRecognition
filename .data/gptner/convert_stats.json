@@ -1,0 +1,122 @@
+[
+  {
+    "split": "train",
+    "sentences": 10748,
+    "queries": 17501,
+    "positive_queries": 17501,
+    "positive_ratio": 1.0,
+    "total_entities": 23971,
+    "per_type": {
+      "address": {
+        "queries": 2090,
+        "positive": 2090,
+        "entities": 2891
+      },
+      "book": {
+        "queries": 908,
+        "positive": 908,
+        "entities": 1139
+      },
+      "company": {
+        "queries": 2215,
+        "positive": 2215,
+        "entities": 2980
+      },
+      "game": {
+        "queries": 1897,
+        "positive": 1897,
+        "entities": 2376
+      },
+      "government": {
+        "queries": 1461,
+        "positive": 1461,
+        "entities": 1835
+      },
+      "movie": {
+        "queries": 779,
+        "positive": 779,
+        "entities": 1123
+      },
+      "name": {
+        "queries": 2847,
+        "positive": 2847,
+        "entities": 3755
+      },
+      "organization": {
+        "queries": 1894,
+        "positive": 1894,
+        "entities": 3210
+      },
+      "position": {
+        "queries": 2464,
+        "positive": 2464,
+        "entities": 3141
+      },
+      "scene": {
+        "queries": 946,
+        "positive": 946,
+        "entities": 1521
+      }
+    }
+  },
+  {
+    "split": "dev",
+    "sentences": 1343,
+    "queries": 13430,
+    "positive_queries": 2219,
+    "positive_ratio": 0.1652,
+    "total_entities": 3072,
+    "per_type": {
+      "address": {
+        "queries": 1343,
+        "positive": 273,
+        "entities": 373
+      },
+      "book": {
+        "queries": 1343,
+        "positive": 121,
+        "entities": 154
+      },
+      "company": {
+        "queries": 1343,
+        "positive": 279,
+        "entities": 378
+      },
+      "game": {
+        "queries": 1343,
+        "positive": 226,
+        "entities": 295
+      },
+      "government": {
+        "queries": 1343,
+        "positive": 190,
+        "entities": 247
+      },
+      "movie": {
+        "queries": 1343,
+        "positive": 101,
+        "entities": 151
+      },
+      "name": {
+        "queries": 1343,
+        "positive": 352,
+        "entities": 465
+      },
+      "organization": {
+        "queries": 1343,
+        "positive": 206,
+        "entities": 367
+      },
+      "position": {
+        "queries": 1343,
+        "positive": 347,
+        "entities": 433
+      },
+      "scene": {
+        "queries": 1343,
+        "positive": 124,
+        "entities": 209
+      }
+    }
+  }
+]

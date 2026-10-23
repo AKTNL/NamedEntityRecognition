@@ -1,0 +1,123 @@
+{
+  "config": {
+    "strategy": "sentence",
+    "k": 0,
+    "lang": "zh_mrc",
+    "chat_template": false,
+    "self_verify": false,
+    "limit": null,
+    "types": null,
+    "seed": 42,
+    "batch_size": 32,
+    "max_new_tokens": 96,
+    "elapsed_minutes": 24.13
+  },
+  "metrics": {
+    "micro_f1": 41.59,
+    "micro_p": 43.12,
+    "micro_r": 40.17,
+    "report": "              precision    recall  f1-score   support\n\n     address     0.2704    0.4718    0.3438       373\n        book     0.2530    0.5390    0.3444       154\n     company     0.4289    0.5661    0.4880       378\n        game     0.6333    0.3864    0.4800       295\n  government     0.5587    0.4818    0.5174       247\n       movie     0.1944    0.0464    0.0749       151\n        name     0.6112    0.6323    0.6216       465\norganization     0.3613    0.1172    0.1770       367\n    position     0.5319    0.3464    0.4196       433\n       scene     0.4658    0.1627    0.2411       209\n\n   micro avg     0.4312    0.4017    0.4159      3072\n   macro avg     0.4309    0.3750    0.3708      3072\nweighted avg     0.4559    0.4017    0.4012      3072\n",
+    "n_sentences": 1343,
+    "n_gold_entities": 3072,
+    "n_pred_entities": 6184,
+    "n_queries": 13430,
+    "n_hallucination": 27,
+    "n_malformed": 20,
+    "hallucination_rate": 0.002,
+    "malformed_rate": 0.0015,
+    "hallucination_samples": [
+      "《吴三桂演义》",
+      "阿森纳",
+      "第1",
+      "第1",
+      "美国国会",
+      "哈里",
+      "《现代启示录》",
+      "常务副所长",
+      "《美国陆军3》",
+      "《美国陆军3》",
+      "《美国陆军3》",
+      "首外",
+      "北京翰上",
+      "北京翰上",
+      "北京翰上",
+      "首长",
+      "？口区长丰街道办事处长丰村",
+      "北京",
+      "公司",
+      "给定句子"
+    ],
+    "per_type": {
+      "address": {
+        "precision": 27.04,
+        "recall": 47.18,
+        "f1": 34.38,
+        "support": 373,
+        "predicted": 651
+      },
+      "book": {
+        "precision": 25.3,
+        "recall": 53.9,
+        "f1": 34.44,
+        "support": 154,
+        "predicted": 328
+      },
+      "company": {
+        "precision": 42.89,
+        "recall": 56.61,
+        "f1": 48.8,
+        "support": 378,
+        "predicted": 499
+      },
+      "game": {
+        "precision": 63.33,
+        "recall": 38.64,
+        "f1": 48.0,
+        "support": 295,
+        "predicted": 180
+      },
+      "government": {
+        "precision": 55.87,
+        "recall": 48.18,
+        "f1": 51.74,
+        "support": 247,
+        "predicted": 213
+      },
+      "movie": {
+        "precision": 19.44,
+        "recall": 4.64,
+        "f1": 7.49,
+        "support": 151,
+        "predicted": 36
+      },
+      "name": {
+        "precision": 61.12,
+        "recall": 63.23,
+        "f1": 62.16,
+        "support": 465,
+        "predicted": 481
+      },
+      "organization": {
+        "precision": 36.13,
+        "recall": 11.72,
+        "f1": 17.7,
+        "support": 367,
+        "predicted": 119
+      },
+      "position": {
+        "precision": 53.19,
+        "recall": 34.64,
+        "f1": 41.96,
+        "support": 433,
+        "predicted": 282
+      },
+      "scene": {
+        "precision": 46.58,
+        "recall": 16.27,
+        "f1": 24.11,
+        "support": 209,
+        "predicted": 73
+      }
+    }
+  }
+}

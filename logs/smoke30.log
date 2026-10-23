@@ -1,0 +1,87 @@
+==============================================================================
+GPT-NER 生成式链路 · 端到端实验
+==============================================================================
+  检索策略 : sentence
+  示例数 k : 8（负例占比 0.5）
+  LoRA     : 无（纯 few-shot）
+  提示语言 : zh_mrc
+  chat模板 : False
+  自验证   : False
+  评测范围 : 前 30 句
+  随机种子 : 42
+
+[1/6] 数据：训练语料 10748 句｜评测 300 条查询（30 个原句 × 10 类型）｜金标实体 66 个
+
+[2/6] 示例检索（sentence，负例占比 0.5）...
+  示例池：10747 句 | 正例槽位 17500 | 负例槽位 89970
+  [句子级检索] 编码 30 条测试句 ...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 40049.25it/s]
+[1mBertModel LOAD REPORT[0m from: D:\college\自然语言处理\NamedEntityRecognition\models\nlp_gte_sentence-embedding_chinese-base
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[3/6] 构造提示...
+  提示 300 条｜字符数 平均 883 / 最长 1027
+
+[4/6] 本地 LLM 生成...
+  [引擎] 加载 Qwen2.5-1.5B-Instruct (bfloat16, device=cuda) ...
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 9553.00it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+  [引擎] 就绪，参数量 1.54B
+  [引擎] 显存占用 3.12 / 8.55 GB
+    16/300 条 | 5.59 条/秒 | 预计剩余 0.8 分钟
+    生成完毕：300 条，用时 9.36 分钟
+
+[5/6] 自验证：跳过（未开启）
+
+[6/6] 解析与评测...
+
+==============================================================================
+结果（seqeval 实体级 Micro，与抽取式链路同口径）
+==============================================================================
+  Precision = 20.63
+  Recall    = 19.70
+  Micro F1  = 20.16
+  金标实体 66 个｜预测实体 145 个
+  幻觉 10 个（率 3.33%）｜格式异常 101 条（率 33.67%）
+
+  逐类型 F1：
+    类型                       P       R      F1      金标      预测
+    address(地址)          20.00   40.00   26.67       5      10
+    book(书籍)             14.29   33.33   20.00       3       7
+    company(公司)          40.00   28.57   33.33       7       5
+    game(游戏)             18.18   28.57   22.22       7      11
+    government(政府机构)      0.00    0.00    0.00       4       7
+    movie(电影)             0.00    0.00    0.00       4       4
+    name(人名)             75.00   25.00   37.50      12       4
+    organization(组织机构)   20.00    8.33   11.76      12       5
+    position(职位)         40.00   22.22   28.57       9       5
+    scene(景点)             0.00    0.00    0.00       3       5
+
+  幻觉样例（原文中找不到）：['找@@校@@方', '市场仍存在对网络销售形式的需求，网络购彩前景如何？为此此我们采访业内专家@@程阳', '业内@@专家@@@@程阳', '《关于调整中国福利彩票双色球游戏规则等有关事项的通知》', '本报导（记者王吉瑛）@@双色球即将出台新规，一等奖最高奖金可达到1000万元。@@昨天，@@中彩中心', '）双色球即将出台新规，@@记者', '7个月以来@@西甲', '他们@@主场0：3惨败@@给了@@中游@@球队@@瓦拉多利德']
+
+[seqeval 分类报告]
+              precision    recall  f1-score   support
+
+     address     0.2000    0.4000    0.2667         5
+        book     0.1429    0.3333    0.2000         3
+     company     0.4000    0.2857    0.3333         7
+        game     0.1818    0.2857    0.2222         7
+  government     0.0000    0.0000    0.0000         4
+       movie     0.0000    0.0000    0.0000         4
+        name     0.7500    0.2500    0.3750        12
+organization     0.2000    0.0833    0.1176        12
+    position     0.4000    0.2222    0.2857         9
+       scene     0.0000    0.0000    0.0000         3
+
+   micro avg     0.2063    0.1970    0.2016        66
+   macro avg     0.2275    0.1860    0.1801        66
+weighted avg     0.3106    0.1970    0.2167        66
+
+
+结果已写入：D:\college\自然语言处理\NamedEntityRecognition\results\generative\gptner_sentence_k8_n30.json

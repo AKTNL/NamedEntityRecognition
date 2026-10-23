@@ -1,0 +1,105 @@
+==============================================================================
+GPT-NER 生成式链路 · 端到端实验
+==============================================================================
+  检索策略 : entity
+  示例数 k : 8（负例占比 0.5）
+  LoRA     : 无（纯 few-shot）
+  提示语言 : zh_mrc
+  chat模板 : False
+  自验证   : False
+  评测范围 : 前 120 句
+  随机种子 : 42
+
+[1/6] 数据：训练语料 10748 句｜评测 1200 条查询（120 个原句 × 10 类型）｜金标实体 274 个
+
+[2/6] 示例检索（entity，负例占比 0.5）...
+  示例池：10747 句 | 正例槽位 17500 | 负例槽位 89970
+  [实体级检索] 编码 120 条测试句（全字位候选）...
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 10735.54it/s]
+[1mBertModel LOAD REPORT[0m from: C:\Users\kevinchang\.cache\huggingface\hub\models--bert-base-chinese\snapshots\8f23c25b06e129b6c986331a13d8d025a92cf0ea
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 44479.96it/s]
+[1mBertModel LOAD REPORT[0m from: D:\college\自然语言处理\NamedEntityRecognition\models\nlp_gte_sentence-embedding_chinese-base
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+[3/6] 构造提示...
+  提示 1200 条｜字符数 平均 878 / 最长 1065
+
+[4/6] 本地 LLM 生成...
+  [引擎] 加载 Qwen2.5-1.5B-Instruct (bfloat16, device=cuda) ...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  40%|███▉      | 134/338 [00:00<00:00, 1328.26it/s]Loading weights:  86%|████████▌ | 290/338 [00:00<00:00, 1427.22it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 1505.75it/s]
+  [引擎] 就绪，参数量 1.54B
+  [引擎] 显存占用 3.12 / 8.55 GB
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+    64/1200 条 | 4.71 条/秒 | 预计剩余 4.0 分钟
+    384/1200 条 | 1.41 条/秒 | 预计剩余 9.6 分钟
+    704/1200 条 | 1.18 条/秒 | 预计剩余 7.0 分钟
+    1024/1200 条 | 1.19 条/秒 | 预计剩余 2.5 分钟
+    1200/1200 条 | 1.21 条/秒 | 预计剩余 0.0 分钟
+    生成完毕：1200 条，用时 16.55 分钟
+
+[5/6] 自验证：跳过（未开启）
+
+[6/6] 解析与评测...
+
+==============================================================================
+结果（seqeval 实体级 Micro，与抽取式链路同口径）
+==============================================================================
+  Precision = 32.53
+  Recall    = 34.67
+  Micro F1  = 33.57
+  金标实体 274 个｜预测实体 555 个
+  幻觉 84 个（率 7.00%）｜格式异常 367 条（率 30.58%）
+
+  逐类型 F1：
+    类型                       P       R      F1      金标      预测
+    address(地址)          29.03   46.15   35.64      39      62
+    book(书籍)             38.10   72.73   50.00      11      21
+    company(公司)          15.62   20.00   17.54      25      32
+    game(游戏)             47.06   50.00   48.48      32      34
+    government(政府机构)     17.24   27.78   21.28      18      29
+    movie(电影)            42.86   13.64   20.69      22       7
+    name(人名)             63.33   48.72   55.07      39      30
+    organization(组织机构)   15.15   17.86   16.39      28      33
+    position(职位)         51.85   41.18   45.90      34      27
+    scene(景点)            11.76    7.69    9.30      26      17
+
+  幻觉样例（原文中找不到）：['台湾的发卡模式，@@先通过@@跑马圈地', '圈的地里面选择@@客户', '我想站在雪山脚下你会被那巍峨的雪山所震撼，但你一定要在自己身体条件允许的情况下坚持走到@@牛奶海', '一二流的@@国家队@@开始@@走出@@欧洲杯', '业内@@专家', '市场仍存在对网络销售形式的需求，网络购彩前景如何？为此此我们采访业内专家@@程阳', '市场仍存在@@对@@网络销售形式的需求，网络购彩前景如何？为此此我们采访@@业内专家@@程阳先生', '给@@了@@中@@游@@球@@队@@瓦拉多利德']
+
+[seqeval 分类报告]
+              precision    recall  f1-score   support
+
+     address     0.2903    0.4615    0.3564        39
+        book     0.3810    0.7273    0.5000        11
+     company     0.1562    0.2000    0.1754        25
+        game     0.4706    0.5000    0.4848        32
+  government     0.1724    0.2778    0.2128        18
+       movie     0.4286    0.1364    0.2069        22
+        name     0.6333    0.4872    0.5507        39
+organization     0.1515    0.1786    0.1639        28
+    position     0.5185    0.4118    0.4590        34
+       scene     0.1176    0.0769    0.0930        26
+
+   micro avg     0.3253    0.3467    0.3357       274
+   macro avg     0.3320    0.3457    0.3203       274
+weighted avg     0.3527    0.3467    0.3350       274
+
+
+结果已写入：D:\college\自然语言处理\NamedEntityRecognition\results\generative\gptner_entity_k8_n120.json

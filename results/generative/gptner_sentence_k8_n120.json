@@ -1,0 +1,123 @@
+{
+  "config": {
+    "strategy": "sentence",
+    "k": 8,
+    "lang": "zh_mrc",
+    "chat_template": false,
+    "self_verify": false,
+    "limit": 120,
+    "types": null,
+    "seed": 42,
+    "batch_size": 64,
+    "max_new_tokens": 72,
+    "elapsed_minutes": 30.21
+  },
+  "metrics": {
+    "micro_f1": 27.55,
+    "micro_p": 28.52,
+    "micro_r": 26.64,
+    "report": "              precision    recall  f1-score   support\n\n     address     0.2449    0.3077    0.2727        39\n        book     0.2381    0.4545    0.3125        11\n     company     0.4000    0.3200    0.3556        25\n        game     0.3030    0.3125    0.3077        32\n  government     0.0000    0.0000    0.0000        18\n       movie     0.2083    0.2273    0.2174        22\n        name     0.6000    0.3846    0.4688        39\norganization     0.2800    0.2500    0.2642        28\n    position     0.5556    0.2941    0.3846        34\n       scene     0.0526    0.0385    0.0444        26\n\n   micro avg     0.2852    0.2664    0.2755       274\n   macro avg     0.2883    0.2589    0.2628       274\nweighted avg     0.3210    0.2664    0.2829       274\n",
+    "n_sentences": 120,
+    "n_gold_entities": 274,
+    "n_pred_entities": 491,
+    "n_queries": 1200,
+    "n_hallucination": 51,
+    "n_malformed": 348,
+    "hallucination_rate": 0.0425,
+    "malformed_rate": 0.29,
+    "hallucination_samples": [
+      "市场仍存在对网络销售形式的需求，网络购彩前景如何？为此此我们采访业内专家@@程阳",
+      "业内@@专家@@程阳",
+      "本报导",
+      "双色球即将出台新规，一等奖最高奖金可达到1000万元。@@昨天，@@中彩中心",
+      "双色球即将出台新规，@@一等奖",
+      "7个月以来@@西甲",
+      "他们@@主场0：3惨败@@给了@@中游@@球队@@瓦拉多利德",
+      "近@@7@@个@@月@@半@@以来@@西甲@@首次@@输@@球",
+      "整个@@潮白河",
+      "买@@好",
+      "1942年@@日军",
+      "该校@@财务处",
+      "办卡与@@财务处",
+      "该校@@财务处求证，但一名工作人员却表示完全不知道@@学生",
+      "件，更否认@@办@@卡",
+      "该校@@财务处",
+      "现在的@@阿森纳",
+      "再@@给人@@以@@强队@@的信心，@@但@@教授",
+      "《美国陆军3》（America's",
+      "像@@范佩西"
+    ],
+    "per_type": {
+      "address": {
+        "precision": 24.49,
+        "recall": 30.77,
+        "f1": 27.27,
+        "support": 39,
+        "predicted": 49
+      },
+      "book": {
+        "precision": 23.81,
+        "recall": 45.45,
+        "f1": 31.25,
+        "support": 11,
+        "predicted": 21
+      },
+      "company": {
+        "precision": 40.0,
+        "recall": 32.0,
+        "f1": 35.56,
+        "support": 25,
+        "predicted": 20
+      },
+      "game": {
+        "precision": 30.3,
+        "recall": 31.25,
+        "f1": 30.77,
+        "support": 32,
+        "predicted": 33
+      },
+      "government": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 18,
+        "predicted": 22
+      },
+      "movie": {
+        "precision": 20.83,
+        "recall": 22.73,
+        "f1": 21.74,
+        "support": 22,
+        "predicted": 24
+      },
+      "name": {
+        "precision": 60.0,
+        "recall": 38.46,
+        "f1": 46.88,
+        "support": 39,
+        "predicted": 25
+      },
+      "organization": {
+        "precision": 28.0,
+        "recall": 25.0,
+        "f1": 26.42,
+        "support": 28,
+        "predicted": 25
+      },
+      "position": {
+        "precision": 55.56,
+        "recall": 29.41,
+        "f1": 38.46,
+        "support": 34,
+        "predicted": 18
+      },
+      "scene": {
+        "precision": 5.26,
+        "recall": 3.85,
+        "f1": 4.44,
+        "support": 26,
+        "predicted": 19
+      }
+    }
+  }
+}

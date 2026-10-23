@@ -1133,5 +1133,119 @@
       "technical_reason": "【模型鲁棒性超越原始脏标注】标注人员在界面滑选时失误多选了半个括号‘（’。BERT 与 MacBERT 依靠预训练学到的句法知识，正确判定括号不属于实体本身，但严苛的字符串位置评测将其判为错误。",
       "proposed_solution": "在数据预处理阶段执行基于正则规则的括号配对与末尾标点清洗后处理。"
     }
+  ],
+  "category_c_generative_failures": [
+    {
+      "case_id": "Case-C-01",
+      "sample_index": 201,
+      "paradigm": "generative",
+      "model_type": "Qwen2.5-1.5B + LoRA (Zero-shot)",
+      "pattern_type": "parametric_prior_overflow",
+      "pattern_name": "大模型先验常识外溢与原文偏离（“阿森纳”归一化案例）",
+      "primary_category": "organization",
+      "text": "莫斯科中央陆军vs波兹南、拉科vs费耶诺德、加拉塔萨雷vs梅塔利斯特，阿森纳出线形势分析",
+      "ground_truth": [
+        {
+          "start": 0,
+          "end": 6,
+          "category": "organization",
+          "text": "莫斯科中央陆军"
+        },
+        {
+          "start": 9,
+          "end": 11,
+          "category": "organization",
+          "text": "波兹南"
+        },
+        {
+          "start": 13,
+          "end": 14,
+          "category": "organization",
+          "text": "拉科"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "category": "organization",
+          "text": "费耶诺德"
+        },
+        {
+          "start": 22,
+          "end": 26,
+          "category": "organization",
+          "text": "加拉塔萨雷"
+        },
+        {
+          "start": 29,
+          "end": 33,
+          "category": "organization",
+          "text": "梅塔利斯特"
+        }
+      ],
+      "generative_prediction": [
+        {
+          "start": 0,
+          "end": 6,
+          "category": "organization",
+          "text": "莫斯科中央陆军"
+        },
+        {
+          "start": 36,
+          "end": 38,
+          "category": "organization",
+          "text": "阿森纳"
+        }
+      ],
+      "model_output": "莫斯科中央陆军vs波兹南、拉科vs费耶诺德、加拉塔萨雷vs梅塔利斯特，@@阿森纳##出线形势分析",
+      "diff_analysis": "LoRA 模型在 1,000 次评测（100 句测试）中格式异常率为 0.00%，全场仅出现 1 例系统判定的幻觉。在体育赛事文本中，大模型凭借强大的世界常识（Parametric World Knowledge），自发将英超著名足球俱乐部“阿森纳”判定为组织机构输出。",
+      "technical_reason": "【世界知识与文本约束的张力】判别式 BERT 属于字符分类器，绝不可能凭空创造实体；而生成式大模型在遇到赛事语境时容易发生先验知识外溢，试图将非标准指代归一化为标准专有名词，体现了生成式模型“常识推理能力”与“严格原文约束”之间的根本博弈。",
+      "proposed_solution": "在 Prompt 中强化【严格原文子串约束】负向指令，或通过第三阶段自验证（Self-Verification）是非问答过滤非原文字符。"
+    },
+    {
+      "case_id": "Case-C-02",
+      "sample_index": 202,
+      "paradigm": "generative",
+      "model_type": "Qwen2.5-1.5B (Random 4-shot, 无微调)",
+      "pattern_type": "syntax_collapse_random_demos",
+      "pattern_name": "随机少样本提示引发语法标记崩溃（“@@跑马圈地”未闭合案例）",
+      "primary_category": "company",
+      "text": "台湾的发卡模式，先通过跑马圈地，圈的地里面选择客户",
+      "ground_truth": [],
+      "generative_prediction": [
+        {
+          "start": 11,
+          "end": 14,
+          "category": "company",
+          "text": "跑马圈地"
+        }
+      ],
+      "model_output": "台湾的发卡模式，先通过@@跑马圈地，圈的地里面选择客户",
+      "diff_analysis": "在无微调的 Random 4-shot 模式下，模型不仅将俗语成语“跑马圈地”错误臆造为公司实体，而且漏掉了闭合符号“##”，导致格式异常率飙升至 62%。",
+      "technical_reason": "【语义不相关示例导致的注意力涣散】随机抽取的 4 个示范样本与当前金融发卡场景毫无语义重合。小参数模型（1.5B）因上下文学习能力受限，注意力矩阵受到不相关少样本噪声的严重干扰，导致包裹标记状态机中途瓦解，诱发严重的边界截断与幻觉。",
+      "proposed_solution": "放弃无序随机采样，采用基于稠密语义向量（如 Sentence Transformer / BGE）的动态示例检索，或直接采用 LoRA 监督对齐。"
+    },
+    {
+      "case_id": "Case-C-03",
+      "sample_index": 203,
+      "paradigm": "generative",
+      "model_type": "Qwen2.5-1.5B (Random 4-shot, 无微调)",
+      "pattern_type": "boundary_marker_degeneration",
+      "pattern_name": "边界标记退化与因果发散（“@@选择@@”双标记案例）",
+      "primary_category": "company",
+      "text": "圈的地里面选择客户，市场处于高度竞争状态",
+      "ground_truth": [],
+      "generative_prediction": [
+        {
+          "start": 5,
+          "end": 6,
+          "category": "company",
+          "text": "选择"
+        }
+      ],
+      "model_output": "圈的地里面@@选择@@客户，市场处于高度竞争状态",
+      "diff_analysis": "模型面对动词“选择”，输出了两个连续的起始标记“@@选择@@”而未闭合“##”，引发后处理正则解析崩溃。",
+      "technical_reason": "【任务形式漂移与结构失配】大模型因果解码的原生目标是续写文本，在缺乏监督微调（SFT）时，对于稀疏边界特殊符的生成概率分布极不稳定。该现象证明：纯靠 Prompt 无法确保轻量大模型执行严格的位置保真抽取，必须通过 LoRA 进行强力格式对齐。",
+      "proposed_solution": "使用 LoRA 进行序列生成格式对齐（SFT），将异常率压制至 0.00%。"
+    }
   ]
 }
