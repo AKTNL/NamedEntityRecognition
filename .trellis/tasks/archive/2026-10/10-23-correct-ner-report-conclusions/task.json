@@ -3,7 +3,7 @@
   "name": "correct-ner-report-conclusions",
   "title": "校正两份 NER 报告的实验结论与证据口径",
   "description": "",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,16 +11,19 @@
   "creator": "kev1n",
   "assignee": "kev1n",
   "createdAt": "2026-10-23",
-  "completedAt": null,
-  "branch": null,
+  "completedAt": "2026-10-23",
+  "branch": "main",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": null,
+  "commit": "9f6c47bda6ac536340c514588f7c8b13d1676edb",
   "pr_url": null,
   "subtasks": [],
   "children": [],
   "parent": null,
-  "relatedFiles": [],
-  "notes": "",
+  "relatedFiles": [
+    "docs/报告1.md",
+    "docs/报告2.md"
+  ],
+  "notes": "Report corrections verified and pushed in 9f6c47b. User requested /finish-work; task archived on 2026-10-23. Numerical evidence, link checks and spec review are recorded in verification.md and research/evidence.md.",
   "meta": {}
 }
